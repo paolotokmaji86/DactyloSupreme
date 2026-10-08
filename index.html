@@ -1,0 +1,1647 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Dactylo Supreme: blind leren typen</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='4' y='14' width='56' height='36' rx='7' fill='%231d2a33'/%3E%3Crect x='12' y='22' width='10' height='8' rx='2' fill='%23c08419'/%3E%3Crect x='27' y='22' width='10' height='8' rx='2' fill='%233e8e6a'/%3E%3Crect x='42' y='22' width='10' height='8' rx='2' fill='%233f6fb5'/%3E%3Crect x='16' y='35' width='32' height='7' rx='2' fill='%23b5578e'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root {
+  --bg: #edf0ee;
+  --surface: #f9fbfa;
+  --surface-2: #e2e7e4;
+  --ink: #1d2a33;
+  --muted: #56666f;
+  --line: #cdd5d2;
+  --accent: #2a5db0;
+  --cur-bg: #dfe8f7;
+  --error: #b8283f;
+  --err-bg: #f6dde2;
+  --ok: #2b7656;
+  --key-bg: #fbfcfb;
+  --key-edge: #bfc9c5;
+  --key-text: #24313a;
+  --f-pink: #ad4f87;
+  --f-ring: #3a67ad;
+  --f-middle: #357f5e;
+  --f-index: #b07613;
+  --f-thumb: #6e7a86;
+  --t-pink: #f1dde9;
+  --t-ring: #dce5f4;
+  --t-middle: #d8ece2;
+  --t-index: #f4e7cb;
+  --t-thumb: #e4e8eb;
+  --radius-key: 7px;
+  --radius-panel: 12px;
+  --font-ui: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-type: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161e25; --surface: #1d2730; --surface-2: #26323c; --ink: #e5ebee; --muted: #9aa9b2;
+    --line: #34434e; --accent: #8db2f0; --cur-bg: #24395a; --error: #f07086; --err-bg: #4a2630;
+    --ok: #6fc79b; --key-bg: #222d36; --key-edge: #3b4a55; --key-text: #e1e8ec;
+    --f-pink: #d77bb0; --f-ring: #6f9be0; --f-middle: #5fb98c; --f-index: #d9a443; --f-thumb: #95a2ad;
+    --t-pink: #46293b; --t-ring: #233853; --t-middle: #213f33; --t-index: #45371c; --t-thumb: #2c3740;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161e25; --surface: #1d2730; --surface-2: #26323c; --ink: #e5ebee; --muted: #9aa9b2;
+  --line: #34434e; --accent: #8db2f0; --cur-bg: #24395a; --error: #f07086; --err-bg: #4a2630;
+  --ok: #6fc79b; --key-bg: #222d36; --key-edge: #3b4a55; --key-text: #e1e8ec;
+  --f-pink: #d77bb0; --f-ring: #6f9be0; --f-middle: #5fb98c; --f-index: #d9a443; --f-thumb: #95a2ad;
+  --t-pink: #46293b; --t-ring: #233853; --t-middle: #213f33; --t-index: #45371c; --t-thumb: #2c3740;
+}
+*, *::before, *::after { box-sizing: inherit; }
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 400 17px/1.55 var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); }
+.wrap { max-width: 1060px; margin: 0 auto; padding-left: 22px; padding-right: 22px; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+/* Bovenbalk */
+.top { border-bottom: 1px solid var(--line); background: var(--bg); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; }
+.top-inner { display: flex; align-items: center; justify-content: space-between; gap: 10px 24px; min-height: 68px; flex-wrap: wrap; padding-top: 8px; padding-bottom: 8px; }
+.brand { display: flex; flex-direction: column; text-decoration: none; color: var(--ink); line-height: 1.15; }
+.brand-name { font-weight: 700; font-size: 23px; letter-spacing: -0.01em; }
+.brand-sub { font-size: 13px; color: var(--muted); }
+.nav { display: flex; gap: 2px; flex-wrap: wrap; }
+.nav a { color: var(--ink); text-decoration: none; padding: 8px 12px; font-weight: 700; font-size: 15px; border-radius: 8px; }
+.nav a:hover { background: var(--surface-2); }
+.nav a[aria-current="page"] { box-shadow: inset 0 -3px 0 var(--ink); border-radius: 8px 8px 0 0; }
+
+main { padding-top: 26px; padding-bottom: 56px; outline: none; }
+h1 { font-size: 34px; line-height: 1.15; margin: 0 0 12px; letter-spacing: -0.015em; }
+h2 { font-size: 24px; line-height: 1.2; margin: 0 0 10px; letter-spacing: -0.01em; }
+h3 { font-size: 19px; line-height: 1.3; margin: 0 0 4px; }
+p { margin: 0 0 12px; max-width: 68ch; }
+.muted { color: var(--muted); }
+.small { font-size: 15px; }
+
+.btn {
+  font: 700 16px/1.2 var(--font-ui); padding: 12px 18px; border-radius: 10px;
+  border: 2px solid var(--ink); background: var(--ink); color: var(--bg); cursor: pointer;
+  display: inline-block; text-decoration: none;
+}
+.btn:hover { filter: brightness(1.12); }
+.btn.secondary { background: transparent; color: var(--ink); }
+.btn.secondary:hover { background: var(--surface-2); filter: none; }
+.btn.danger { background: transparent; color: var(--error); border-color: var(--error); }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; align-items: center; }
+.hint { color: var(--muted); font-size: 15px; margin-top: 10px; }
+
+.banner { margin-top: 14px; padding: 12px 14px; border: 2px solid var(--error); border-radius: 10px; background: var(--err-bg); }
+.notice { margin: 0 0 18px; padding: 12px 14px; border-left: 4px solid var(--accent); background: var(--surface); border-radius: 0 10px 10px 0; }
+
+/* Startpagina */
+.hero { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 36px; align-items: center; padding: 8px 0 34px; border-bottom: 1px solid var(--line); }
+.hero .lead { color: var(--muted); font-size: 16px; margin-bottom: 6px; }
+.hero h1 { font-size: 40px; }
+.overall { color: var(--muted); font-size: 15px; margin-top: 14px; }
+@media (max-width: 860px) { .hero { grid-template-columns: 1fr; gap: 22px; } .hero h1 { font-size: 32px; } }
+
+.phase { margin-top: 34px; }
+.phase-title { font-size: 21px; margin-bottom: 4px; }
+.phase-sub { color: var(--muted); font-size: 15px; margin-bottom: 8px; }
+.module { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 24px; padding: 18px 0; border-top: 1px solid var(--line); }
+.module-head .count { color: var(--muted); font-size: 15px; }
+.bar { height: 6px; background: var(--surface-2); border-radius: 3px; overflow: hidden; margin-top: 8px; max-width: 200px; }
+.bar > i { display: block; height: 100%; background: var(--ok); }
+.lesson-list { list-style: none; margin: 0; padding: 0; }
+.lesson-list a, .lesson-list .locked {
+  display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; gap: 12px; align-items: baseline;
+  padding: 8px 10px; border-radius: 8px; color: var(--ink); text-decoration: none;
+}
+.lesson-list a:hover { background: var(--surface-2); }
+.lesson-list .nr { color: var(--muted); font-variant-numeric: tabular-nums; }
+.lesson-list .st { font-size: 14px; color: var(--muted); white-space: nowrap; }
+.lesson-list .st.ok { color: var(--ok); }
+.lesson-list .st.next { color: var(--accent); font-weight: 700; }
+.lesson-list .locked { color: var(--muted); }
+.module.soon .module-body { color: var(--muted); }
+.module.soon .module-body p { margin: 0; }
+@media (max-width: 720px) { .module { grid-template-columns: 1fr; gap: 8px; } }
+
+/* Toetsenbord */
+.kb { display: flex; flex-direction: column; gap: 5px; padding: 12px; background: var(--surface-2); border-radius: 14px; user-select: none; -webkit-user-select: none; width: 100%; }
+.kb-row { display: flex; gap: 5px; }
+.key {
+  flex: 1 1 0; min-width: 0; height: 44px; border-radius: var(--radius-key);
+  background: var(--key-bg); border: 1px solid var(--key-edge); border-bottom-width: 3px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 15px; color: var(--key-text); position: relative; line-height: 1.05;
+  transition: background-color .12s ease, transform .08s ease;
+}
+.key .lg-top, .key .lg-bot { font-size: 12px; font-weight: 400; }
+.key .lg-mod { font-size: 11px; font-weight: 400; color: var(--muted); }
+.key.f-lp, .key.f-rp, .finger.f-lp, .finger.f-rp { --fc: var(--f-pink); --tc: var(--t-pink); }
+.key.f-lr, .key.f-rr, .finger.f-lr, .finger.f-rr { --fc: var(--f-ring); --tc: var(--t-ring); }
+.key.f-lm, .key.f-rm, .finger.f-lm, .finger.f-rm { --fc: var(--f-middle); --tc: var(--t-middle); }
+.key.f-li, .key.f-ri, .finger.f-li, .finger.f-ri { --fc: var(--f-index); --tc: var(--t-index); }
+.key.f-th, .finger.f-th { --fc: var(--f-thumb); --tc: var(--t-thumb); }
+.kb.tinted .key:not(.mod) { background: var(--tc); }
+.key.is-new { background: var(--fc) !important; color: #fff; border-color: rgba(0,0,0,.18); }
+.key.is-new .lg-mod { color: #fff; }
+.key.is-next { background: var(--fc) !important; color: #fff; border-color: rgba(0,0,0,.18); transform: translateY(1px); box-shadow: 0 0 0 3px var(--surface-2), 0 0 0 5px var(--fc); z-index: 1; }
+.key.is-next .lg-mod { color: #fff; }
+.key.home::after { content: ""; position: absolute; bottom: 6px; left: 50%; width: 12px; height: 2px; margin-left: -6px; border-radius: 2px; background: currentColor; opacity: .55; }
+.kb.compact .key { height: 36px; font-size: 13px; }
+.kb.compact .key .lg-top, .kb.compact .key .lg-bot { font-size: 10px; }
+.kb.compact .key .lg-mod { font-size: 9px; }
+@media (max-width: 640px) {
+  .kb { padding: 6px; gap: 3px; } .kb-row { gap: 3px; }
+  .key, .kb.compact .key { height: 30px; font-size: 11px; border-radius: 5px; }
+  .key .lg-top, .key .lg-bot, .kb.compact .key .lg-top, .kb.compact .key .lg-bot { font-size: 8px; }
+  .key .lg-mod, .kb.compact .key .lg-mod { font-size: 7px; }
+}
+.hands { display: block; width: min(400px, 100%); height: auto; margin: 14px auto 0; }
+.hands .palm { fill: var(--surface); stroke: var(--line); stroke-width: 1.5; }
+.hands .finger { fill: var(--tc); stroke: var(--line); stroke-width: 1.5; transition: fill .12s ease; }
+.hands .finger.on { fill: var(--fc); stroke: var(--fc); }
+.finger-label { text-align: center; color: var(--muted); font-size: 15px; margin: 4px auto 0; min-height: 1.5em; }
+
+/* Les */
+.lesson-head { margin-bottom: 4px; }
+.back { display: inline-block; margin-bottom: 10px; font-weight: 700; text-decoration: none; }
+.back:hover { text-decoration: underline; }
+.steps { display: flex; gap: 6px; list-style: none; padding: 0; margin: 14px 0 24px; }
+.steps li { flex: 1 1 0; min-width: 0; font-size: 13px; color: var(--muted); border-top: 4px solid var(--line); padding-top: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.steps li.done { border-color: var(--ok); color: var(--ink); }
+.steps li.cur { border-color: var(--accent); color: var(--ink); font-weight: 700; }
+@media (max-width: 640px) { .steps li { font-size: 0; } }
+.intro { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 36px; align-items: start; }
+@media (max-width: 860px) { .intro { grid-template-columns: 1fr; } }
+.run-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+.run-top h2 { margin: 0; font-size: 20px; }
+.running .back { margin-bottom: 2px; }
+.running .lesson-head h1 { font-size: 26px; margin-bottom: 0; }
+.running .steps { margin: 10px 0 16px; }
+.running .kb-area { margin-top: 16px; }
+.running .kb { max-width: 900px; margin: 0 auto; }
+.running .key { height: 40px; }
+.running .hands { width: 270px; margin-top: 8px; }
+.run-hint { margin-left: auto; color: var(--muted); font-size: 15px; }
+.ex-count { color: var(--muted); font-size: 15px; }
+.strip {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-panel);
+  padding: 20px 28px; font-family: var(--font-type); font-size: clamp(20px, 2.5vw, 30px);
+  line-height: 1.8; letter-spacing: 0.02em; white-space: pre-wrap; color: var(--ink);
+  min-height: calc(3.6em + 42px); outline: none; max-height: 60vh; overflow-y: auto;
+}
+.strip .w { white-space: nowrap; }
+.ch { border-radius: 3px; }
+.ch.done { color: var(--muted); }
+.ch.had-err { color: var(--error); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; }
+.ch.cur { background: var(--cur-bg); box-shadow: inset 0 -3px 0 var(--accent); color: var(--ink); }
+.ch.flash { background: var(--err-bg); box-shadow: inset 0 -3px 0 var(--error); }
+.stats { display: flex; flex-wrap: wrap; gap: 6px 28px; margin: 14px 2px 0; color: var(--muted); font-size: 15px; }
+.stats b { color: var(--ink); font-size: 21px; margin-right: 5px; font-variant-numeric: tabular-nums; }
+.caps { margin: 12px 0 0; padding: 8px 12px; border-radius: 8px; background: var(--err-bg); color: var(--ink); font-weight: 700; }
+.kb-area { margin-top: 22px; }
+.result h2 { font-size: 28px; }
+.result h2.pass { color: var(--ok); }
+.result h2.fail { color: var(--error); }
+.result-stats { display: flex; flex-wrap: wrap; gap: 8px 32px; margin: 10px 0 6px; }
+.result-stats div { font-size: 15px; color: var(--muted); }
+.result-stats b { display: block; font-size: 24px; color: var(--ink); font-variant-numeric: tabular-nums; }
+
+/* Voortgang */
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px 28px; margin: 10px 0 30px; }
+.kpi b { display: block; font-size: 26px; font-variant-numeric: tabular-nums; }
+.kpi span { color: var(--muted); font-size: 15px; }
+.section { margin-top: 34px; }
+.charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+.chart { width: 100%; height: auto; display: block; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-panel); }
+.chart .grid { stroke: var(--line); stroke-width: 1; }
+.chart .axis { fill: var(--muted); font-size: 12px; font-family: var(--font-ui); }
+.chart .line { fill: none; stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.empty { color: var(--muted); padding: 22px; border: 1px dashed var(--line); border-radius: var(--radius-panel); }
+.fbars { display: grid; grid-template-columns: max-content minmax(80px, 1fr) max-content; gap: 8px 14px; align-items: center; max-width: 620px; margin-top: 16px; }
+.fbar { height: 10px; background: var(--surface-2); border-radius: 5px; overflow: hidden; }
+.fbar i { display: block; height: 100%; background: var(--fc); }
+.fname { font-size: 15px; }
+.fval { font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* Instellingen */
+.form { display: grid; gap: 22px; max-width: 620px; }
+.field label { display: block; font-weight: 700; margin-bottom: 6px; }
+.field select, .field input[type="text"] {
+  font: inherit; padding: 10px 12px; border: 2px solid var(--line); border-radius: 8px;
+  background: var(--surface); color: var(--ink); width: 100%;
+}
+.field .help { color: var(--muted); font-size: 14px; margin-top: 6px; }
+.foot { color: var(--muted); font-size: 14px; padding-bottom: 30px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-inner">
+    <a class="brand" href="#/lessen">
+      <span class="brand-name">Dactylo Supreme</span>
+      <span class="brand-sub">Blind leren typen op Belgisch AZERTY</span>
+    </a>
+    <nav class="nav" aria-label="Hoofdmenu">
+      <a href="#/lessen" data-nav="lessen">Lessen</a>
+      <a href="#/voortgang" data-nav="voortgang">Voortgang</a>
+      <a href="#/oefenen" data-nav="oefenen">Vrij oefenen</a>
+      <a href="#/instellingen" data-nav="instellingen">Instellingen</a>
+    </nav>
+  </div>
+</header>
+<div class="wrap"><div id="banner" class="banner" hidden></div></div>
+<main id="app" class="wrap" tabindex="-1"></main>
+<footer class="wrap foot">
+  Dactylo Supreme versie <span id="version"></span>. Je voortgang wordt alleen in deze browser op dit toestel bewaard. Maak af en toe een back-up via Instellingen.
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var APP_VERSION = '0.1.0';
+  var STORAGE_KEY = 'dactylo-be-azerty';
+  var SCHEMA = 1;
+
+  /* =========================================================
+     Toetsenbord: Belgisch AZERTY (Mac en Windows)
+     De app controleert het teken dat binnenkomt (event.key),
+     dus het typen zelf werkt op elke indeling. De indeling
+     hieronder dient enkel voor het toetsenbord op het scherm.
+     ========================================================= */
+  var FINGER_NAME = {
+    lp: 'linkerpink', lr: 'linkerringvinger', lm: 'linkermiddelvinger', li: 'linkerwijsvinger',
+    ri: 'rechterwijsvinger', rm: 'rechtermiddelvinger', rr: 'rechterringvinger', rp: 'rechterpink', th: 'duim'
+  };
+  var TOP_FINGERS = ['lp', 'lr', 'lm', 'li', 'li', 'ri', 'ri', 'rm', 'rr', 'rp'];
+
+  function K(id, base, shift, finger, w, label) {
+    return { id: id, base: base, shift: shift, finger: finger, w: w || 1, label: label == null ? null : label };
+  }
+  function letterKeys(s, fingers) {
+    return s.split('').map(function (c, i) { return K('k_' + c, c, c.toUpperCase(), fingers[i], 1); });
+  }
+  function buildLayout(variant) {
+    var mac = variant === 'mac';
+    return [
+      [
+        // Mac: toets onder Esc (@ en #). Welke van de twee Shift vraagt, controleren we nog op haar toetsenbord.
+        mac ? K('k_top', '@', '#', 'lp') : K('k_top', '\u00b2', '\u00b3', 'lp'),
+        K('k_1', '&', '1', 'lp'), K('k_2', '\u00e9', '2', 'lr'), K('k_3', '"', '3', 'lm'), K('k_4', "'", '4', 'li'),
+        K('k_5', '(', '5', 'li'), K('k_6', '\u00a7', '6', 'ri'), K('k_7', '\u00e8', '7', 'ri'), K('k_8', '!', '8', 'rm'),
+        K('k_9', '\u00e7', '9', 'rr'), K('k_0', '\u00e0', '0', 'rp'), K('k_rpar', ')', '\u00b0', 'rp'), K('k_minus', '-', '_', 'rp'),
+        K('k_bksp', null, null, 'rp', 2, mac ? 'delete' : '\u232b')
+      ],
+      [K('k_tab', null, null, 'lp', 1.5, 'tab')].concat(letterKeys('azertyuiop', TOP_FINGERS), [
+        K('k_circ', '^', '\u00a8', 'rp'), K('k_dollar', '$', '*', 'rp'), K('k_enter', null, null, 'rp', 1.5, mac ? 'return' : 'enter')
+      ]),
+      [K('k_caps', null, null, 'lp', 1.75, 'caps lock')].concat(letterKeys('qsdfghjklm', TOP_FINGERS), [
+        K('k_ugrave', '\u00f9', '%', 'rp'), mac ? K('k_extra', '`', '\u00a3', 'rp') : K('k_extra', '\u00b5', '\u00a3', 'rp'),
+        K('k_enter2', null, null, 'rp', 1.25, '')
+      ]),
+      [K('k_lshift', null, null, 'lp', 1.25, 'shift'), K('k_lt', '<', '>', 'lp')].concat(
+        letterKeys('wxcvbn', ['lp', 'lr', 'lm', 'li', 'li', 'ri']), [
+        K('k_comma', ',', '?', 'ri'), K('k_semi', ';', '.', 'rm'), K('k_colon', ':', '/', 'rr'), K('k_equals', '=', '+', 'rp'),
+        K('k_rshift', null, null, 'rp', 2.75, 'shift')
+      ]),
+      mac ? [
+        K('k_fn', null, null, 'lp', 1, 'fn'), K('k_ctrl', null, null, 'lp', 1.25, 'control'), K('k_alt', null, null, 'lp', 1.25, 'option'),
+        K('k_cmd', null, null, 'th', 1.5, 'command'), K('k_space', ' ', ' ', 'th', 5.5, ''), K('k_cmd2', null, null, 'th', 1.5, 'command'),
+        K('k_alt2', null, null, 'rp', 1.25, 'option'), K('k_blank', null, null, 'rp', 1.75, '')
+      ] : [
+        K('k_ctrl', null, null, 'lp', 1.5, 'ctrl'), K('k_win', null, null, 'lp', 1.25, 'win'), K('k_alt', null, null, 'th', 1.25, 'alt'),
+        K('k_space', ' ', ' ', 'th', 6.25, ''), K('k_alt2', null, null, 'th', 1.25, 'alt gr'), K('k_ctrl2', null, null, 'rp', 1.5, 'ctrl'),
+        K('k_blank', null, null, 'rp', 2, '')
+      ]
+    ];
+  }
+  function buildCharMap(layout) {
+    var map = new Map();
+    layout.forEach(function (row) {
+      row.forEach(function (k) {
+        if (k.base != null && !map.has(k.base)) map.set(k.base, { key: k, shift: false });
+        if (k.shift != null && k.shift !== k.base && !map.has(k.shift)) map.set(k.shift, { key: k, shift: true });
+      });
+    });
+    return map;
+  }
+
+  /* =========================================================
+     Woorden en zinnen (eigen lijsten, kleine letters).
+     Een les gebruikt enkel woorden met letters die al gekend zijn.
+     ========================================================= */
+  var WORDS = Array.from(new Set((
+    'de het een en van ik je jij hij zij ze we wij u mij me hem haar ons hun mijn jouw zijn uw dit dat die deze wat wie waar hoe ' +
+    'wanneer waarom welk welke er hier daar nu dan toen al nog ook wel niet geen niets iets alles veel weinig meer minder heel erg ' +
+    'zeer zo zoals als maar want omdat dus of tot met voor na naar uit in op aan bij om over onder boven door tegen tussen achter ' +
+    'naast zonder sinds tijdens via per ja nee graag samen even weer altijd nooit vaak soms meestal straks later vroeg laat vandaag ' +
+    'morgen gisteren eerst daarna toch echt gewoon misschien zeker juist precies natuurlijk eigenlijk helemaal bijna alleen ' +
+    'huis tuin deur raam muur dak trap kamer keuken tafel stoel bed kast lamp boek pen potlood papier brief kaart foto film beeld ' +
+    'muziek lied spel sport fiets auto trein tram bus boot schip vliegtuig straat weg plein park markt winkel school kerk stad dorp ' +
+    'land zee strand berg bos veld rivier meer brug haven station hotel kantoor bureau computer scherm toets muis telefoon bericht ' +
+    'mail email tekst woord zin letter regel bladzijde verhaal vraag antwoord idee plan doel les cursus oefening examen diploma ' +
+    'sleutel tas jas trui broek jurk rok schoen sok hoed muts sjaal bril horloge ring geld prijs rekening factuur euro cent kassa ' +
+    'brood kaas melk boter ei soep salade appel peer banaan druif citroen tomaat aardappel rijst pasta pizza vis vlees kip koffie ' +
+    'thee water wijn bier sap suiker zout peper taart koek ijs chocolade friet wafel ontbijt lunch diner snoep fruit groente sla ' +
+    'ui look kruid honing jam man vrouw kind jongen meisje vader moeder papa mama broer zus opa oma oom tante neef nicht vriend ' +
+    'vriendin buur collega baas klant leraar lerares juf meester dokter kapper kok bakker boer agent piloot dag nacht ochtend ' +
+    'middag avond week maand jaar uur minuut seconde tijd moment weekend maandag dinsdag woensdag donderdag vrijdag zaterdag ' +
+    'zondag januari februari maart april mei juni juli augustus september oktober november december lente zomer herfst winter ' +
+    'groot klein lang kort hoog laag oud nieuw jong mooi snel traag rustig druk warm koud heet nat droog licht donker zwaar ' +
+    'makkelijk moeilijk duur goedkoop leuk lief blij boos moe ziek gezond sterk zwak rijk arm vol leeg open dicht vrij klaar fout ' +
+    'goed slecht slim stil luid zacht hard zoet zuur fris lekker schoon dik dun breed smal rood blauw geel groen zwart wit grijs ' +
+    'bruin roze paars oranje zijn hebben gaan komen doen maken zien kijken horen zeggen praten lezen schrijven typen leren oefenen ' +
+    'werken spelen lopen fietsen rijden zitten staan liggen slapen eten drinken koken kopen betalen geven nemen houden vinden ' +
+    'denken weten kennen willen kunnen moeten mogen blijven worden wachten zoeken helpen vragen beginnen stoppen openen sluiten ' +
+    'bellen sturen lachen zingen dansen zwemmen wonen reizen ga gaat kom komt doe doet maak maakt zie ziet kijk kijkt hoor hoort ' +
+    'zeg zegt lees leest schrijf schrijft typ typt leer leert oefen oefent werk werkt speel speelt loop loopt rijd rijdt zit staat ' +
+    'lig ligt slaap slaapt eet drink drinkt kook kookt koop koopt geef geeft neem neemt hou houdt vind vindt denk denkt weet ken ' +
+    'kent wil kan moet mag blijf blijft wordt wacht zoek zoekt help helpt vraagt begin begint stop stopt opent sluit bel belt ' +
+    'stuur stuurt lach lacht zing zingt woon woont reis reist heb heeft had was waren is ben bent ' +
+    'als dag das gas glas slap pad kap lap map kaas haas laag plas half pak plak slag klap hal dal paal maal kaal haal saga gala ' +
+    'doos hoofd kool mos zool zak zaal kop pop hoop sloop hok mop pols zalm som golf polo pool hol soda eis dief kies slee geef ' +
+    'lijk mes hek gek heg mis dijk zeep pijl pijp held fles piek lip pil zeil keel hiel deel meel peil zijde ideaal dame selfie ' +
+    'ijzel ijzig lijm kiezel egel eik ijdel edel ziel spiegel heelal rug deur ruim raar daar ruzie rups rook roos kleur kus hulp ' +
+    'huid duif uil sorry super kerel geluk gelukkig zuid taal gast gitaar yoga type pyjama jury party toilet post patat tosti ' +
+    'omelet thuis rust sporter atleet fit trots jarig terras zolder lift sofa rijp kamers dorst sport'
+  ).trim().split(/\s+/)));
+
+  var SENTENCES = [
+    'de kat ligt op de mat', 'het meisje loopt op straat', 'ik zit op de stoel', 'de zee is heel rustig',
+    'mama eet soep met kaas', 'papa zit op het terras', 'het is zaterdag', 'de taart is erg lekker',
+    'de dokter is druk', 'oma leest graag', 'de tram is te laat', 'ik eet graag pasta', 'zij typt elke dag',
+    'het is koud', 'ik zie de zee', 'de kat slaapt op de sofa', 'het huis heeft drie kamers', 'de tafel is rood',
+    'de pizza is heet', 'ik ga met de fiets', 'de jas is grijs', 'het idee is goed', 'de straat is erg druk',
+    'ik ga graag op reis', 'de muziek is luid', 'het feest is op zaterdag', 'de les duurt kort',
+    'de pyjama ligt op de stoel', 'de appel is rijp', 'de gitaar staat op zolder', 'de lift is stuk',
+    'papa is dokter', 'oma is jarig', 'zij is lerares', 'het hotel is mooi', 'de kapper heeft tijd',
+    'het is al laat', 'ik leer elke dag', 'de toets is moeilijk', 'maar ik zet door', 'de juf is lief',
+    'de egel slaapt', 'het meisje typt rustig', 'de koffie is heet', 'de zomer is heet', 'de herfst is grijs',
+    'er ligt ijs op de straat', 'de kerk staat op de markt', 'de muis zit op de kast', 'ik hou de deur op slot',
+    'de soep is te heet', 'het is hoog tijd', 'de pasta is klaar', 'ik loop door het park', 'de lamp is stuk',
+    'de taart is op',
+    // voor latere modules (bevatten letters die nog volgen)
+    'ik oefen elke dag een kwartier', 'we gaan morgen naar de zee', 'de trein vertrekt om negen uur',
+    'het regent al de hele week', 'zij leert blind typen met tien vingers', 'de winkel is op zondag gesloten',
+    'we eten vanavond pasta met groenten', 'de kinderen spelen buiten in de tuin', 'hij fietst elke ochtend naar zijn werk',
+    'het boek ligt op de keukentafel', 'de vergadering begint over vijf minuten', 'kun je me straks even bellen',
+    'het weer is vandaag erg zacht', 'de bus komt bijna altijd te laat', 'we wonen al drie jaar in deze straat'
+  ];
+
+  var BASELINE_TEXT = 'Vandaag begin ik aan een typcursus. Elke dag oefen ik een kwartier, en stap voor stap leer ik blind typen met tien vingers.';
+
+  /* =========================================================
+     Leerplan. Volgorde van de toetsen volgt bestaande AZERTY-
+     dactylocursussen: thuisrij, bovenrij, onderrij, ...
+     Elke les heeft een vaste id, zodat voortgang bewaard blijft
+     als er later lessen bijkomen.
+     ========================================================= */
+  var PHASES = { 1: 'Toetsen leren', 2: 'Aanpassing', 3: 'Snelheid', 4: 'Vlotheid', 5: 'Examen' };
+  var PLANNED_TOTAL = 126;
+
+  function L(id, title, type, opts) {
+    var l = { id: id, title: title, type: type, add: '', focus: '', help: 'full', intro: [] };
+    for (var k in opts) l[k] = opts[k];
+    return l;
+  }
+
+  var MODULES = [
+    { id: 'm1', nr: 1, phase: 1, title: 'Start', planned: 3, desc: 'Houding, thuispositie, vingerverdeling, beginmeting', lessons: [
+      L('m1-houding', 'Houding en thuispositie', 'intro', { add: 'fj', intro: [
+        'Ga rechtop zitten, met je voeten plat op de grond. Je ellebogen hangen ontspannen naast je lichaam, ongeveer in een rechte hoek.',
+        'Leg je linkervingers op q, s, d en f, en je rechtervingers op j, k, l en m. Op de f en de j voel je een klein streepje: daar horen je wijsvingers.',
+        'Je duimen rusten boven de spatiebalk. Na elke aanslag keren je vingers terug naar deze thuispositie.',
+        'Kijk vanaf nu naar het scherm, niet naar je toetsenbord. Typ rustig: juist typen is belangrijker dan snel typen.'
+      ] }),
+      L('m1-vingers', 'Vingerverdeling', 'intro', { intro: [
+        'Elke vinger heeft zijn eigen toetsen. Op het toetsenbord hieronder heeft elke vinger een kleur: roze voor je pinken, blauw voor je ringvingers, groen voor je middelvingers en oker voor je wijsvingers.',
+        'Je wijsvingers hebben het meeste werk: elk twee kolommen. De spatiebalk is voor je duimen.',
+        'In deze les oefen je het ritme: toets aanslaan, terug naar de thuispositie, spatie met je duim.'
+      ] }),
+      L('m1-beginmeting', 'Beginmeting', 'baseline', { help: 'none', intro: [
+        'Typ de tekst zoals je nu typt. Je mag naar je toetsenbord kijken en zoveel vingers gebruiken als je wil.',
+        'Dit is je vertrekpunt. Bij Voortgang vergelijk je later je snelheid en nauwkeurigheid met deze meting.'
+      ] })
+    ] },
+    { id: 'm2', nr: 2, phase: 1, title: 'Thuisrij', planned: 10, desc: 's d f en j k l, q m, g h, spatie', lessons: [
+      L('m2-dk', 'd en k', 'new', { add: 'dk', intro: [
+        'Je middelvingers liggen op de d en de k. Typ de d met je linkermiddelvinger en de k met je rechtermiddelvinger.',
+        'Hou je wijsvingers op de streepjes van f en j, en keer na elke aanslag terug naar de thuispositie.'
+      ] }),
+      L('m2-sl', 's en l', 'new', { add: 'sl', intro: [
+        'Je ringvingers liggen op de s en de l. De s typ je met je linkerringvinger, de l met je rechterringvinger.',
+        'Beweeg alleen de vinger die de toets aanslaat. De andere vingers blijven liggen.'
+      ] }),
+      L('m2-sdfjkl', 's d f en j k l samen', 'practice', { focus: 'sdfjkl', intro: [
+        'Je combineert de zes toetsen die je al kent: s, d en f voor je linkerhand, j, k en l voor je rechterhand.',
+        'Typ in een rustig, gelijkmatig ritme. Liever traag en juist dan snel met fouten.'
+      ] }),
+      L('m2-qm', 'q en m', 'new', { add: 'qm', intro: [
+        'Je pinken liggen op de q en de m. Op een AZERTY-toetsenbord staan die op de thuisrij, anders dan op QWERTY.',
+        'De q typ je met je linkerpink, de m met je rechterpink.'
+      ] }),
+      L('m2-qm-oef', 'q en m oefenen', 'practice', { focus: 'qm', intro: [
+        'Je oefent de q en de m samen met de rest van de thuisrij.'
+      ] }),
+      L('m2-gh', 'g en h', 'new', { add: 'gh', intro: [
+        'De g en de h liggen in het midden, tussen je wijsvingers. Strek je linkerwijsvinger naar rechts voor de g, en je rechterwijsvinger naar links voor de h.',
+        'Keer daarna meteen terug naar de f en de j. Voel even naar de streepjes als je twijfelt.'
+      ] }),
+      L('m2-gh-oef', 'g en h oefenen', 'practice', { focus: 'gh', intro: [
+        'Je oefent de g en de h samen met de rest van de thuisrij.'
+      ] }),
+      L('m2-herh1', 'Herhaling thuisrij 1', 'review', { focus: 'qsdfghjklm', help: 'hint', intro: [
+        'Alle tien toetsen van de thuisrij komen door elkaar. De toetsen waarop je de meeste fouten maakt, komen vaker terug.',
+        'Het toetsenbord op het scherm toont de volgende toets nu pas als je een fout maakt of even twijfelt.'
+      ] }),
+      L('m2-herh2', 'Herhaling thuisrij 2', 'review', { focus: 'qsdfghjklm', help: 'hint', intro: [
+        'Nog een herhaling van de thuisrij, met langere lettergroepen.'
+      ] }),
+      L('m2-toets', 'Moduletoets thuisrij', 'moduletest', { focus: 'qsdfghjklm', help: 'hint', intro: [
+        'Dit is de moduletoets van de thuisrij. Haal minstens 95% nauwkeurigheid om de bovenrij vrij te spelen.',
+        'Neem je tijd: snelheid telt hier niet mee.'
+      ] })
+    ] },
+    { id: 'm3', nr: 3, phase: 1, title: 'Bovenrij', planned: 15, desc: 'a p, z o, e r u i, t y', lessons: [
+      L('m3-ap', 'a en p', 'new', { add: 'ap', intro: [
+        'De a typ je met je linkerpink: strek hem vanaf de q schuin naar boven. De p typ je met je rechterpink, schuin boven de m.',
+        'Met de a heb je je eerste klinker. Vanaf nu typ je ook echte woorden.'
+      ] }),
+      L('m3-ap-oef', 'a en p oefenen', 'practice', { focus: 'ap', help: 'hint', intro: [
+        'Je oefent de a en de p, ook in woorden.'
+      ] }),
+      L('m3-zo', 'z en o', 'new', { add: 'zo', intro: [
+        'De z typ je met je linkerringvinger, schuin boven de s. De o typ je met je rechterringvinger, schuin boven de l.'
+      ] }),
+      L('m3-zo-oef', 'z en o oefenen', 'practice', { focus: 'zo', help: 'hint', intro: [
+        'Je oefent de z en de o, los en in woorden.'
+      ] }),
+      L('m3-ei', 'e en i', 'new', { add: 'ei', intro: [
+        'De e typ je met je linkermiddelvinger, schuin boven de d. De i typ je met je rechtermiddelvinger, schuin boven de k.',
+        'De e is de letter die je in het Nederlands het vaakst typt.'
+      ] }),
+      L('m3-ru', 'r en u', 'new', { add: 'ru', intro: [
+        'De r typ je met je linkerwijsvinger, schuin boven de f. De u typ je met je rechterwijsvinger, schuin boven de j.'
+      ] }),
+      L('m3-erui-oef', 'e r u i oefenen', 'practice', { focus: 'erui', help: 'hint', intro: [
+        'Je oefent e, r, u en i samen. Met deze letters typ je al heel wat woorden.'
+      ] }),
+      L('m3-ty', 't en y', 'new', { add: 'ty', intro: [
+        'De t ligt naast de r: strek je linkerwijsvinger iets verder naar rechts. De y ligt naast de u: strek je rechterwijsvinger iets verder naar links.'
+      ] }),
+      L('m3-ty-oef', 't en y oefenen', 'practice', { focus: 'ty', help: 'hint', intro: [
+        'Je oefent de t en de y. De y komt in het Nederlands weinig voor, de t des te meer.'
+      ] }),
+      L('m3-woorden', 'Woorden met de bovenrij', 'words', { focus: 'azertyuiop', help: 'hint', intro: [
+        'Je kent nu de thuisrij en de bovenrij. In deze les typ je echte woorden met al die letters.'
+      ] }),
+      L('m3-zinnen', 'Woorden en zinnetjes', 'sentences', { focus: 'azertyuiop', help: 'hint', intro: [
+        'Van woorden naar zinnetjes. Hoofdletters en leestekens komen later, dus alles staat nog in kleine letters.'
+      ] }),
+      L('m3-herh1', 'Herhaling bovenrij 1', 'review', { focus: 'azertyuiop', help: 'hint', intro: [
+        'Herhaling van de bovenrij en de thuisrij, met extra aandacht voor je zwakste toetsen.'
+      ] }),
+      L('m3-herh2', 'Herhaling bovenrij 2', 'review', { focus: 'azertyuiop', help: 'hint', intro: [
+        'Een tweede herhaling, met meer woorden.'
+      ] }),
+      L('m3-zwak', 'Je zwakste toetsen', 'weak', { help: 'hint', intro: [
+        'Deze les is op maat: de toetsen waarop je tot nu toe de meeste fouten maakte, komen vaker terug.'
+      ] }),
+      L('m3-toets', 'Moduletoets bovenrij', 'moduletest', { focus: 'azertyuiop', help: 'hint', intro: [
+        'Dit is de moduletoets van de bovenrij. Haal minstens 95% nauwkeurigheid om de module af te ronden.'
+      ] })
+    ] },
+    { id: 'm4', nr: 4, phase: 1, title: 'Onderrij', planned: 11, desc: 'w x, c v, b n', lessons: [] },
+    { id: 'm5', nr: 5, phase: 1, title: 'Hoofdletters', planned: 8, desc: 'Linker- en rechter-Shift', lessons: [] },
+    { id: 'm6', nr: 6, phase: 1, title: 'Accenten', planned: 10, desc: '\u00e9 \u00e8, \u00e7 \u00e0, \u00f9 en ^ (\u00ea), \u00a8 (\u00eb \u00ef)', lessons: [] },
+    { id: 'm7', nr: 7, phase: 1, title: 'Leestekens', planned: 12, desc: ', ; ! : " \' ( ) - ? .', lessons: [] },
+    { id: 'm8', nr: 8, phase: 1, title: 'Cijfers', planned: 8, desc: '1 tot 0 met Shift, datums, bedragen, nummers', lessons: [] },
+    { id: 'm9', nr: 9, phase: 1, title: 'Tekens en bediening', planned: 9, desc: '@ \u20ac % / + = & # *, Enter, Backspace, Tab', lessons: [] },
+    { id: 'm10', nr: 10, phase: 2, title: 'Alles door elkaar', planned: 10, desc: 'Alle toetsen gemengd, lastige combinaties (ij, ui, eu, sch, ng), zwakke toetsen', lessons: [] },
+    { id: 'm11', nr: 11, phase: 3, title: 'Snelheid', planned: 12, desc: 'Meest gebruikte Nederlandse woorden, korte zinnen, tijdtests van 1 minuut', lessons: [] },
+    { id: 'm12', nr: 12, phase: 4, title: 'Vlotheid', planned: 15, desc: "Volledige alinea's, verhalen, zakelijke teksten, e-mails en brieven, tijdtests van 3 en 5 minuten", lessons: [] },
+    { id: 'm13', nr: 13, phase: 5, title: 'Examen', planned: 3, desc: 'Twee proefexamens en het examen met certificaat', lessons: [] }
+  ];
+
+  var ALL_LESSONS = [];
+  var KNOWN = {};
+  (function derive() {
+    var acc = [];
+    MODULES.forEach(function (m) {
+      m.lessons.forEach(function (l, i) {
+        l.module = m;
+        l.nr = m.nr + '.' + (i + 1);
+        (l.add || '').split('').forEach(function (c) { if (c !== ' ' && acc.indexOf(c) < 0) acc.push(c); });
+        KNOWN[l.id] = acc.slice();
+        ALL_LESSONS.push(l);
+      });
+    });
+  })();
+  var LESSON_BY_ID = {};
+  ALL_LESSONS.forEach(function (l) { LESSON_BY_ID[l.id] = l; });
+
+  function threshold(lesson) {
+    if (lesson.type === 'intro' || lesson.type === 'baseline' || lesson.type === 'free') return null;
+    return 95;
+  }
+
+  /* =========================================================
+     Opslag
+     ========================================================= */
+  function defaultState() {
+    return {
+      schema: SCHEMA, created: Date.now(),
+      settings: { name: '', layout: 'auto', errorMode: 'block', help: 'auto', theme: 'auto' },
+      lessons: {}, sessions: [], keys: {}, days: {}, totalMs: 0, baseline: null
+    };
+  }
+  function migrate(raw) {
+    var base = defaultState();
+    if (!raw || typeof raw !== 'object') return base;
+    var s = Object.assign(base, raw);
+    s.settings = Object.assign(defaultState().settings, raw.settings || {});
+    if (!s.lessons || typeof s.lessons !== 'object') s.lessons = {};
+    if (!Array.isArray(s.sessions)) s.sessions = [];
+    if (!s.keys || typeof s.keys !== 'object') s.keys = {};
+    if (!s.days || typeof s.days !== 'object') s.days = {};
+    if (typeof s.totalMs !== 'number') s.totalMs = 0;
+    // Toekomstige omzettingen komen hier, bv.: if (s.schema < 2) { ... }
+    s.schema = SCHEMA;
+    return s;
+  }
+  var storageOK = true;
+  function load() {
+    try {
+      var raw = window.localStorage.getItem(STORAGE_KEY);
+      return raw ? migrate(JSON.parse(raw)) : defaultState();
+    } catch (e) { storageOK = false; return defaultState(); }
+  }
+  function save() {
+    try { window.localStorage.setItem(STORAGE_KEY, JSON.stringify(S)); storageOK = true; }
+    catch (e) { storageOK = false; }
+    showBanner();
+  }
+  function showBanner() {
+    var b = document.getElementById('banner');
+    if (!b) return;
+    if (storageOK) { b.hidden = true; return; }
+    b.hidden = false;
+    b.textContent = 'Je voortgang kan in deze browser niet bewaard worden. Maak na elke oefensessie een back-up via Instellingen.';
+  }
+
+  var S = load();
+
+  /* =========================================================
+     Hulpfuncties
+     ========================================================= */
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function mulberry32(seed) {
+    var a = seed >>> 0;
+    return function () {
+      a = (a + 0x6D2B79F5) >>> 0;
+      var t = a;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function pick(arr, r) { return arr[Math.floor(r() * arr.length)]; }
+  function weightedPick(items, wfn, r) {
+    var total = 0, ws = items.map(function (x) { var w = Math.max(0, wfn(x)); total += w; return w; });
+    if (total <= 0) return pick(items, r);
+    var x = r() * total;
+    for (var i = 0; i < items.length; i++) { x -= ws[i]; if (x <= 0) return items[i]; }
+    return items[items.length - 1];
+  }
+  function fillTo(target, next) {
+    var out = [], len = 0, prev = null, guard = 0;
+    while (len < target && guard++ < 600) {
+      var p = next();
+      if (!p) break;
+      if (p === prev) continue;
+      out.push(p); len += p.length + 1; prev = p;
+    }
+    return out.join(' ');
+  }
+  function todayKey(d) {
+    d = d || new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+  function fmtPct(v) { return String(v).replace('.', ',') + '%'; }
+  function fmtClock(ms) {
+    var s = Math.round(ms / 1000);
+    return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+  }
+  function fmtDuration(ms) {
+    var min = Math.round(ms / 60000);
+    if (min < 1) return Math.round(ms / 1000) + ' s';
+    if (min < 60) return min + ' min';
+    return Math.floor(min / 60) + ' u ' + String(min % 60).padStart(2, '0') + ' min';
+  }
+  function detectMac() {
+    var p = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '';
+    return /mac/i.test(p) || /Macintosh/.test(navigator.userAgent || '');
+  }
+  function variant() {
+    var v = S.settings.layout;
+    return v === 'auto' ? (detectMac() ? 'mac' : 'win') : v;
+  }
+
+  var LAYOUT = buildLayout(variant());
+  var CHARMAP = buildCharMap(LAYOUT);
+  function refreshLayout() { LAYOUT = buildLayout(variant()); CHARMAP = buildCharMap(LAYOUT); }
+
+  function applyTheme() {
+    var t = S.settings.theme;
+    if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    else document.documentElement.removeAttribute('data-theme');
+  }
+
+  /* =========================================================
+     Statistieken per toets
+     ========================================================= */
+  function errRate(c) {
+    var s = S.keys[c];
+    if (!s) return 0;
+    return s.e / (s.h + s.e + 5);
+  }
+  function keyWeights(known) {
+    var m = new Map();
+    known.forEach(function (c) { m.set(c, 1 + 8 * errRate(c)); });
+    return m;
+  }
+  function weakestKeys(known, n) {
+    n = n || 4;
+    var scored = known.map(function (c) {
+      var s = S.keys[c] || { h: 0, e: 0 };
+      return { c: c, r: errRate(c), seen: s.h + s.e };
+    });
+    var withErr = scored.filter(function (x) { return x.r > 0; })
+      .sort(function (a, b) { return b.r - a.r; }).slice(0, n).map(function (x) { return x.c; });
+    if (withErr.length >= 2) return withErr;
+    var least = scored.slice().sort(function (a, b) { return a.seen - b.seen; }).map(function (x) { return x.c; });
+    var out = withErr.slice();
+    least.forEach(function (c) { if (out.length < n && out.indexOf(c) < 0) out.push(c); });
+    return out;
+  }
+
+  /* =========================================================
+     Oefenteksten maken
+     ========================================================= */
+  var HOME = { a: 'q', z: 's', e: 'd', r: 'f', t: 'f', g: 'f', v: 'f', b: 'f', c: 'd', x: 's', w: 'q', y: 'j', u: 'j', h: 'j', n: 'j', i: 'k', o: 'l', p: 'm' };
+  function handOf(c) { var m = CHARMAP.get(c); return m ? m.key.finger.charAt(0) : 'l'; }
+
+  function makeCtx(lesson, seed, known) {
+    known = known || KNOWN[lesson.id] || [];
+    var r = mulberry32(seed);
+    var add = (lesson.add || '').split('').filter(function (c) { return c !== ' '; });
+    var focus;
+    if (lesson.type === 'weak' || lesson.type === 'free') focus = weakestKeys(known);
+    else if (lesson.focus) focus = lesson.focus.split('').filter(function (c) { return known.indexOf(c) >= 0; });
+    else focus = add.slice();
+    return { r: r, known: known, knownSet: new Set(known), add: add, focus: focus, weights: keyWeights(known) };
+  }
+  function wordPool(c) {
+    return WORDS.filter(function (w) {
+      for (var i = 0; i < w.length; i++) if (!c.knownSet.has(w.charAt(i))) return false;
+      return true;
+    });
+  }
+  function hasWords(lesson, known) {
+    var set = new Set(known || KNOWN[lesson.id] || []);
+    var n = 0;
+    for (var i = 0; i < WORDS.length && n < 6; i++) {
+      var ok = true, w = WORDS[i];
+      for (var j = 0; j < w.length; j++) if (!set.has(w.charAt(j))) { ok = false; break; }
+      if (ok) n++;
+    }
+    return n >= 6;
+  }
+  function wordWeight(c, w, focusSet) {
+    var s = 1;
+    for (var i = 0; i < w.length; i++) {
+      var ch = w.charAt(i);
+      if (focusSet && focusSet.has(ch)) s += 3;
+      s += ((c.weights.get(ch) || 1) - 1) * 0.5;
+    }
+    return s;
+  }
+  function drillPieces(c) {
+    var keys = c.add.length ? c.add : c.focus;
+    var out = [];
+    keys.forEach(function (k) {
+      out.push(k + k + k, k + k);
+      var a = HOME[k];
+      if (!a || a === k || !c.knownSet.has(a)) a = handOf(k) === 'l' ? 'f' : 'j';
+      if (a !== k && c.knownSet.has(a)) out.push(a + k + a, k + a + k, a + k, k + a);
+    });
+    for (var i = 0; i < keys.length; i++) for (var j = i + 1; j < keys.length; j++) {
+      var x = keys[i], y = keys[j];
+      out.push(x + y, y + x, x + y + x, y + x + y);
+    }
+    return out.length ? out : c.known.slice();
+  }
+  function comboPiece(c, focusShare, minLen, maxLen) {
+    minLen = minLen || 2; maxLen = maxLen || 4;
+    var len = minLen + Math.floor(c.r() * (maxLen - minLen + 1));
+    var letters = [];
+    for (var i = 0; i < len; i++) letters.push(weightedPick(c.known, function (ch) { return c.weights.get(ch) || 1; }, c.r));
+    if (c.focus.length && c.r() < focusShare) letters[Math.floor(c.r() * len)] = pick(c.focus, c.r);
+    return letters.join('');
+  }
+  function wordsText(c, target, focus, opts) {
+    opts = opts || {};
+    var pool = wordPool(c);
+    if (opts.minLen) pool = pool.filter(function (w) { return w.length >= opts.minLen; });
+    if (opts.maxLen) pool = pool.filter(function (w) { return w.length <= opts.maxLen; });
+    if (pool.length < 6) return null;
+    var fs = focus && focus.length ? new Set(focus) : null;
+    return fillTo(target, function () { return weightedPick(pool, function (w) { return wordWeight(c, w, fs); }, c.r); });
+  }
+  function sentencesText(c, target) {
+    var pool = SENTENCES.filter(function (s) {
+      for (var i = 0; i < s.length; i++) { var ch = s.charAt(i); if (ch !== ' ' && !c.knownSet.has(ch)) return false; }
+      return true;
+    });
+    if (pool.length < 4) return null;
+    return fillTo(target, function () { return pick(pool, c.r); });
+  }
+  function mixedText(c, target, focusShare) {
+    var pool = wordPool(c);
+    var fs = new Set(c.focus);
+    return fillTo(target, function () {
+      if (pool.length >= 6 && c.r() < 0.55) return weightedPick(pool, function (w) { return wordWeight(c, w, fs); }, c.r);
+      return comboPiece(c, focusShare, 2, 4);
+    });
+  }
+  function warmupText(c, target) {
+    var prev = c.known.filter(function (x) { return c.add.indexOf(x) < 0; });
+    if (prev.length < 2) return fillTo(target, function () { return pick(drillPieces(c), c.r); });
+    var sub = { r: c.r, known: prev, knownSet: new Set(prev), add: [], focus: [], weights: keyWeights(prev) };
+    var pool = wordPool(sub);
+    return fillTo(target, function () {
+      if (pool.length >= 6 && c.r() < 0.5) return weightedPick(pool, function (w) { return wordWeight(sub, w, null); }, c.r);
+      return comboPiece(sub, 0, 2, 4);
+    });
+  }
+
+  var LEN = { ex: 80, test: 110, module: 200 };
+
+  function planFor(lesson, known) {
+    function ex(name, make, test) { return { name: name, make: make, test: !!test }; }
+    var words = hasWords(lesson, known);
+    switch (lesson.type) {
+      case 'intro':
+        if (lesson.id === 'm1-houding') return [
+          ex('De f en de j', function (c) { return fillTo(LEN.ex, function () { return pick(['fff', 'jjj', 'ff', 'jj'], c.r); }); }),
+          ex('Afwisselen', function (c) { return fillTo(LEN.ex, function () { return pick(['fj', 'jf', 'fjf', 'jfj', 'ff', 'jj'], c.r); }); }),
+          ex('Slottoets', function (c) { return fillTo(LEN.test, function () { return pick(['f', 'j', 'ff', 'jj', 'fj', 'jf', 'fjf', 'jfj'], c.r); }); }, true)
+        ];
+        return [
+          ex('Duimen op de spatiebalk', function (c) { return fillTo(LEN.ex, function () { return pick(['f', 'j'], c.r); }); }),
+          ex('Ritme', function (c) { return fillTo(LEN.ex, function () { return pick(['ff', 'jj', 'fj', 'jf', 'fff', 'jjj'], c.r); }); }),
+          ex('Slottoets', function (c) { return fillTo(LEN.test, function () { return pick(['f', 'j', 'fj', 'jf', 'fjj', 'jff', 'fjf', 'jfj'], c.r); }); }, true)
+        ];
+      case 'baseline':
+        return [ex('Beginmeting', function () { return BASELINE_TEXT; }, true)];
+      case 'new':
+        return [
+          ex('Opwarming', function (c) { return warmupText(c, LEN.ex); }),
+          ex('Nieuwe toetsen', function (c) { var p = drillPieces(c); return fillTo(LEN.ex, function () { return pick(p, c.r); }); }),
+          ex('Combinaties', function (c) { return fillTo(LEN.ex, function () { return comboPiece(c, 0.75, 2, 4); }); }),
+          ex(words ? 'Woorden' : 'Langere combinaties', function (c) {
+            return wordsText(c, LEN.ex, c.focus) || fillTo(LEN.ex, function () { return comboPiece(c, 0.6, 3, 5); });
+          }),
+          ex('Slottoets', function (c) { return mixedText(c, LEN.test, 0.6); }, true)
+        ];
+      case 'practice':
+        return [
+          ex('Opwarming', function (c) { return warmupText(c, LEN.ex); }),
+          ex('Combinaties', function (c) { return fillTo(LEN.ex, function () { return comboPiece(c, 0.8, 2, 4); }); }),
+          ex(words ? 'Woorden' : 'Langere combinaties', function (c) {
+            return wordsText(c, LEN.ex, c.focus) || fillTo(LEN.ex, function () { return comboPiece(c, 0.7, 3, 5); });
+          }),
+          ex(words ? 'Woorden en combinaties' : 'Alles door elkaar', function (c) { return mixedText(c, LEN.ex, 0.6); }),
+          ex('Slottoets', function (c) { return mixedText(c, LEN.test, 0.6); }, true)
+        ];
+      case 'words':
+        return [
+          ex('Opwarming', function (c) { return mixedText(c, LEN.ex, 0.3); }),
+          ex('Korte woorden', function (c) { return wordsText(c, LEN.ex, c.focus, { maxLen: 4 }) || mixedText(c, LEN.ex, 0.5); }),
+          ex('Langere woorden', function (c) { return wordsText(c, LEN.ex, c.focus, { minLen: 5 }) || mixedText(c, LEN.ex, 0.5); }),
+          ex('Woorden door elkaar', function (c) { return wordsText(c, LEN.ex, c.focus) || mixedText(c, LEN.ex, 0.5); }),
+          ex('Slottoets', function (c) { return wordsText(c, LEN.test, c.focus) || mixedText(c, LEN.test, 0.5); }, true)
+        ];
+      case 'sentences':
+        return [
+          ex('Woorden', function (c) { return wordsText(c, LEN.ex, c.focus) || mixedText(c, LEN.ex, 0.5); }),
+          ex('Zinnetjes', function (c) { return sentencesText(c, LEN.ex) || mixedText(c, LEN.ex, 0.5); }),
+          ex('Meer zinnetjes', function (c) { return sentencesText(c, LEN.ex) || mixedText(c, LEN.ex, 0.5); }),
+          ex('Langere zinnetjes', function (c) { return sentencesText(c, LEN.test) || mixedText(c, LEN.test, 0.5); }),
+          ex('Slottoets', function (c) { return sentencesText(c, LEN.test) || mixedText(c, LEN.test, 0.5); }, true)
+        ];
+      case 'review':
+        return [
+          ex('Alles door elkaar', function (c) { return fillTo(LEN.ex, function () { return comboPiece(c, 0.3, 2, 4); }); }),
+          ex('Combinaties', function (c) { return fillTo(LEN.ex, function () { return comboPiece(c, 0.6, 3, 5); }); }),
+          ex(words ? 'Woorden' : 'Lange combinaties', function (c) {
+            return wordsText(c, LEN.ex, c.focus) || fillTo(LEN.ex, function () { return comboPiece(c, 0.5, 4, 6); });
+          }),
+          ex(words ? 'Woorden en combinaties' : 'Gemengde combinaties', function (c) { return mixedText(c, LEN.ex, 0.5); }),
+          ex('Slottoets', function (c) { return mixedText(c, LEN.test, 0.5); }, true)
+        ];
+      case 'weak':
+        return [
+          ex('Je zwakste toetsen', function (c) { var p = drillPieces(c); return fillTo(LEN.ex, function () { return pick(p, c.r); }); }),
+          ex('Combinaties', function (c) { return fillTo(LEN.ex, function () { return comboPiece(c, 0.85, 2, 4); }); }),
+          ex(words ? 'Woorden' : 'Langere combinaties', function (c) {
+            return wordsText(c, LEN.ex, c.focus) || fillTo(LEN.ex, function () { return comboPiece(c, 0.8, 3, 5); });
+          }),
+          ex('Door elkaar', function (c) { return mixedText(c, LEN.ex, 0.7); }),
+          ex('Slottoets', function (c) { return mixedText(c, LEN.test, 0.6); }, true)
+        ];
+      case 'moduletest':
+        return [
+          ex('Opwarming', function (c) { return mixedText(c, 50, 0.3); }),
+          ex('Moduletoets', function (c) {
+            var w = wordPool(c).length >= 6;
+            var s = sentencesText(c, 60);
+            var main = w ? mixedText(c, LEN.module - (s ? 60 : 0), 0.4) : fillTo(LEN.module, function () { return comboPiece(c, 0.3, 2, 5); });
+            return s ? main + ' ' + s : main;
+          }, true)
+        ];
+      case 'free':
+        return [
+          ex('Je zwakste toetsen', function (c) { return mixedText(c, LEN.test, 0.8); }, true)
+        ];
+    }
+    return [];
+  }
+
+  /* =========================================================
+     Toetsenbord en handen op het scherm
+     ========================================================= */
+  function kbHTML(opts) {
+    opts = opts || {};
+    var newSet = new Set(opts.newKeys || []);
+    var cls = 'kb' + (opts.tinted ? ' tinted' : '') + (opts.compact ? ' compact' : '');
+    var html = '<div class="' + cls + '" aria-hidden="true">';
+    LAYOUT.forEach(function (row) {
+      html += '<div class="kb-row">';
+      row.forEach(function (k) {
+        var classes = ['key', 'f-' + k.finger];
+        if (k.base == null) classes.push('mod');
+        if (k.id === 'k_f' || k.id === 'k_j') classes.push('home');
+        if ((k.base && newSet.has(k.base)) || (k.id === 'k_space' && newSet.has(' '))) classes.push('is-new');
+        var style = 'flex-grow:' + k.w + ';';
+        var title = '';
+        if (opts.heat && k.base) {
+          var h = opts.heat[k.base];
+          if (h && h.n >= 8) {
+            if (h.rate <= 0.02) {
+              style += 'background:rgba(43,118,86,0.22);';
+            } else {
+              var a = 0.15 + Math.min(1, (h.rate - 0.02) / 0.13) * 0.75;
+              style += 'background:rgba(184,40,63,' + a.toFixed(2) + ');';
+              if (a > 0.55) style += 'color:#fff;';
+            }
+            title = ' title="' + esc(k.base) + ': ' + Math.round(h.rate * 100) + '% fouten (' + h.n + ' aanslagen)"';
+          }
+        }
+        html += '<div class="' + classes.join(' ') + '" data-k="' + k.id + '" style="' + style + '"' + title + '>';
+        if (k.base == null) html += '<span class="lg-mod">' + esc(k.label || '') + '</span>';
+        else if (k.id === 'k_space') html += '';
+        else if (/^[a-z]$/.test(k.base)) html += esc(k.shift);
+        else html += '<span class="lg-top">' + esc(k.shift) + '</span><span class="lg-bot">' + esc(k.base) + '</span>';
+        html += '</div>';
+      });
+      html += '</div>';
+    });
+    return html + '</div>';
+  }
+
+  function handsHTML() {
+    function hand(prefix) {
+      return '' +
+        '<rect class="palm" x="38" y="96" width="180" height="60" rx="28"/>' +
+        '<rect class="finger f-' + prefix + 'p" data-f="' + prefix + 'p" x="40" y="58" width="36" height="66" rx="18"/>' +
+        '<rect class="finger f-' + prefix + 'r" data-f="' + prefix + 'r" x="84" y="34" width="38" height="90" rx="19"/>' +
+        '<rect class="finger f-' + prefix + 'm" data-f="' + prefix + 'm" x="130" y="22" width="38" height="102" rx="19"/>' +
+        '<rect class="finger f-' + prefix + 'i" data-f="' + prefix + 'i" x="176" y="38" width="38" height="86" rx="19"/>' +
+        '<rect class="finger f-th" data-f="th" x="206" y="118" width="64" height="32" rx="16" transform="rotate(-24 206 134)"/>';
+    }
+    return '<svg class="hands" viewBox="0 0 600 170" role="img" aria-label="Twee handen; de vinger die je nodig hebt licht op">' +
+      '<g>' + hand('l') + '</g>' +
+      '<g transform="translate(600 0) scale(-1 1)">' + hand('r') + '</g>' +
+      '</svg>';
+  }
+  function setFingers(list) {
+    var area = document.getElementById('kb-area');
+    if (!area) return;
+    area.querySelectorAll('.finger.on').forEach(function (f) { f.classList.remove('on'); });
+    (list || []).forEach(function (f) {
+      area.querySelectorAll('.finger[data-f="' + f + '"]').forEach(function (el) { el.classList.add('on'); });
+    });
+    var label = document.getElementById('finger-label');
+    if (label) {
+      if (list && list.length === 1) label.textContent = 'Gebruik je ' + FINGER_NAME[list[0]] + '.';
+      else label.textContent = '';
+    }
+  }
+  function fingersFor(chars) {
+    var out = [];
+    chars.forEach(function (c) {
+      var m = CHARMAP.get(c);
+      if (m && out.indexOf(m.key.finger) < 0) out.push(m.key.finger);
+    });
+    return out;
+  }
+
+  /* =========================================================
+     Routering en weergave
+     ========================================================= */
+  var app = document.getElementById('app');
+  var RUN = null;       // lopende oefening
+  var FLOW = null;      // lopende les of vrije oefening
+  var NOTICE = '';      // eenmalige melding bovenaan
+
+  function go(hash) { if (location.hash === hash) route(); else location.hash = hash; }
+
+  function setNav(page) {
+    document.querySelectorAll('[data-nav]').forEach(function (a) {
+      if (a.getAttribute('data-nav') === page) a.setAttribute('aria-current', 'page');
+      else a.removeAttribute('aria-current');
+    });
+  }
+
+  function route() {
+    stopRun();
+    FLOW = null;
+    var parts = (location.hash || '#/lessen').replace(/^#\/?/, '').split('/');
+    var page = parts[0] || 'lessen';
+    if (page === 'les' && parts[1]) { setNav('lessen'); openLesson(decodeURIComponent(parts[1])); }
+    else if (page === 'voortgang') { setNav('voortgang'); renderProgress(); }
+    else if (page === 'oefenen') { setNav('oefenen'); renderFree(); }
+    else if (page === 'instellingen') { setNav('instellingen'); renderSettings(); }
+    else { setNav('lessen'); renderHome(); }
+    window.scrollTo(0, 0);
+  }
+
+  function lessonRecord(l) { return S.lessons[l.id] || null; }
+  function isPassed(l) { var r = lessonRecord(l); return !!(r && r.passed); }
+  function isUnlocked(l) {
+    var i = ALL_LESSONS.indexOf(l);
+    return i === 0 || (i > 0 && isPassed(ALL_LESSONS[i - 1]));
+  }
+  function nextLesson() {
+    for (var i = 0; i < ALL_LESSONS.length; i++) if (!isPassed(ALL_LESSONS[i])) return ALL_LESSONS[i];
+    return null;
+  }
+  function passedCount() { return ALL_LESSONS.filter(isPassed).length; }
+  function newKeysOf(l) {
+    if (l.add) return l.add.split('');
+    if (l.focus) return l.focus.split('');
+    return [];
+  }
+  function noticeHTML() {
+    if (!NOTICE) return '';
+    var h = '<p class="notice">' + esc(NOTICE) + '</p>';
+    NOTICE = '';
+    return h;
+  }
+
+  /* ----- Lessen (startpagina) ----- */
+  function renderHome() {
+    var nl = nextLesson();
+    var html = noticeHTML();
+    if (nl) {
+      var nk = newKeysOf(nl);
+      html += '<section class="hero">' +
+        '<div>' +
+          '<p class="lead">' + (passedCount() === 0 ? 'Je eerste les' : 'Je volgende les') + '</p>' +
+          '<h1>Les ' + esc(nl.nr) + ': ' + esc(nl.title) + '</h1>' +
+          '<p>' + esc(nl.intro[0] || '') + '</p>' +
+          '<div class="actions"><a class="btn" href="#/les/' + esc(nl.id) + '" data-primary>Start les ' + esc(nl.nr) + '</a></div>' +
+          '<p class="overall">' + passedCount() + ' van ' + PLANNED_TOTAL + ' lessen geslaagd. In deze versie zijn modules 1 tot en met 3 beschikbaar.</p>' +
+        '</div>' +
+        '<div>' + kbHTML({ tinted: true, compact: true, newKeys: nk }) + '</div>' +
+      '</section>';
+    } else {
+      html += '<section class="hero"><div>' +
+        '<p class="lead">Alle beschikbare lessen gedaan</p>' +
+        '<h1>Modules 1 tot en met 3 zijn afgerond</h1>' +
+        '<p>De volgende modules komen in een nieuwe versie. Tot dan kan je je zwakste toetsen blijven oefenen.</p>' +
+        '<div class="actions"><a class="btn" href="#/oefenen" data-primary>Vrij oefenen</a></div>' +
+        '</div><div>' + kbHTML({ tinted: true, compact: true }) + '</div></section>';
+    }
+    var lastPhase = 0;
+    MODULES.forEach(function (m) {
+      if (m.phase !== lastPhase) {
+        if (lastPhase) html += '</section>';
+        html += '<section class="phase"><h2 class="phase-title">Fase ' + m.phase + ': ' + esc(PHASES[m.phase].toLowerCase()) + '</h2>';
+        lastPhase = m.phase;
+      }
+      var done = m.lessons.filter(isPassed).length;
+      var soon = m.lessons.length === 0;
+      html += '<div class="module' + (soon ? ' soon' : '') + '">' +
+        '<div class="module-head"><h3>Module ' + m.nr + ': ' + esc(m.title) + '</h3>' +
+        '<div class="count">' + (soon ? m.planned + ' lessen' : done + ' van ' + m.planned + ' lessen geslaagd') + '</div>' +
+        (soon ? '' : '<div class="bar"><i style="width:' + Math.round(100 * done / m.planned) + '%"></i></div>') +
+        '</div><div class="module-body">';
+      if (soon) {
+        html += '<p>' + esc(m.desc) + '. Volgt in een volgende versie.</p>';
+      } else {
+        html += '<ol class="lesson-list">';
+        m.lessons.forEach(function (l) {
+          var rec = lessonRecord(l), passed = isPassed(l), open = isUnlocked(l);
+          var st = passed ? '<span class="st ok">Geslaagd, ' + Math.round(rec.bestAcc) + '%</span>'
+            : open ? '<span class="st next">Volgende</span>' : '<span class="st">Op slot</span>';
+          if (l.type === 'intro' && passed) st = '<span class="st ok">Gedaan</span>';
+          if (l.type === 'baseline' && passed) st = '<span class="st ok">Gedaan</span>';
+          var inner = '<span class="nr">' + esc(l.nr) + '</span><span>' + esc(l.title) + '</span>' + st;
+          html += '<li>' + (open ? '<a href="#/les/' + esc(l.id) + '">' + inner + '</a>' : '<div class="locked" aria-disabled="true">' + inner + '</div>') + '</li>';
+        });
+        html += '</ol>';
+      }
+      html += '</div></div>';
+    });
+    html += '</section>';
+    app.innerHTML = html;
+  }
+
+  /* ----- Les ----- */
+  function openLesson(id) {
+    var lesson = LESSON_BY_ID[id];
+    if (!lesson) { NOTICE = 'Die les bestaat niet.'; return go('#/lessen'); }
+    if (!isUnlocked(lesson)) { NOTICE = 'Les ' + lesson.nr + ' is nog op slot. Rond eerst de vorige les af.'; return go('#/lessen'); }
+    FLOW = { kind: 'lesson', lesson: lesson, plan: planFor(lesson), i: -1, seed: (Date.now() % 2147483647) | 0, results: [] };
+    renderIntro();
+  }
+  function lessonHeader() {
+    var l = FLOW.lesson;
+    var steps = FLOW.plan.map(function (ex, i) {
+      var c = i < FLOW.i ? 'done' : i === FLOW.i ? 'cur' : '';
+      if (FLOW.finished && i <= FLOW.i) c = 'done';
+      return '<li class="' + c + '">' + esc(ex.name) + '</li>';
+    }).join('');
+    return '<div class="lesson-head"><a class="back" href="#/lessen">Alle lessen</a>' +
+      '<h1>Les ' + esc(l.nr) + ': ' + esc(l.title) + '</h1>' +
+      '<ol class="steps" aria-label="Oefeningen in deze les">' + steps + '</ol></div>';
+  }
+  function renderIntro() {
+    var l = FLOW.lesson;
+    var nk = newKeysOf(l);
+    if (l.id === 'm1-houding') nk = ['f', 'j', ' '];
+    var fingers = l.type === 'intro' && l.id === 'm1-vingers' ? ['lp', 'lr', 'lm', 'li', 'ri', 'rm', 'rr', 'rp', 'th'] : fingersFor(nk);
+    var thr = threshold(l);
+    var html = lessonHeader() +
+      '<div class="intro"><div>' +
+      l.intro.map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('') +
+      (thr ? '<p class="muted">Deze les heeft ' + FLOW.plan.length + ' oefeningen. Bij de slottoets heb je minstens ' + thr + '% nauwkeurigheid nodig.</p>' : '') +
+      '<div class="actions"><button class="btn" data-act="start" data-primary>Begin met oefenen</button></div>' +
+      '<p class="hint">Of druk op Enter.</p>' +
+      '</div><div id="kb-area">' +
+      (l.help === 'none' ? '' : kbHTML({ tinted: true, newKeys: l.type === 'intro' && l.id === 'm1-vingers' ? [] : nk }) + handsHTML()) +
+      '</div></div>';
+    app.innerHTML = html;
+    if (l.help !== 'none') setFingers(fingers);
+    var label = document.getElementById('finger-label');
+    if (label) label.textContent = '';
+  }
+  function helpMode(lessonHelp) {
+    var h = S.settings.help;
+    if (h === 'always') return 'full';
+    if (h === 'never') return 'none';
+    return lessonHelp || 'full';
+  }
+  function startExercise(i) {
+    FLOW.i = i;
+    var ex = FLOW.plan[i];
+    var ctx = makeCtx(FLOW.lesson, (FLOW.seed + i * 7919 + (FLOW.attempt || 0) * 104729) >>> 0, FLOW.known);
+    var text = ex.make(ctx).replace(/\s+/g, ' ').trim();
+    var help = helpMode(FLOW.lesson.help);
+    var head = FLOW.kind === 'lesson' ? lessonHeader() : '<div class="lesson-head"><h1>Vrij oefenen</h1></div>';
+    // In een les toont de stappenbalk al welke oefening bezig is; bij vrij oefenen tonen we de naam.
+    app.innerHTML = head + '<section class="run" id="run">' +
+      (FLOW.kind === 'lesson' ? '' : '<div class="run-top"><h2>' + esc(ex.name) + '</h2></div>') +
+      '<div class="strip" id="strip" tabindex="-1" aria-label="Tekst om te typen">' + stripHTML(text) + '</div>' +
+      '<div class="stats"><span><b id="st-apm">\u2013</b>aanslagen per minuut</span><span><b id="st-acc">\u2013</b>nauwkeurig</span><span><b id="st-time">0:00</b>tijd</span>' +
+      '<span class="run-hint" id="run-hint">Begin met typen wanneer je klaar bent. Esc stopt de oefening.</span></div>' +
+      '<p class="caps" id="caps" hidden>Caps Lock staat aan. Zet hem uit om verder te typen.</p>' +
+      '<div class="kb-area" id="kb-area"' + (help === 'none' ? ' hidden' : '') + '>' +
+      kbHTML({ tinted: help === 'full' }) + handsHTML() + '<p class="finger-label" id="finger-label"></p></div>' +
+      '</section>';
+    app.classList.add('running');
+    if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+    var strip = document.getElementById('strip');
+    strip.focus({ preventScroll: true });
+    RUN = {
+      text: text, pos: 0, keystrokes: 0, errors: 0, correct: 0, start: null, last: null, active: 0,
+      perKey: {}, errPos: {}, help: help, test: ex.test, finished: false, hintTimer: null, clockTimer: null,
+      spans: Array.prototype.slice.call(strip.querySelectorAll('.ch'))
+    };
+    markCurrent();
+  }
+  function stripHTML(text) {
+    var html = '', i = 0, parts = text.split(' ');
+    parts.forEach(function (w, wi) {
+      html += '<span class="w">';
+      for (var j = 0; j < w.length; j++) { html += '<span class="ch" data-i="' + i + '">' + esc(w.charAt(j)) + '</span>'; i++; }
+      html += '</span>';
+      if (wi < parts.length - 1) { html += '<span class="ch sp" data-i="' + i + '"> </span>'; i++; }
+    });
+    return html;
+  }
+
+  function markCurrent() {
+    var R = RUN;
+    if (!R) return;
+    var span = R.spans[R.pos];
+    if (span) {
+      span.classList.add('cur');
+      var strip = document.getElementById('strip');
+      if (strip && span.offsetTop + span.offsetHeight > strip.scrollTop + strip.clientHeight - 10) {
+        strip.scrollTop = span.offsetTop - 20;
+      }
+    }
+    updateHint(false);
+  }
+  function updateHint(forceShow) {
+    var R = RUN;
+    if (!R) return;
+    clearTimeout(R.hintTimer);
+    var ch = R.text.charAt(R.pos);
+    if (R.help === 'full' || forceShow) { showNextKey(ch); return; }
+    showNextKey(null);
+    if (R.help === 'hint') {
+      R.hintTimer = setTimeout(function () { if (RUN === R && !R.finished) showNextKey(ch); }, 2000);
+    }
+  }
+  function showNextKey(ch) {
+    var area = document.getElementById('kb-area');
+    if (!area) return;
+    area.querySelectorAll('.key.is-next').forEach(function (k) { k.classList.remove('is-next'); });
+    if (ch == null || ch === '') { setFingers([]); return; }
+    var m = CHARMAP.get(ch);
+    if (!m) { setFingers([]); return; }
+    var el = area.querySelector('[data-k="' + m.key.id + '"]');
+    if (el) el.classList.add('is-next');
+    var fingers = [m.key.finger];
+    if (m.shift) {
+      var sid = m.key.finger.charAt(0) === 'l' ? 'k_rshift' : 'k_lshift';
+      var sk = area.querySelector('[data-k="' + sid + '"]');
+      if (sk) sk.classList.add('is-next');
+      fingers.push(sid === 'k_rshift' ? 'rp' : 'lp');
+    }
+    setFingers(fingers);
+  }
+  function updateStats() {
+    var R = RUN;
+    if (!R) return;
+    var apm = document.getElementById('st-apm'), acc = document.getElementById('st-acc'), tm = document.getElementById('st-time');
+    if (acc && R.keystrokes) acc.textContent = Math.round(100 * (R.keystrokes - R.errors) / R.keystrokes) + '%';
+    if (apm && R.active >= 3000) apm.textContent = String(Math.round(R.correct / (R.active / 60000)));
+    if (tm) tm.textContent = fmtClock(R.active);
+  }
+  var MAX_GAP = 5000;   // een pauze tussen twee aanslagen telt voor hoogstens 5 seconden mee
+  function clockNow() { return (window.performance && performance.now) ? performance.now() : Date.now(); }
+  // Laat de klok ook tussen twee aanslagen doorlopen; na een pauze van MAX_GAP blijft hij staan.
+  function tickClock(R) {
+    if (RUN !== R || R.finished) { clearInterval(R.clockTimer); return; }
+    var tm = document.getElementById('st-time');
+    var t = fmtClock(R.active + Math.min(clockNow() - R.last, MAX_GAP));
+    if (tm && tm.textContent !== t) tm.textContent = t;
+  }
+  function setCaps(on) {
+    var el = document.getElementById('caps');
+    if (el) el.hidden = !on;
+  }
+
+  function typeChar(ch, now) {
+    var R = RUN;
+    if (!R || R.finished) return;
+    var expected = R.text.charAt(R.pos);
+    if (R.start === null) {
+      R.start = now; R.last = now;
+      var h = document.getElementById('run-hint'); if (h) h.textContent = 'Esc stopt de oefening.';
+      R.clockTimer = setInterval(function () { tickClock(R); }, 250);
+    }
+    else { R.active += Math.min(now - R.last, MAX_GAP); R.last = now; }
+    R.keystrokes++;
+    var st = R.perKey[expected] || (R.perKey[expected] = { h: 0, e: 0 });
+    var span = R.spans[R.pos];
+    if (ch === expected) {
+      st.h++;
+      R.correct++;
+      if (span) { span.classList.remove('cur', 'flash'); span.classList.add('done'); if (R.errPos[R.pos]) span.classList.add('had-err'); }
+      R.pos++;
+    } else {
+      st.e++;
+      R.errors++;
+      R.errPos[R.pos] = true;
+      if (S.settings.errorMode === 'continue') {
+        if (span) { span.classList.remove('cur', 'flash'); span.classList.add('done', 'had-err'); }
+        R.pos++;
+      } else if (span) {
+        span.classList.remove('flash');
+        void span.offsetWidth;
+        span.classList.add('flash');
+      }
+    }
+    if (R.pos >= R.text.length) { finishRun(); return; }
+    markCurrent();
+    if (ch !== expected && S.settings.errorMode !== 'continue') updateHint(R.help !== 'none');
+    updateStats();
+  }
+
+  function stopRun() {
+    if (RUN) { clearTimeout(RUN.hintTimer); clearInterval(RUN.clockTimer); RUN.finished = true; }
+    RUN = null;
+    app.classList.remove('running');
+  }
+
+  function finishRun() {
+    var R = RUN;
+    R.finished = true;
+    clearTimeout(R.hintTimer);
+    clearInterval(R.clockTimer);
+    var ms = Math.max(R.active, 1000);
+    var result = {
+      apm: Math.round(R.correct / (ms / 60000)),
+      acc: Math.round(1000 * (R.keystrokes - R.errors) / Math.max(1, R.keystrokes)) / 10,
+      errors: R.errors, chars: R.text.length, ms: Math.round(R.active), perKey: R.perKey
+    };
+    var isBaseline = FLOW && FLOW.lesson && FLOW.lesson.type === 'baseline';
+    Object.keys(R.perKey).forEach(function (c) {
+      if (c === ' ' || isBaseline) return;
+      var k = S.keys[c] || (S.keys[c] = { h: 0, e: 0 });
+      k.h += R.perKey[c].h; k.e += R.perKey[c].e;
+    });
+    var day = todayKey();
+    S.days[day] = (S.days[day] || 0) + Math.round(R.active);
+    S.totalMs += Math.round(R.active);
+    var kind = FLOW && FLOW.kind === 'free' ? 'free' : (FLOW && FLOW.lesson.type === 'baseline' ? 'base' : (R.test ? 'test' : 'ex'));
+    S.sessions.push({ t: Date.now(), l: FLOW && FLOW.lesson ? FLOW.lesson.id : null, x: FLOW ? FLOW.i : 0, k: kind, apm: result.apm, acc: result.acc, n: result.chars, e: result.errors, ms: result.ms });
+    if (S.sessions.length > 3000) S.sessions.splice(0, S.sessions.length - 3000);
+    RUN = null;
+    app.classList.remove('running');
+    if (FLOW && FLOW.kind === 'lesson') {
+      FLOW.results[FLOW.i] = result;
+      if (FLOW.plan[FLOW.i].test) finishLesson(result);
+      else { save(); renderExerciseResult(result); }
+    } else {
+      save();
+      renderFreeResult(result);
+    }
+  }
+
+  function worstKeys(perKey) {
+    return Object.keys(perKey).filter(function (c) { return perKey[c].e > 0; })
+      .sort(function (a, b) { return perKey[b].e - perKey[a].e; }).slice(0, 4)
+      .map(function (c) { return c === ' ' ? 'spatie' : c; });
+  }
+  function statsBlock(r) {
+    return '<div class="result-stats">' +
+      '<div><b>' + r.apm + '</b>aanslagen per minuut</div>' +
+      '<div><b>' + fmtPct(r.acc) + '</b>nauwkeurig</div>' +
+      '<div><b>' + r.errors + '</b>' + (r.errors === 1 ? 'fout' : 'fouten') + '</div>' +
+      '<div><b>' + fmtClock(r.ms) + '</b>tijd</div></div>';
+  }
+  function renderExerciseResult(r) {
+    var worst = worstKeys(r.perKey);
+    var next = FLOW.plan[FLOW.i + 1];
+    app.innerHTML = lessonHeader() + '<section class="result">' +
+      '<h2>' + esc(FLOW.plan[FLOW.i].name) + ': klaar</h2>' + statsBlock(r) +
+      (worst.length ? '<p>De meeste fouten maakte je op: ' + worst.map(esc).join(', ') + '. Die toetsen komen vaker terug.</p>' : '<p>Geen enkele fout. Mooi zo.</p>') +
+      '<div class="actions"><button class="btn" data-act="next" data-primary>Volgende: ' + esc(next.name.toLowerCase()) + '</button>' +
+      '<button class="btn secondary" data-act="again">Deze oefening opnieuw</button></div>' +
+      '<p class="hint">Druk op Enter om verder te gaan.</p></section>';
+  }
+  function finishLesson(r) {
+    var l = FLOW.lesson;
+    var thr = threshold(l);
+    var passed = thr === null || r.acc >= thr;
+    var rec = S.lessons[l.id] || (S.lessons[l.id] = { passed: false, bestAcc: 0, bestApm: 0, attempts: 0 });
+    rec.attempts++;
+    rec.lastAt = Date.now();
+    if (passed) {
+      if (!rec.passed) rec.passedAt = Date.now();
+      rec.passed = true;
+      rec.bestAcc = Math.max(rec.bestAcc || 0, r.acc);
+      rec.bestApm = Math.max(rec.bestApm || 0, r.apm);
+    }
+    if (l.type === 'baseline') S.baseline = { apm: r.apm, acc: r.acc, t: Date.now() };
+    FLOW.finished = passed;
+    save();
+    var idx = ALL_LESSONS.indexOf(l);
+    var nxt = ALL_LESSONS[idx + 1];
+    var html = lessonHeader() + '<section class="result">';
+    if (l.type === 'baseline') {
+      html += '<h2 class="pass">Beginmeting opgeslagen</h2>' + statsBlock(r) +
+        '<p>Dit is je vertrekpunt. Vanaf de volgende module typ je blind: kijk niet meer naar je toetsenbord.</p>';
+    } else if (passed) {
+      var last = l.module.lessons[l.module.lessons.length - 1] === l;
+      html += '<h2 class="pass">Les ' + esc(l.nr) + ' geslaagd</h2>' + statsBlock(r) +
+        (last ? '<p>Daarmee is module ' + l.module.nr + ' (' + esc(l.module.title.toLowerCase()) + ') afgerond.</p>' : '') +
+        (thr ? '<p class="muted">Nodig was ' + thr + '% nauwkeurigheid.</p>' : '');
+    } else {
+      html += '<h2 class="fail">Nog niet geslaagd</h2>' + statsBlock(r) +
+        '<p>Je was ' + fmtPct(r.acc) + ' nauwkeurig. Om te slagen heb je ' + thr + '% nodig.</p>' +
+        '<p>Typ trager en let op de juiste vinger. Snelheid telt hier niet mee.</p>';
+    }
+    html += '<div class="actions">';
+    if (passed) {
+      if (nxt) html += '<a class="btn" href="#/les/' + esc(nxt.id) + '" data-primary>Volgende les: ' + esc(nxt.nr) + ' ' + esc(nxt.title) + '</a>';
+      else html += '<a class="btn" href="#/oefenen" data-primary>Vrij oefenen</a>';
+      html += '<a class="btn secondary" href="#/lessen">Alle lessen</a>';
+    } else {
+      html += '<button class="btn" data-act="retry-test" data-primary>Slottoets opnieuw</button>' +
+        '<button class="btn secondary" data-act="restart">Les opnieuw beginnen</button>' +
+        '<a class="btn secondary" href="#/lessen">Alle lessen</a>';
+    }
+    html += '</div><p class="hint">Druk op Enter voor de eerste knop.</p></section>';
+    app.innerHTML = html;
+  }
+
+  /* ----- Vrij oefenen ----- */
+  function unlockedKnown() {
+    var best = [];
+    ALL_LESSONS.forEach(function (l) { if (isPassed(l) && KNOWN[l.id].length > best.length) best = KNOWN[l.id]; });
+    return best;
+  }
+  function renderFree() {
+    var known = unlockedKnown();
+    var html = noticeHTML() + '<h1>Vrij oefenen</h1>';
+    if (known.length < 4) {
+      html += '<p>Vrij oefenen kan zodra je de eerste lessen van de thuisrij hebt afgerond. Je oefent dan met de toetsen die je al kent.</p>' +
+        '<div class="actions"><a class="btn" href="#/lessen" data-primary>Naar de lessen</a></div>';
+      app.innerHTML = html; return;
+    }
+    var weak = weakestKeys(known);
+    html += '<p>Je oefent met de ' + known.length + ' letters die je al kent. Toetsen waarop je vaak fouten maakt, komen vaker terug.</p>' +
+      '<p class="muted">Je zwakste toetsen op dit moment: ' + weak.map(esc).join(', ') + '.</p>' +
+      '<div class="actions"><button class="btn" data-act="free" data-primary>Start een oefening</button></div>' +
+      '<p class="hint">Een vrije oefening telt mee in je statistieken, maar niet voor de lessen.</p>';
+    app.innerHTML = html;
+  }
+  function startFree() {
+    var known = unlockedKnown();
+    var pseudo = { id: 'free', title: 'Vrij oefenen', type: 'free', add: '', focus: '', help: 'hint', intro: [] };
+    FLOW = { kind: 'free', lesson: pseudo, plan: planFor(pseudo, known), i: -1, seed: (Date.now() % 2147483647) | 0, results: [], known: known };
+    startExercise(0);
+  }
+  function renderFreeResult(r) {
+    var worst = worstKeys(r.perKey);
+    app.innerHTML = '<div class="lesson-head"><h1>Vrij oefenen</h1></div><section class="result"><h2>Oefening klaar</h2>' + statsBlock(r) +
+      (worst.length ? '<p>De meeste fouten maakte je op: ' + worst.map(esc).join(', ') + '.</p>' : '<p>Geen enkele fout.</p>') +
+      '<div class="actions"><button class="btn" data-act="free" data-primary>Nog een oefening</button>' +
+      '<a class="btn secondary" href="#/voortgang">Bekijk je voortgang</a></div></section>';
+  }
+
+  /* ----- Voortgang ----- */
+  function streak() {
+    var d = new Date(), n = 0;
+    if (!S.days[todayKey(d)]) d.setDate(d.getDate() - 1);
+    while (S.days[todayKey(d)]) { n++; d.setDate(d.getDate() - 1); }
+    return n;
+  }
+  function chartSVG(values, opts) {
+    if (values.length < 2) return '<p class="empty">Nog te weinig gegevens. Na een paar oefeningen zie je hier je verloop.</p>';
+    var W = 640, H = 220, pl = 46, pr = 14, pt = 16, pb = 30;
+    var lo = opts.min, hi = opts.max;
+    var x = function (i) { return pl + (W - pl - pr) * (i / (values.length - 1)); };
+    var y = function (v) { return pt + (H - pt - pb) * (1 - (v - lo) / (hi - lo || 1)); };
+    var svg = '<svg class="chart" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(opts.label) + '">';
+    for (var g = 0; g <= 4; g++) {
+      var v = lo + (hi - lo) * g / 4, yy = y(v);
+      svg += '<line class="grid" x1="' + pl + '" x2="' + (W - pr) + '" y1="' + yy.toFixed(1) + '" y2="' + yy.toFixed(1) + '"/>' +
+        '<text class="axis" x="' + (pl - 8) + '" y="' + (yy + 4).toFixed(1) + '" text-anchor="end">' + Math.round(v) + (opts.unit || '') + '</text>';
+    }
+    var pts = values.map(function (v, i) { return x(i).toFixed(1) + ',' + y(v).toFixed(1); }).join(' ');
+    svg += '<polyline class="line" style="stroke:' + opts.color + '" points="' + pts + '"/>';
+    var lx = x(values.length - 1), ly = y(values[values.length - 1]);
+    svg += '<circle cx="' + lx.toFixed(1) + '" cy="' + ly.toFixed(1) + '" r="4.5" style="fill:' + opts.color + '"/>';
+    svg += '<text class="axis" x="' + pl + '" y="' + (H - 8) + '">Laatste ' + values.length + ' oefeningen, van oud naar nieuw</text>';
+    return svg + '</svg>';
+  }
+  function renderProgress() {
+    var sessions = S.sessions.filter(function (s) { return s.k !== 'base'; });
+    var tests = S.sessions.filter(function (s) { return s.k === 'test'; });
+    var recent = sessions.slice(-40);
+    var bestTest = tests.reduce(function (b, s) { return s.acc >= 95 && (!b || s.apm > b.apm) ? s : b; }, null);
+    var last5 = tests.slice(-5);
+    var avg = function (arr, f) { return arr.length ? Math.round(arr.reduce(function (a, s) { return a + s[f]; }, 0) / arr.length * 10) / 10 : null; };
+    var html = noticeHTML() + '<h1>Voortgang</h1>' +
+      '<div class="kpis">' +
+      '<div class="kpi"><b>' + passedCount() + ' van ' + PLANNED_TOTAL + '</b><span>lessen geslaagd</span></div>' +
+      '<div class="kpi"><b>' + streak() + (streak() === 1 ? ' dag' : ' dagen') + '</b><span>op rij geoefend</span></div>' +
+      '<div class="kpi"><b>' + fmtDuration(S.totalMs) + '</b><span>totale oefentijd</span></div>' +
+      '<div class="kpi"><b>' + (bestTest ? bestTest.apm : '\u2013') + '</b><span>aanslagen per minuut, beste geslaagde slottoets</span></div>' +
+      '</div>';
+    html += '<section class="section"><h2>Beginmeting en nu</h2>';
+    if (S.baseline) {
+      html += '<p>Bij je beginmeting typte je ' + S.baseline.apm + ' aanslagen per minuut met ' + fmtPct(S.baseline.acc) + ' nauwkeurigheid' +
+        ', op je eigen manier en kijkend naar je toetsenbord.</p>';
+      if (last5.length) html += '<p>Je laatste ' + last5.length + (last5.length === 1 ? ' slottoets' : ' slottoetsen') + ' gemiddeld: ' +
+        Math.round(avg(last5, 'apm')) + ' aanslagen per minuut, ' + fmtPct(avg(last5, 'acc')) + ' nauwkeurig, blind getypt.</p>' +
+        '<p class="muted">In het begin ligt je snelheid lager dan bij de beginmeting. Dat is normaal: je leert een nieuwe techniek, en die haalt je oude snelheid later in.</p>';
+    } else {
+      html += '<p class="muted">Je hebt de beginmeting (les 1.3) nog niet gedaan.</p>';
+    }
+    html += '</section>';
+    html += '<section class="section"><h2>Verloop</h2><div class="charts">' +
+      '<div><h3>Snelheid</h3>' + chartSVG(recent.map(function (s) { return s.apm; }), {
+        min: 0, max: Math.max(60, Math.ceil(Math.max.apply(null, recent.map(function (s) { return s.apm; }).concat([0])) * 1.15 / 10) * 10),
+        color: 'var(--f-ring)', label: 'Aanslagen per minuut per oefening' }) + '</div>' +
+      '<div><h3>Nauwkeurigheid</h3>' + chartSVG(recent.map(function (s) { return s.acc; }), {
+        min: Math.min(80, Math.floor(Math.min.apply(null, recent.map(function (s) { return s.acc; }).concat([100])) / 5) * 5), max: 100,
+        color: 'var(--f-middle)', unit: '%', label: 'Nauwkeurigheid per oefening' }) + '</div>' +
+      '</div></section>';
+    var heat = {};
+    Object.keys(S.keys).forEach(function (c) {
+      var k = S.keys[c], n = k.h + k.e;
+      heat[c] = { n: n, rate: n ? k.e / n : 0 };
+    });
+    var fingers = {};
+    Object.keys(S.keys).forEach(function (c) {
+      var m = CHARMAP.get(c);
+      if (!m) return;
+      var f = m.key.finger, k = S.keys[c];
+      var agg = fingers[f] || (fingers[f] = { h: 0, e: 0 });
+      agg.h += k.h; agg.e += k.e;
+    });
+    html += '<section class="section"><h2>Fouten per toets</h2>' +
+      '<p class="muted">Groen: (bijna) geen fouten. Hoe roder de toets, hoe vaker je je daar vergist. Toetsen met minder dan 8 aanslagen blijven grijs. De beginmeting telt hier niet mee.</p>' +
+      kbHTML({ heat: heat });
+    var order = ['lp', 'lr', 'lm', 'li', 'ri', 'rm', 'rr', 'rp'];
+    var rows = order.filter(function (f) { return fingers[f] && fingers[f].h + fingers[f].e > 0; });
+    if (rows.length) {
+      var maxRate = Math.max.apply(null, rows.map(function (f) { return fingers[f].e / (fingers[f].h + fingers[f].e); }).concat([0.05]));
+      html += '<h3 style="margin-top:22px">Fouten per vinger</h3><div class="fbars">' + rows.map(function (f) {
+        var a = fingers[f], rate = a.e / (a.h + a.e);
+        return '<span class="fname">' + esc(FINGER_NAME[f]) + '</span>' +
+          '<span class="fbar key f-' + f + '" style="height:10px;border:0;display:block;background:var(--surface-2)"><i style="width:' + Math.round(100 * rate / maxRate) + '%"></i></span>' +
+          '<span class="fval">' + fmtPct(Math.round(rate * 1000) / 10) + '</span>';
+      }).join('') + '</div>';
+    }
+    html += '</section>';
+    app.innerHTML = html;
+  }
+
+  /* ----- Instellingen ----- */
+  function opt(value, label, current) {
+    return '<option value="' + value + '"' + (value === current ? ' selected' : '') + '>' + esc(label) + '</option>';
+  }
+  function renderSettings() {
+    var s = S.settings;
+    var detected = detectMac() ? 'Mac' : 'Windows';
+    app.innerHTML = noticeHTML() + '<h1>Instellingen</h1><div class="form">' +
+      '<div class="field"><label for="set-name">Naam</label><input type="text" id="set-name" value="' + esc(s.name) + '" autocomplete="given-name">' +
+      '<div class="help">Komt op het certificaat aan het einde van de cursus.</div></div>' +
+      '<div class="field"><label for="set-layout">Toetsenbord</label><select id="set-layout">' +
+      opt('auto', 'Automatisch (nu: Belgisch AZERTY, ' + detected + ')', s.layout) + opt('mac', 'Belgisch AZERTY, Mac', s.layout) + opt('win', 'Belgisch AZERTY, Windows', s.layout) +
+      '</select><div class="help">Letters, cijfers en leestekens staan op Mac en Windows op dezelfde plek. Enkel een paar speciale tekens, zoals @ en \u20ac, verschillen.</div></div>' +
+      '<div class="field"><label for="set-error">Bij een tikfout</label><select id="set-error">' +
+      opt('block', 'Wachten op de juiste toets (aangeraden)', s.errorMode) + opt('continue', 'Doortypen, de fout blijft rood staan', s.errorMode) +
+      '</select></div>' +
+      '<div class="field"><label for="set-help">Hulp van het toetsenbord op het scherm</label><select id="set-help">' +
+      opt('auto', 'Automatisch: verdwijnt stap voor stap', s.help) + opt('always', 'Altijd de volgende toets tonen', s.help) + opt('never', 'Nooit tonen', s.help) +
+      '</select></div>' +
+      '<div class="field"><label for="set-theme">Weergave</label><select id="set-theme">' +
+      opt('auto', 'Zoals je Mac (licht of donker)', s.theme) + opt('light', 'Licht', s.theme) + opt('dark', 'Donker', s.theme) +
+      '</select></div>' +
+      '<div class="field"><label>Back-up van je voortgang</label>' +
+      '<p class="muted small">Je voortgang staat alleen in deze browser. Met een back-up kan je ze terugzetten, ook op een andere computer.</p>' +
+      '<div class="actions" style="margin-top:6px"><button class="btn secondary" data-act="export">Back-up downloaden</button>' +
+      '<button class="btn secondary" data-act="import">Back-up terugzetten</button>' +
+      '<input type="file" id="import-file" accept="application/json,.json" hidden></div></div>' +
+      '<div class="field"><label>Opnieuw beginnen</label>' +
+      '<div class="actions" style="margin-top:6px"><button class="btn danger" data-act="reset">Alle voortgang wissen</button></div></div>' +
+      '</div>';
+    document.getElementById('set-name').addEventListener('change', function (e) { S.settings.name = e.target.value.trim(); save(); });
+    document.getElementById('set-layout').addEventListener('change', function (e) { S.settings.layout = e.target.value; refreshLayout(); save(); });
+    document.getElementById('set-error').addEventListener('change', function (e) { S.settings.errorMode = e.target.value; save(); });
+    document.getElementById('set-help').addEventListener('change', function (e) { S.settings.help = e.target.value; save(); });
+    document.getElementById('set-theme').addEventListener('change', function (e) { S.settings.theme = e.target.value; applyTheme(); save(); });
+    document.getElementById('import-file').addEventListener('change', function (e) {
+      var f = e.target.files && e.target.files[0];
+      if (!f) return;
+      var reader = new FileReader();
+      reader.onload = function () { importJSON(String(reader.result)); };
+      reader.readAsText(f);
+    });
+  }
+  function exportJSON() { return JSON.stringify(S, null, 2); }
+  function exportProgress() {
+    var blob = new Blob([exportJSON()], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'dactylo-supreme-back-up-' + todayKey() + '.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
+  }
+  function importJSON(text, skipConfirm) {
+    var data;
+    try { data = JSON.parse(text); } catch (e) { NOTICE = 'Dit bestand is geen geldige back-up.'; renderSettings(); return false; }
+    if (!data || typeof data !== 'object' || typeof data.schema !== 'number' || typeof data.lessons !== 'object') {
+      NOTICE = 'Dit bestand is geen back-up van Dactylo Supreme.'; renderSettings(); return false;
+    }
+    if (data.schema > SCHEMA) { NOTICE = 'Deze back-up komt van een nieuwere versie van Dactylo Supreme. Laad eerst de nieuwste versie van de site.'; renderSettings(); return false; }
+    if (!skipConfirm && !window.confirm('Je huidige voortgang wordt vervangen door de back-up. Doorgaan?')) return false;
+    S = migrate(data);
+    refreshLayout(); applyTheme(); save();
+    NOTICE = 'Back-up teruggezet.';
+    renderSettings();
+    return true;
+  }
+
+  /* =========================================================
+     Gebeurtenissen
+     ========================================================= */
+  app.addEventListener('click', function (e) {
+    var t = e.target.closest('[data-act]');
+    if (!t) return;
+    var act = t.getAttribute('data-act');
+    if (act === 'start') startExercise(0);
+    else if (act === 'next') startExercise(FLOW.i + 1);
+    else if (act === 'again') { FLOW.attempt = (FLOW.attempt || 0) + 1; startExercise(FLOW.i); }
+    else if (act === 'retry-test') { FLOW.attempt = (FLOW.attempt || 0) + 1; startExercise(FLOW.plan.length - 1); }
+    else if (act === 'restart') { FLOW.attempt = (FLOW.attempt || 0) + 1; FLOW.finished = false; startExercise(0); }
+    else if (act === 'free') startFree();
+    else if (act === 'export') exportProgress();
+    else if (act === 'import') document.getElementById('import-file').click();
+    else if (act === 'reset') {
+      if (window.confirm('Al je voortgang wordt gewist. Dit kan je niet ongedaan maken. Doorgaan?')) {
+        var keepSettings = S.settings;
+        S = defaultState(); S.settings = keepSettings; save();
+        NOTICE = 'Je voortgang is gewist.';
+        renderSettings();
+      }
+    }
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (RUN && !RUN.finished) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        stopRun();
+        if (FLOW && FLOW.kind === 'lesson') renderIntro(); else renderFree();
+        return;
+      }
+      if (e.metaKey || (e.ctrlKey && !e.altKey)) return;
+      var caps = typeof e.getModifierState === 'function' && e.getModifierState('CapsLock');
+      setCaps(caps);
+      if (e.key === 'Tab' || e.key === 'Backspace' || e.key === ' ' || e.key === 'Enter') e.preventDefault();
+      if (e.isComposing || e.key === 'Dead' || e.key === 'Process' || e.key === 'Unidentified') return;
+      if (!e.key || e.key.length !== 1) return;
+      e.preventDefault();
+      if (caps) return;
+      typeChar(e.key, clockNow());
+      return;
+    }
+    var active = document.activeElement;
+    if (e.key === ' ' && (!active || active === document.body || active === app)) { e.preventDefault(); return; }
+    if (e.key === 'Enter') {
+      var tag = document.activeElement && document.activeElement.tagName;
+      if (tag === 'BUTTON' || tag === 'A' || tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
+      var btn = app.querySelector('[data-primary]');
+      if (btn) { e.preventDefault(); btn.click(); }
+    }
+  });
+
+  window.addEventListener('hashchange', route);
+
+  /* Toegang voor de automatische tests. */
+  window.__dactylo = {
+    version: APP_VERSION, state: function () { return S; }, modules: MODULES, lessons: ALL_LESSONS, known: KNOWN,
+    planFor: planFor, makeCtx: makeCtx, run: function () { return RUN; }, flow: function () { return FLOW; },
+    exportJSON: exportJSON, importJSON: importJSON, migrate: migrate, layout: function () { return LAYOUT; },
+    words: WORDS, sentences: SENTENCES, weakestKeys: weakestKeys
+  };
+
+  document.getElementById('version').textContent = APP_VERSION;
+  applyTheme();
+  showBanner();
+  route();
+})();
+</script>
+</body>
+</html>
