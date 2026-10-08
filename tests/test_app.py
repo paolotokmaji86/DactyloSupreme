@@ -161,6 +161,17 @@ def main():
             check(have == planned, f"module {nr}: {have} van {planned} lessen gebouwd")
         check(info["unique"], "alle les-ids uniek")
 
+        # 2b. Hulp van het toetsenbord volgens het leerplan (CLAUDE.md): modules 4-9 nieuwe lessen
+        # 'full' en de andere 'hint', modules 10-11 'hint', modules 12-13 'none'
+        helps = page.evaluate("() => window.__dactylo.lessons.map(l => [l.id, l.module.nr, l.type, l.help])")
+        def want_help(nr, typ_):
+            if 4 <= nr <= 9: return "full" if typ_ == "new" else "hint"
+            if nr in (10, 11): return "hint"
+            if nr >= 12: return "none"
+            return None
+        wrong_help = [f"{i}={h}" for i, nr, typ_, h in helps if want_help(nr, typ_) not in (None, h)]
+        check(not wrong_help, f"hulpniveau per les volgens het leerplan {wrong_help[:5]}")
+
         # 3. Oefenteksten: enkel toegelaten tekens, redelijke lengte, nieuwe toetsen aanwezig
         gen = page.evaluate("""() => {
           const d = window.__dactylo;
@@ -184,6 +195,23 @@ def main():
           return { count, n: problems.length, sample: problems.slice(0, 8) };
         }""")
         check(gen["n"] == 0, f"{gen['count']} oefenteksten gecontroleerd, {gen['n']} problemen {gen['sample']}")
+
+        # 3b. Zinnenlessen tonen echte zinnen, geen terugval op losse woorden en lettercombinaties
+        no_sent = page.evaluate("""() => {
+          const d = window.__dactylo, out = [];
+          const norm = s => s.toLowerCase().replace(/[.?!]/g, '').replace(/\\s+/g, ' ').trim();
+          const all = d.sentences.map(norm).filter(s => s.split(' ').length >= 3);
+          for (const l of d.lessons.filter(l => l.type === 'sentences')) {
+            const ex = d.planFor(l).find(e => e.name === 'Zinnetjes' || e.name === 'Korte zinnen');
+            if (!ex) continue;
+            for (let seed = 1; seed <= 5; seed++) {
+              const t = norm(ex.make(d.makeCtx(l, seed)));
+              if (!all.some(s => t.includes(s))) { out.push(l.id + ' #' + seed); break; }
+            }
+          }
+          return out;
+        }""")
+        check(not no_sent, f"zinnenlessen tonen echte zinnen {no_sent[:5]}")
 
         page.screenshot(path=f"{SHOTS}/home.png")
 
@@ -241,18 +269,30 @@ def main():
         check(win_top == "\u00b2" and mac_top != "\u00b2", f"Windows- en Mac-indeling verschillen (win: {win_top}, mac: {mac_top})")
         page.select_option("#set-layout", "auto")
 
-        # 9. Typscherm past op een MacBook (Safari toont ongeveer 1440 x 790)
+        # 9. Typscherm past op een MacBook (Safari toont ongeveer 1440 x 790), ook bij de langste
+        # oefeningen: de opwarming van de laatste nieuwe les, de slottoets van de laatste zinnenles
+        # en de toets van de laatste moduletoets.
         page.set_viewport_size({"width": 1440, "height": 790})
-        target = next((l["id"] for l in reversed(lessons) if l["type"] == "new"), lessons[0]["id"])
-        page.goto(URL + "#/les/" + target)
-        page.wait_for_selector("[data-act=start]")
-        page.keyboard.press("Enter")
-        page.wait_for_selector("#strip")
-        typ(run_text()[:4], 30)
-        bottom = page.evaluate("() => { const el = document.getElementById('finger-label'); return el ? el.getBoundingClientRect().bottom : 0; }")
-        check(0 < bottom <= 790, f"typscherm past op een MacBook (onderkant op {bottom:.0f}px van 790)")
-        page.screenshot(path=f"{SHOTS}/typing_macbook.png")
-        page.keyboard.press("Escape")
+        def last_of(typ_):
+            return next((l["id"] for l in reversed(lessons) if l["type"] == typ_), None)
+        targets = [(last_of("new"), 0), (last_of("sentences"), -1), (last_of("moduletest"), -1)]
+        for lid, idx in [x for x in targets if x[0]]:
+            page.goto(URL + "#/les/" + lid)
+            page.wait_for_selector("[data-act=start]")
+            page.keyboard.press("Enter")
+            n = page.evaluate("() => window.__dactylo.flow().plan.length")
+            stop = idx % n
+            for i in range(stop):
+                page.wait_for_selector("#strip")
+                typ(run_text())
+                page.wait_for_selector(".result")
+                page.keyboard.press("Enter")
+            page.wait_for_selector("#strip")
+            typ(run_text()[:4], 30)
+            bottom = page.evaluate("() => { const el = document.getElementById('finger-label'); return el ? el.getBoundingClientRect().bottom : 0; }")
+            check(0 < bottom <= 790, f"typscherm past op een MacBook bij {lid}, oefening {stop + 1} (onderkant op {bottom:.0f}px van 790)")
+            page.screenshot(path=f"{SHOTS}/typing_macbook.png" if idx == 0 else f"{SHOTS}/typing_macbook_{lid}.png")
+            page.keyboard.press("Escape")
         page.set_viewport_size({"width": 1280, "height": 900})
 
         # 10. Voortgang en donker thema renderen

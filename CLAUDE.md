@@ -49,10 +49,12 @@ Belangrijkste onderdelen, in de volgorde van het script:
   in een Mac- en een Windows-variant. Alleen visueel: `LAYOUT` en `CHARMAP` sturen het
   toetsenbord, de hint voor de volgende toets en vinger, en de fouten per vinger. Vingers:
   `lp lr lm li ri rm rr rp th`. Na een wijziging van `S.settings.layout`: `refreshLayout()`.
-- `WORDS`, `SENTENCES`: eigen Nederlandse woord- en zinslijsten, kleine letters, zonder
-  leestekens. Generatoren nemen alleen woorden en zinnen met gekende tekens, dus inhoud voor
-  latere modules mag er al in staan. `BASELINE_TEXT` (beginmeting) heeft wel hoofdletters en
-  leestekens.
+- `WORDS` (kleine letters) en `SENTENCES` (volledige vorm: hoofdletter, leestekens): eigen
+  Nederlandse lijsten. `sentenceForm()` laat de hoofdletter vooraan en de punt achteraan weg
+  zolang die nog niet gekend zijn; een zin met andere ongekende tekens wordt pas bruikbaar als
+  die aangeleerd zijn. Generatoren nemen alleen woorden en zinnen met gekende tekens, dus inhoud
+  voor latere modules mag er al in staan. `BASELINE_TEXT` (beginmeting) heeft wel hoofdletters
+  en leestekens.
 - `MODULES`, met lessen via `L(id, title, type, opts)` (opts: `add`, `focus`, `help`, `intro`).
   `derive()` zet alle lessen in één rij `ALL_LESSONS` (een les gaat open als de vorige of de
   les zelf geslaagd is),
@@ -113,11 +115,13 @@ verlaten wordt, begint opnieuw bij de intro.
 - `CHARMAP` kent alleen de basis- en de Shift-laag. Tekens via AltGr/Option (zoals €) en via
   dode toetsen (ê, ë, ï) krijgen geen hint. Bij een Shift-teken licht de Shift van de andere
   hand op.
-- `PLANNED_TOTAL` (126) is de hardgecodeerde som van alle `planned`; `planned` is ook de
-  noemer van de voortgangsbalk per module. `renderHome()` zegt letterlijk "modules 1 tot en met
-  3" (twee keer): aanpassen bij elke nieuwe module.
-- Het typscherm past maar net op een MacBook (de test meet 1440 x 790; bij 0.1.0 zat de
-  onderkant op 778 px). Elke extra regel boven het toetsenbord kan de test doen falen.
+- `PLANNED_TOTAL` is de som van alle `planned`; `planned` is ook de noemer van de
+  voortgangsbalk per module en moet gelijk zijn aan het aantal lessen van een gebouwde module
+  (de test controleert dat). De startpagina noemt de laatste gebouwde module zelf.
+- Het typscherm past maar net op een MacBook (de test meet 1440 x 790, ook bij de langste
+  oefeningen). Daarom toont de strook tijdens een oefening twee regels die meeschuiven
+  (`.running .run .strip`, `markCurrent()`); zonder toetsenbord op het scherm (`no-kb`) meer.
+  Elke extra regel boven het toetsenbord kan de test doen falen.
 - CSS: kleuren zijn variabelen op `:root`. De donkere kleuren staan er twee keer (in
   `@media (prefers-color-scheme: dark)` en onder `:root[data-theme="dark"]`): pas beide aan.
   Vingerkleuren: `--f-*` (vol) en `--t-*` (tint), via de klassen `.f-lp` tot `.f-th`. De
@@ -175,7 +179,7 @@ verlaten wordt, begint opnieuw bij de intro.
 | 1 Start | 1 | Houding, thuispositie, vingerverdeling, beginmeting | 3 | klaar |
 | 2 Thuisrij | 1 | s d f j k l, q m, g h | 10 | klaar |
 | 3 Bovenrij | 1 | a p, z o, e r u i, t y | 15 | klaar |
-| 4 Onderrij | 1 | w x, c v, b n | 11 | te bouwen |
+| 4 Onderrij | 1 | w x, c v, b n | 11 | klaar |
 | 5 Hoofdletters | 1 | Linker- en rechter-Shift | 8 | te bouwen |
 | 6 Accenten | 1 | é è, ç à, ù en ^ (ê), ¨ (ë ï ö ü) | 10 | te bouwen |
 | 7 Leestekens | 1 | , ; ! : " ' ( ) - . ? | 12 | te bouwen |

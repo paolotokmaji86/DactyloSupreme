@@ -197,8 +197,12 @@ p { margin: 0 0 12px; max-width: 68ch; }
   background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-panel);
   padding: 20px 28px; font-family: var(--font-type); font-size: clamp(20px, 2.5vw, 30px);
   line-height: 1.8; letter-spacing: 0.02em; white-space: pre-wrap; color: var(--ink);
-  min-height: calc(3.6em + 42px); outline: none; max-height: 60vh; overflow-y: auto;
+  min-height: calc(3.6em + 42px); outline: none; max-height: 60vh; overflow-y: auto; position: relative;
 }
+/* Tijdens een oefening toont de strook twee regels, zodat het toetsenbord en de handen op een
+   MacBook-scherm passen. Zonder toetsenbord op het scherm is er plaats voor meer regels. */
+.running .run .strip { padding-bottom: 0; min-height: 0; height: calc(3.6em + 22px); overflow: hidden; }
+.running .run.no-kb .strip { height: auto; max-height: calc(9em + 22px); }
 .strip .w { white-space: nowrap; }
 .ch { border-radius: 3px; }
 .ch.done { color: var(--muted); }
@@ -273,7 +277,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
 (function () {
   'use strict';
 
-  var APP_VERSION = '0.1.1';
+  var APP_VERSION = '0.2.0';
   var STORAGE_KEY = 'dactylo-be-azerty';
   var SCHEMA = 1;
 
@@ -341,8 +345,9 @@ p { margin: 0 0 12px; max-width: 68ch; }
   }
 
   /* =========================================================
-     Woorden en zinnen (eigen lijsten, kleine letters).
-     Een les gebruikt enkel woorden met letters die al gekend zijn.
+     Woorden en zinnen (eigen lijsten). Woorden in kleine letters,
+     zinnen in hun volledige vorm. Een les gebruikt enkel woorden
+     en zinnen met tekens die al gekend zijn.
      ========================================================= */
   var WORDS = Array.from(new Set((
     'de het een en van ik je jij hij zij ze we wij u mij me hem haar ons hun mijn jouw zijn uw dit dat die deze wat wie waar hoe ' +
@@ -378,28 +383,275 @@ p { margin: 0 0 12px; max-width: 68ch; }
     'ijzel ijzig lijm kiezel egel eik ijdel edel ziel spiegel heelal rug deur ruim raar daar ruzie rups rook roos kleur kus hulp ' +
     'huid duif uil sorry super kerel geluk gelukkig zuid taal gast gitaar yoga type pyjama jury party toilet post patat tosti ' +
     'omelet thuis rust sporter atleet fit trots jarig terras zolder lift sofa rijp kamers dorst sport'
-  ).trim().split(/\s+/)));
+   +
+    // module 4: alle letters gekend
+    ' kun onze hoeveel langs zullen vijf twee drie vier zeven negen tien elf twaalf twintig dertig veertig vijftig zestig zeventig negentig honderd ' +
+    'duizend miljoen eerste tweede derde vierde vijfde helft kwart wereld noorden oosten zuiden westen kwaliteit ' +
+    'kwestie twijfel twijfelen gewicht gewoonte eeuw nieuws nieuwsbrief wedstrijd welkom warmte winnaar winst ' +
+    'woonkamer woordenboek worst waarde wandeling wijsvinger wijzer werknemer werkgever werkdag woning appartement ' +
+    'rijhuis living salon badkamer slaapkamer kelder garage oprit balkon venster gordijn rolluik vloer tapijt plafond ' +
+    'radiator kachel schoorsteen verwarming frigo diepvries vaatwasser wasmachine droogkast strijkijzer stofzuiger ' +
+    'lavabo douche kraan handdoek zetel fauteuil matras kussen deken laken kaars vaas bloempot wekker brievenbus ' +
+    'vuilbak vuilniszak emmer borstel dweil bezem schaar vork lepel bord beker pan deksel oven waterkoker afwas ' +
+    'keukenrol boterham broodje pistolet croissant koffiekoek pannenkoek frieten frietkot mayonaise mosterd stoofvlees ' +
+    'waterzooi mosselen garnalen kroketten gehakt balletjes spinazie wortelen prei witloof spruitjes bloemkool ' +
+    'broccoli courgette paprika komkommer champignon puree azijn olie confituur praline koekje gebak yoghurt room ' +
+    'eieren sinaasappel mandarijn druiven aardbei framboos kersen pruim perzik abrikoos ananas kiwi meloen walnoot ' +
+    'hazelnoot noten avondeten maaltijd vieruurtje cacao limonade frisdrank bruiswater spuitwater centrum gemeente ' +
+    'provincie stadhuis postkantoor perron loket metro halte bushalte tramhalte fietspad voetpad kruispunt rotonde ' +
+    'snelweg zebrapad omleiding wegenwerken parking tankstation benzine diesel vrachtwagen camion bestelwagen ' +
+    'bromfiets motor step taxi taxirit rijbewijs verkeer file vertraging spoor ticket abonnement bagage koffer valies ' +
+    'paspoort visum reiziger luchthaven terminal uitgang ingang bibliotheek zwembad museum theater bioscoop cinema ' +
+    'apotheek ziekenhuis bakkerij slagerij supermarkt kapsalon monument voetganger fietser vergadering afdeling ' +
+    'project planning afspraak verslag rapport budget offerte contract leverancier bestelling levering voorraad ' +
+    'magazijn personeel vacature salaris pensioen verlof opleiding attest examens examinator laptop printer ' +
+    'toetsenbord muismat kabel stekker stopcontact batterij oplader koptelefoon luidspreker website internet netwerk ' +
+    'bestand document bijlage mailbox inbox wachtwoord gsm tablet pixel index fax kopie archief nietje notitie ' +
+    'kalender directeur directie secretariaat bediende zelfstandige ondernemer boekhouder onthaal receptie klaslokaal ' +
+    'speelplaats boekentas schoolbank proefwerk huiswerk woordenschat grammatica wiskunde geschiedenis biologie chemie ' +
+    'fysica kwartier mens persoon baby peuter kleuter tiener jongere volwassene gezin familie grootouders kleinkind ' +
+    'buurman buurvrouw kennis leerling student docent verpleger verpleegster apotheker tandarts beenhouwer visser ' +
+    'loodgieter elektricien schilder timmerman metser architect advocaat notaris chauffeur verkoper kassier arbeider ' +
+    'voorzitter begeleider trainer coach brandweer politie postbode ober gids toerist zon regen wind wolk sneeuw hagel ' +
+    'mist onweer bliksem donder storm klimaat seizoen regenboog zonsopgang boom blad tak wortel gras struik heide duin ' +
+    'beek kanaal vijver heuvel vallei akker weide polder eiland kust vogel vlinder wesp mier konijn paard varken ' +
+    'schaap geit eend zwaan hert wolf leeuw tijger olifant zebra vos bever kraai merel meeuw zwaluw valk helder ' +
+    'bewolkt zonnig winderig windstil mistig koel lauw vochtig proper netjes beleefd eerlijk geduldig behulpzaam ' +
+    'zorgvuldig handig praktisch nuttig eenvoudig ingewikkeld belangrijk bijzonder normaal typisch logisch technisch ' +
+    'elektrisch bekend beroemd onbekend nieuwsgierig tevreden verdrietig verbaasd dankbaar bang wakker slaperig ' +
+    'hongerig dorstig vlug langzaam diep ondiep krap flexibel exact extreem extern complex exotisch luxueus excellent ' +
+    'maximaal minimaal correct perfect creatief actief centraal speciaal sociaal officieel concreet compleet compact ' +
+    'recent geschikt stevig veilig gevaarlijk vrolijk vriendelijk volwassen vervelend voorzichtig kwaad kwetsbaar ' +
+    'bewust zichtbaar bruikbaar betaalbaar beschikbaar bereikbaar haalbaar gratis bovendien binnenkort voorlopig ' +
+    'gewoonlijk eventueel onlangs vroeger achteraf vanavond vanmorgen overmorgen eergisteren nergens ergens overal ' +
+    'buiten binnen beneden achteruit vooruit opnieuw voortaan sindsdien nauwelijks tenminste trouwens inderdaad helaas ' +
+    'uiteraard bijvoorbeeld ongeveer voldoende behoorlijk enkel slechts zelfs weliswaar daarom echter wellicht ' +
+    'vervolgens uiteindelijk expres apart zelden dichtbij verderop onderweg intussen zowel plots opeens nadien vooraf ' +
+    'bijgevolg hierna wekelijks dagelijks jaarlijks maandelijks bewaren bewegen bestellen beslissen bedanken bezoeken ' +
+    'beloven bouwen breken brengen blazen blussen wandelen wassen winnen wensen wegen wijzen verhuizen vertrekken ' +
+    'vergeten verkopen vertellen verdienen verliezen veranderen verbeteren vervangen verwachten verzamelen vallen ' +
+    'varen vliegen voelen volgen vouwen verven vriezen kiezen zwijgen schuiven schudden schatten vechten zuchten mixen ' +
+    'faxen relaxen exporteren controleren corrigeren concentreren noteren ontvangen opbergen afwassen poetsen strijken ' +
+    'stofzuigen opruimen uitleggen uitnodigen antwoorden beantwoorden annuleren bevestigen invullen afdrukken printen ' +
+    'scannen klikken verwijderen bewerken opslaan inloggen uitloggen werkte gewerkt woonde gewoond bouwde gebouwd ' +
+    'bouwt schreef geschreven vond gevonden brengt bracht gebracht dacht gedacht kocht gekocht zocht gezocht wachtte ' +
+    'gewacht gevraagd begon begonnen bleef gebleven gaf gegeven nam genomen kwam gekomen zag gezien wist geweten ' +
+    'vertrok vertrokken betaalde betaald betaalt won gewonnen wint verloor verloren verliest dronk gedronken sliep ' +
+    'geslapen reed gereden belde gebeld stuurde gestuurd las gelezen typte getypt oefende geoefend vergat vergeet ' +
+    'verstuurd bewaard bewaart bewoog bewogen beweegt waste gewassen kookte gekookt opende geopend sloot gesloten zwom ' +
+    'gezwommen wandelde gewandeld fietste gefietst vloog gevlogen vliegt viel gevallen hielp geholpen verhuisde ' +
+    'verhuisd antwoordde geantwoord beloofde beloofd bezocht bezoekt verkocht verdiend veranderd verwacht vertelt ' +
+    'wenst weegt wijst voelt volgt box boxen extra extraatje expert export luxe mix mixer reflex context excuus ' +
+    'excuses expo excursie exemplaar exclusief explosie expositie experiment expeditie maximum saxofoon textiel centen ' +
+    'cola cultuur camping caravan cadeau camera catalogus centimeter cijfer cirkel club code comfort concert contact ' +
+    'controle crisis decor dictee discussie effect functie object procent product recept record reactie service succes ' +
+    'tactiek accent actie acteur actrice bacterie ceremonie conditie congres curve circus cactus cel cello cement ' +
+    'fictie focus inspectie instructie medicijn oceaan principe proces producent productie reclame redactie scenario ' +
+    'sector selectie techniek accu picknick acht achttien tachtig lucht recht rechts pracht prachtig gracht kracht ' +
+    'krachtig tocht plicht zicht gezicht gerecht lichaam dochter vlucht zucht richting pech juichen vrucht opdracht ' +
+    'uitzicht echtgenoot achternaam gedachte verlichting achtergrond nachtwinkel schaal schuld schrift schets schijf ' +
+    'schouder schuur schuim schaduw schade schat scheren verschil landschap vriendschap boodschap eigenschap ' +
+    'gereedschap afscheid tijdschrift handschoen scherp schrikken schreeuwen schrijver schuin schaken schema ' +
+    'schilderij schimmel schommel schotel schouwburg schroef schuilen').trim().split(/\s+/)));
+
+  // Zinnen staan in hun volledige vorm: hoofdletter vooraan, leestekens. sentenceForm() laat
+  // de hoofdletter vooraan en de punt achteraan weg zolang die nog niet gekend zijn; een zin met
+  // andere ongekende tekens wordt pas bruikbaar als die tekens aangeleerd zijn.
+  var WORD_SET = new Set(WORDS);
 
   var SENTENCES = [
-    'de kat ligt op de mat', 'het meisje loopt op straat', 'ik zit op de stoel', 'de zee is heel rustig',
-    'mama eet soep met kaas', 'papa zit op het terras', 'het is zaterdag', 'de taart is erg lekker',
-    'de dokter is druk', 'oma leest graag', 'de tram is te laat', 'ik eet graag pasta', 'zij typt elke dag',
-    'het is koud', 'ik zie de zee', 'de kat slaapt op de sofa', 'het huis heeft drie kamers', 'de tafel is rood',
-    'de pizza is heet', 'ik ga met de fiets', 'de jas is grijs', 'het idee is goed', 'de straat is erg druk',
-    'ik ga graag op reis', 'de muziek is luid', 'het feest is op zaterdag', 'de les duurt kort',
-    'de pyjama ligt op de stoel', 'de appel is rijp', 'de gitaar staat op zolder', 'de lift is stuk',
-    'papa is dokter', 'oma is jarig', 'zij is lerares', 'het hotel is mooi', 'de kapper heeft tijd',
-    'het is al laat', 'ik leer elke dag', 'de toets is moeilijk', 'maar ik zet door', 'de juf is lief',
-    'de egel slaapt', 'het meisje typt rustig', 'de koffie is heet', 'de zomer is heet', 'de herfst is grijs',
-    'er ligt ijs op de straat', 'de kerk staat op de markt', 'de muis zit op de kast', 'ik hou de deur op slot',
-    'de soep is te heet', 'het is hoog tijd', 'de pasta is klaar', 'ik loop door het park', 'de lamp is stuk',
-    'de taart is op',
-    // voor latere modules (bevatten letters die nog volgen)
-    'ik oefen elke dag een kwartier', 'we gaan morgen naar de zee', 'de trein vertrekt om negen uur',
-    'het regent al de hele week', 'zij leert blind typen met tien vingers', 'de winkel is op zondag gesloten',
-    'we eten vanavond pasta met groenten', 'de kinderen spelen buiten in de tuin', 'hij fietst elke ochtend naar zijn werk',
-    'het boek ligt op de keukentafel', 'de vergadering begint over vijf minuten', 'kun je me straks even bellen',
-    'het weer is vandaag erg zacht', 'de bus komt bijna altijd te laat', 'we wonen al drie jaar in deze straat'
+    'De kat ligt op de mat.', 'Het meisje loopt op straat.', 'Ik zit op de stoel.', 'De zee is heel rustig.',
+    'Mama eet soep met kaas.', 'Papa zit op het terras.', 'Het is zaterdag.', 'De taart is erg lekker.',
+    'De dokter is druk.', 'Oma leest graag.', 'De tram is te laat.', 'Ik eet graag pasta.', 'Zij typt elke dag.',
+    'Het is koud.', 'Ik zie de zee.', 'De kat slaapt op de sofa.', 'Het huis heeft drie kamers.', 'De tafel is rood.',
+    'De pizza is heet.', 'Ik ga met de fiets.', 'De jas is grijs.', 'Het idee is goed.', 'De straat is erg druk.',
+    'Ik ga graag op reis.', 'De muziek is luid.', 'Het feest is op zaterdag.', 'De les duurt kort.',
+    'De pyjama ligt op de stoel.', 'De appel is rijp.', 'De gitaar staat op zolder.', 'De lift is stuk.',
+    'Papa is dokter.', 'Oma is jarig.', 'Zij is lerares.', 'Het hotel is mooi.', 'De kapper heeft tijd.',
+    'Het is al laat.', 'Ik leer elke dag.', 'De toets is moeilijk.', 'Maar ik zet door.', 'De juf is lief.',
+    'De egel slaapt.', 'Het meisje typt rustig.', 'De koffie is heet.', 'De zomer is heet.', 'De herfst is grijs.',
+    'Er ligt ijs op de straat.', 'De kerk staat op de markt.', 'De muis zit op de kast.', 'Ik hou de deur op slot.',
+    'De soep is te heet.', 'Het is hoog tijd.', 'De pasta is klaar.', 'Ik loop door het park.', 'De lamp is stuk.',
+    'De taart is op.', 'Ik oefen elke dag een kwartier.', 'We gaan morgen naar de zee.',
+    'De trein vertrekt om negen uur.', 'Het regent al de hele week.', 'Zij leert blind typen met tien vingers.',
+    'De winkel is op zondag gesloten.', 'We eten vanavond pasta met groenten.',
+    'De kinderen spelen buiten in de tuin.', 'Hij fietst elke ochtend naar zijn werk.',
+    'Het boek ligt op de keukentafel.', 'De vergadering begint over vijf minuten.', 'Kun je me straks even bellen?',
+    'Het weer is vandaag erg zacht.', 'De bus komt bijna altijd te laat.', 'We wonen al drie jaar in deze straat.',
+    // module 4: gewone zinnen, korte zinnen, vragen en zinnen met eigennamen
+    'De keuken ruikt naar verse koffie en toast.', 'Mijn buurman maait elke zaterdag zijn gazon.',
+    'We hebben de woonkamer gisteren opnieuw geschilderd.', 'De wasmachine draait al sinds de vroege ochtend.',
+    'Ik zet de vuilniszak vanavond op het voetpad.', 'Het licht in de gang is weer stuk.',
+    'De kat slaapt de hele middag in de zetel.', 'Na het eten doen we samen de afwas.',
+    'Er staat een vaas met verse bloemen op tafel.', 'Ik hang de was buiten omdat de zon schijnt.',
+    'De verwarming staat sinds vorige week weer aan.', 'Onze nieuwe zetel past perfect in de woonkamer.',
+    'Mijn dochter ruimt haar kamer bijna nooit op.', 'In de kelder staan nog dozen van de verhuis.',
+    'De brievenbus zit vol met reclamefolders.', 'Het dak lekt bij elke zware regenbui.',
+    'We eten vanavond aan de grote tafel in de tuin.', 'Mijn vader herstelt zelf zijn oude fiets.',
+    'Het water in de waterkoker kookt al.', 'De vaatwasser is klaar en mag leeggemaakt worden.',
+    'Ik strijk de hemden op zondagavond.', 'We krijgen morgen een nieuwe keuken.',
+    'De hond wil elke ochtend vroeg naar buiten.', 'Ik vergeet altijd waar ik mijn sleutels leg.',
+    'Het pakje wordt morgen tussen negen en twaalf geleverd.', 'De postbode brengt de brieven rond de middag.',
+    'Mijn gsm ligt aan de lader naast het bed.', 'Ik geef de planten water voor ik vertrek.',
+    'Vergeet niet om het licht uit te doen.', 'De wind waait de was van de lijn.',
+    'De vergadering begint om negen uur stipt.', 'Mijn collega werkt twee dagen per week thuis.',
+    'Ik moet dit verslag voor vrijdag afwerken.', 'De printer op de tweede verdieping is weer kapot.',
+    'Na de lunch heb ik een gesprek met een klant.', 'Mijn baas stuurt zijn mails altijd heel laat.',
+    'Het nieuwe programma werkt sneller dan het oude.', 'Ik neem elke dag de trein naar kantoor.',
+    'De koffie op het werk is niet erg lekker.', 'We sluiten het project volgende maand af.',
+    'Mijn nieuwe bureau staat vlak bij het raam.', 'De klant wil het contract nog eens nalezen.',
+    'Ik schrijf elke ochtend eerst een lijstje met taken.', 'De stagiair leert snel en stelt goede vragen.',
+    'Op maandag is het altijd druk op kantoor.', 'Het team viert vrijdag het einde van het project.',
+    'Ik werk liever vroeg dan laat op de avond.', 'Mijn computer start vandaag erg traag op.',
+    'De directeur geeft morgen een korte toespraak.', 'Na het werk ga ik meteen naar huis.',
+    'Zijn nieuwe job bevalt hem heel goed.', 'Ik werk vandaag thuis omdat mijn auto stuk is.',
+    'Hij werkt al tien jaar bij hetzelfde bedrijf.', 'Mijn schoonzus werkt als boekhoudster in een groot bedrijf.',
+    'Ik maak een kopie van de factuur voor de boekhouding.',
+    'Het kantoor verhuist in november naar een nieuw gebouw.', 'Ik bewaar mijn wachtwoorden niet op een briefje.',
+    'Na een lange werkdag ben ik doodmoe.', 'De bakker op de hoek verkoopt heerlijk brood.',
+    'Ik koop vlees bij de beenhouwer in het dorp.', 'De supermarkt is op zondag tot de middag open.',
+    'Aan de kassa staat een lange rij.', 'Ik betaal liever met mijn kaart dan cash.',
+    'De solden beginnen volgende week in alle winkels.', 'Deze schoenen zijn te klein voor mij.',
+    'In de winkel ligt het fruit mooi uitgestald.', 'Ik vergat mijn boodschappentas in de auto.',
+    'De verkoper helpt een klant met een nieuwe gsm.', 'Op de markt koop ik verse groenten en kaas.',
+    'De prijs van koffie stijgt weer.', 'Ik zoek een warme jas voor de winter.',
+    'De apotheek sluit vandaag al om zes uur.', 'Ze ruilt de trui in voor een grotere maat.',
+    'De bakkerij is op maandag gesloten.', 'We kopen een cadeau voor de verjaardag van onze buurvrouw.',
+    'Het heeft de hele nacht hard geregend.', 'Morgen wordt het zonnig en vrij warm.',
+    'De wind blaast de bladeren van de bomen.', 'Er ligt een dun laagje sneeuw op het gras.',
+    'Na de bui verschijnt er een mooie regenboog.', 'In de zomer zitten we graag op het terras.',
+    'Het is zo mistig dat ik bijna niets zie.', 'De weerman voorspelt onweer voor vanavond.',
+    'Het is vandaag veel kouder dan gisteren.', 'Door de hitte blijven we liever binnen.',
+    'De zon komt net op boven de velden.', 'Neem zeker een paraplu mee als je vertrekt.',
+    'Het waait zo hard dat de fiets omvalt.', 'De sneeuw smelt snel in de ochtendzon.',
+    'Het vriest vannacht in het hele land.', 'De zee is vandaag wild en grijs.',
+    'De vogels zingen al vroeg in de ochtend.', 'We vertrekken vroeg om de file te vermijden.',
+    'De trein naar de kust heeft vertraging.', 'Ik heb mijn koffer gisteravond al ingepakt.',
+    'Het vliegtuig landt binnen twintig minuten.', 'In de vakantie huren we een klein huisje aan zee.',
+    'De bus naar het station rijdt elk kwartier.', 'We kamperen deze zomer aan een rustig meer.',
+    'Op de camping is er een groot zwembad.', 'Vergeet je identiteitskaart niet als je op reis gaat.',
+    'De taxi wacht al voor de deur van het hotel.', 'Ik reis het liefst met de trein.',
+    'Het hotel ligt vlak bij het strand.', 'Onderweg stoppen we even voor een kop koffie.',
+    'De reis duurde langer dan we hadden gedacht.', 'We wandelen elke avond op de dijk.',
+    'De veerboot vertrekt bij zonsopgang.', 'De taxi brengt ons naar de luchthaven.',
+    'We nemen een taxi omdat de laatste bus weg is.', 'We gaan dit weekend met de fiets naar zee.',
+    'Het hotel biedt extra kussens en dekens aan.', 'Vanavond eten we stoofvlees met frieten.',
+    'Ik maak elke ochtend een kom yoghurt met fruit.', 'Op vrijdag halen we frieten bij het frietkot.',
+    'De soep moet nog een kwartier zachtjes koken.', 'Mijn moeder bakt op zondag wafels voor iedereen.',
+    'Ik drink mijn koffie liefst zonder suiker.', 'De mosselen zijn dit jaar extra lekker.',
+    'Vanavond maak ik witloof met hesp en kaas.', 'Voor het ontbijt neem ik een boterham met kaas.',
+    'Ik kook de pasta tien minuten in water met zout.', 'Na het eten drinken we nog een kopje thee.',
+    'De chocolade smelt in de warme auto.', 'In het restaurant bestellen we een fles wijn.',
+    'Mijn broer kookt graag met verse kruiden.', 'De taart staat in de koelkast tot morgen.',
+    'Ik schil de aardappelen en snijd de uien.', 'Ik zoek een recept voor een snelle avondmaaltijd.',
+    'Het brood is nog warm van de oven.', 'De ober brengt ons de rekening aan tafel.',
+    'Mijn ouders zijn volgend jaar veertig jaar getrouwd.', 'Mijn zus woont met haar gezin in een rijhuis.',
+    'Op zondag eten we vaak bij mijn grootouders.', 'Onze zoon leert dit jaar fietsen zonder zijwieltjes.',
+    'Mijn grootvader vertelt graag over vroeger.', 'De kinderen spelen in de tuin met de hond.',
+    'Mijn tante belt elke week op woensdag.', 'We vieren de verjaardag van oma met taart.',
+    'Mijn neef studeert sinds september aan de universiteit.', 'Mijn schoonouders komen dit weekend logeren.',
+    'Onze dochter zit in het zesde leerjaar.', 'Mijn broer en ik lijken sterk op elkaar.',
+    'Op woensdagmiddag hebben de kinderen geen school.', 'Mijn buren geven zaterdag een feest in de tuin.',
+    'Ik speel elke dinsdag tennis met een collega.', 'Mijn vrouw zingt in het koor van ons dorp.',
+    'Op zaterdag ga ik vaak vissen aan de rivier.', 'Hij leert gitaar spelen met een online cursus.',
+    'We wandelen graag in het bos achter ons huis.', 'Ik lees elke avond een paar bladzijden voor het slapengaan.',
+    'Mijn vriend bouwt een kast voor zijn werkkamer.', 'Zij schildert landschappen met waterverf.',
+    'Ik fiets elke zondag een tocht van zestig kilometer.',
+    'De schaakclub speelt elke donderdagavond in de parochiezaal.', 'In de tuin kweek ik tomaten en sla.',
+    'Ze fotografeert graag vogels in de vroege ochtend.', 'We gaan vanavond naar een concert in de stad.',
+    'Mijn zoon zwemt drie keer per week.', 'Ik puzzel graag op een rustige zondagmiddag.',
+    'Hij verzamelt oude postzegels uit verre landen.', 'In de herfst zoeken we paddenstoelen in het bos.',
+    'Mijn buurvrouw geeft yogales in de sporthal.', 'Na de pauze speelt het orkest nog een stuk.',
+    'De coach geeft de spelers nog enkele tips.', 'Vanavond kijken we naar een film op tv.',
+    'De tram rijdt elke tien minuten door het centrum.', 'In het centrum is parkeren erg duur.',
+    'De parking onder het station is altijd vol.', 'Op het plein speelt een muzikant op zijn viool.',
+    'De straat is afgesloten wegens wegenwerken.', 'Het museum is elke eerste zondag gratis.',
+    'Op de markt hangt de geur van verse wafels.', 'De bibliotheek heeft een nieuwe leeszaal.',
+    'Langs de rivier is een mooi fietspad aangelegd.', 'De bus stopt vlak voor het stadhuis.',
+    'In de winkelstraat is het op zaterdag erg druk.', 'De oude brug wordt volgend jaar vernieuwd.',
+    'Na zonsondergang wordt het plein mooi verlicht.', 'Ik zet mijn fiets in de fietsenstalling aan het station.',
+    'De kermis staat deze week op het marktplein.', 'Het circus komt deze zomer naar het dorp.',
+    'Het vuurwerk boven de stad was prachtig.', 'Mijn examen begint morgen om half negen.',
+    'Ik typ deze tekst zonder naar de toetsen te kijken.', 'De cursus duurt tien weken en kost weinig.',
+    'Mijn vriendin werkt als verpleegster in een groot ziekenhuis.', 'De wekker loopt elke ochtend om zeven uur af.',
+    'We wachten al een kwartier op de bus.', 'Je kunt de code op je gsm ontvangen.',
+    'Er staat een luxe wagen voor het hotel.', 'Het examen was moeilijker dan ik dacht.',
+    'De conducteur controleert de tickets in de trein.', 'Voor de verbouwing vragen we drie offertes.',
+    'Mijn gsm valt telkens uit als hij koud wordt.', 'Het wordt tijd om de winterbanden te laten monteren.',
+    'De tuinman snoeit de hagen in het voorjaar.', 'Ik heb een afspraak bij de tandarts om vier uur.',
+    'Ik neem de lift naar de vijfde verdieping.', 'Mijn fiets heeft een lekke band.',
+    'Ik ga vanmiddag even bij de bank langs.', 'De zon schijnt.', 'Het waait hard.', 'Ik ben moe.',
+    'De koffie is klaar.', 'De bus is laat.', 'We gaan wandelen.', 'Het is koud buiten.', 'De winkel is dicht.',
+    'Ik kom zo.', 'De soep is lauw.', 'Hij slaapt nog.', 'Zij werkt vandaag thuis.', 'De trein vertrekt.',
+    'Het brood is op.', 'De hond blaft.', 'Ik heb honger.', 'We zijn er bijna.', 'De deur is open.',
+    'Het sneeuwt al.', 'De baby lacht.', 'Ik bel je straks.', 'De les begint.', 'Het is vrijdag.', 'De kat wil eten.',
+    'Mijn gsm is leeg.', 'Het is druk.', 'De tram stopt hier.', 'Ik zoek mijn sleutels.', 'Wij eten vroeg.',
+    'Het licht is uit.', 'De melk is zuur.', 'Ze leest een boek.', 'Ik typ zonder te kijken.',
+    'De vergadering is afgelast.', 'Het water kookt.', 'De parking is vol.', 'Ik neem de fiets.',
+    'De lift doet het niet.', 'We hebben tijd.', 'Het wordt donker.', 'De zee is kalm.', 'Ik drink thee.',
+    'De wafels zijn lekker.', 'Hij wint altijd.', 'Het concert is uitverkocht.', 'De taxi wacht.', 'Ik ben klaar.',
+    'De wind gaat liggen.', 'Het examen is voorbij.', 'De tuin is nat.', 'Zij komt morgen.', 'Het pakje is er.',
+    'Ik heb dorst.', 'De auto start niet.', 'Het is middag.', 'De winkel gaat open.', 'Wij wonen hier graag.',
+    'De vogels zingen.', 'Het frietkot is open.', 'Ik stofzuig de auto.', 'De printer werkt weer.',
+    'Het boek is spannend.', 'Ik wacht buiten.', 'Hij fietst naar school.', 'De markt is gezellig.',
+    'De wekker gaat af.', 'We blijven thuis.', 'De weg is glad.', 'Het is bijna weekend.', 'Ik oefen elke avond.',
+    'De cursus is nuttig.', 'De film begint.', 'Ze lacht hartelijk.', 'De kinderen spelen buiten.', 'De kraan lekt.',
+    'Ik ben te laat.', 'De rekening klopt.', 'We vertrekken nu.', 'De tafel is gedekt.', 'Het is mijn beurt.',
+    'De bakker is dicht.', 'De zomer is voorbij.', 'Ik heb het koud.', 'De taxi komt eraan.', 'Hij woont op kot.',
+    'De wasmachine piept.', 'Het vriest buiten.', 'Ik voel me beter.', 'We wachten op jou.', 'De boot vaart weg.',
+    'De oven is warm.', 'Het werk is af.', 'De straat is stil.', 'Ze zwemt elke ochtend.', 'Het regent zachtjes.',
+    'Mijn koffie is koud.', 'De bus is vol.', 'Het wordt een mooie dag.', 'Hoe laat vertrekt de trein?',
+    'Waar heb je je fiets gezet?', 'Wil je nog een tas koffie?', 'Heb je de sleutels van de auto gezien?',
+    'Wanneer begint de vergadering morgen?', 'Hoeveel kost een ticket naar de kust?',
+    'Kun je me morgen helpen met verhuizen?', 'Waarom is de winkel vandaag gesloten?', 'Wie kookt er vanavond?',
+    'Is de bakker op maandag open?', 'Waar is de dichtstbijzijnde apotheek?', 'Hoe gaat het met je moeder?',
+    'Heb je zin om mee te gaan wandelen?', 'Welke bus rijdt naar het ziekenhuis?', 'Mag ik even je pen lenen?',
+    'Wat eten we vanavond?', 'Hoe lang duurt de rit naar zee?', 'Heb je het verslag al afgewerkt?',
+    'Waar parkeer je meestal in de stad?', 'Zullen we zaterdag samen gaan fietsen?', 'Weet jij hoe laat het is?',
+    'Wat ga je doen in de vakantie?', 'Hoe oud is jullie jongste kind?', 'Waarom staat de verwarming zo hoog?',
+    'Kun je de deur even dichtdoen?', 'Wie heeft de laatste koekjes opgegeten?', 'Hoeveel uur werk je per week?',
+    'Is er nog melk in de koelkast?', 'Welke film wil je vanavond zien?', 'Waar kan ik hier een taxi nemen?',
+    'Hoe vaak oefen je per week?', 'Heb je een paraplu bij je?', 'Wanneer komt je zus op bezoek?',
+    'Zit er nog genoeg benzine in de tank?', 'Wat vind je van de nieuwe collega?', 'Hoe schrijf je dat woord?',
+    'Hoeveel woorden typ je per minuut?', 'Is het concert al uitverkocht?', 'Kom je morgen met de trein?',
+    'Wie brengt de kinderen naar school?', 'Hoe laat sluit de bibliotheek vandaag?', 'Waar vind ik de wc?',
+    'Welke dag past jou het best?', 'Heb je de mail van de klant gelezen?',
+    'Lien neemt elke ochtend de trein naar Gent.', 'Jonas woont al drie jaar in Leuven.',
+    'Marie werkt als verpleegster in een ziekenhuis in Hasselt.', 'Tom en Sofie gaan dit weekend naar de kust.',
+    'Op zondag fietst Wout naar Lier.', 'In Brugge is het in de zomer altijd druk.',
+    'De trein naar Oostende heeft vandaag vertraging.', 'Sofie studeert sinds september geneeskunde in Antwerpen.',
+    'Mijn broer Pieter woont met zijn gezin in Kortrijk.', 'Lotte koopt haar brood bij de bakker op de hoek.',
+    'Bart werkt al twintig jaar op een kantoor in Aalst.', 'Na het werk drinkt Koen een koffie met Griet.',
+    'Stijn rijdt elke dag met de auto naar Genk.', 'De markt in Tongeren is elke zondag erg druk.',
+    'Hanne en Arne trouwen volgende zomer.', 'Ruben speelt op zaterdag voetbal bij een club in Lokeren.',
+    'In Leuven fietsen veel studenten naar de les.', 'Nina leert sinds kort blind typen met tien vingers.',
+    'Lars en Emma wonen samen in een rijhuis.', 'Lucas zoekt een nieuwe job in Antwerpen.',
+    'Fien belt haar moeder elke avond na het eten.', 'Jens neemt de bus naar het station van Turnhout.',
+    'De haven van Zeebrugge is erg groot.', 'Eline wandelt elke ochtend met de hond langs de Leie.',
+    'Bram bestelt een pizza voor het hele team.', 'Ines werkt drie dagen per week in Brussel.',
+    'Mats en Femke spelen samen in een orkest.', 'Thomas koopt een tweedehandse fiets in Roeselare.',
+    'Charlotte geeft les in een school in Dendermonde.', 'Xavier maakt met zijn klas een uitstap naar Tienen.',
+    'Victor werkt als kok in een restaurant in Knokke.', 'Vincent belt zijn zus vanuit de trein naar Gent.',
+    'Wim verkoopt groenten op de markt in Diest.', 'Ward helpt zijn opa met de tuin.',
+    'Nele en Kato fietsen samen naar school.', 'De Schelde stroomt langs de kaaien van Antwerpen.',
+    'Jef verkoopt zijn oude auto aan een collega.', 'Mieke wacht aan het station van Mechelen.',
+    'Dirk en Hilde zijn dertig jaar getrouwd.', 'Katrien schrijft elke week een lange brief aan haar oma.',
+    'Geert herstelt computers in een winkel in Geel.', 'Veerle zwemt elke woensdag in het zwembad van Hasselt.',
+    'Op vrijdag eet Rik altijd frieten.', 'Yannick verhuist in maart naar Mol.',
+    'Bert gaat met de trein naar Parijs.', 'Seppe oefent elke dag op zijn gitaar.',
+    'Robbe studeert voor zijn examen in de bibliotheek.', 'Noor fotografeert vogels in de duinen bij Nieuwpoort.',
+    'Jasper werkt in een hotel aan de dijk in Blankenberge.', 'Lisa heeft een kot in Leuven.',
+    'Saar deelt een appartement met Febe.', 'Axel en Max spelen tennis op dinsdagavond.',
+    'Felix kookt vanavond stoofvlees voor zijn vrienden.', 'Alex rijdt elke ochtend met de tram door Antwerpen.',
+    'Lien en Jonas hebben een nieuwe keuken gekocht.', 'Tom werkt vandaag thuis omdat het sneeuwt.',
+    'Sofie neemt haar laptop mee naar Brugge.', 'Wout zoekt een rustig hotel in de Ardennen.',
+    'De kermis in Aalst trekt veel bezoekers.', 'In Kortrijk gaat Lotte op zaterdag naar de markt.',
+    'Pieter rijdt in de zomer met zijn camper naar Frankrijk.', 'Het station van Gent is vandaag erg druk.',
+    'Wout zet zijn auto op de parking bij het station.',
+    'Lien drinkt een warme chocolademelk op de markt van Brugge.', 'Koen verkoopt verse vis op de markt in Oostende.',
+    'De bus van Hasselt naar Genk is vol.', 'Griet stuurt Tom een bericht over de vergadering.',
+    'Joke typt elke dag een kwartier zonder te kijken.', 'Marie wandelt op zondag door de Kempen.',
+    'Jonas bakt wafels voor de verjaardag van zijn zus.'
   ];
 
   var BASELINE_TEXT = 'Vandaag begin ik aan een typcursus. Elke dag oefen ik een kwartier, en stap voor stap leer ik blind typen met tien vingers.';
@@ -411,7 +663,6 @@ p { margin: 0 0 12px; max-width: 68ch; }
      als er later lessen bijkomen.
      ========================================================= */
   var PHASES = { 1: 'Toetsen leren', 2: 'Aanpassing', 3: 'Snelheid', 4: 'Vlotheid', 5: 'Examen' };
-  var PLANNED_TOTAL = 126;
 
   function L(id, title, type, opts) {
     var l = { id: id, title: title, type: type, add: '', focus: '', help: 'full', intro: [] };
@@ -525,7 +776,45 @@ p { margin: 0 0 12px; max-width: 68ch; }
         'Dit is de moduletoets van de bovenrij. Haal minstens 95% nauwkeurigheid om de module af te ronden.'
       ] })
     ] },
-    { id: 'm4', nr: 4, phase: 1, title: 'Onderrij', planned: 11, desc: 'w x, c v, b n', lessons: [] },
+    { id: 'm4', nr: 4, phase: 1, title: 'Onderrij', planned: 11, desc: 'w x, c v, b n', lessons: [
+      L('m4-wx', 'w en x', 'new', { add: 'wx', intro: [
+        'De w typ je met je linkerpink: strek hem vanaf de q schuin naar beneden. De x typ je met je linkerringvinger, schuin onder de s.',
+        'Keer na elke aanslag terug naar de thuisrij. Je wijsvingers blijven op de streepjes van f en j.'
+      ] }),
+      L('m4-wx-oef', 'w en x oefenen', 'practice', { focus: 'wx', help: 'hint', intro: [
+        'Je oefent de w en de x, los en in woorden.'
+      ] }),
+      L('m4-cv', 'c en v', 'new', { add: 'cv', intro: [
+        'De c typ je met je linkermiddelvinger, schuin onder de d. De v typ je met je linkerwijsvinger, schuin onder de f.',
+        'Alleen de vinger die typt, beweegt naar beneden. De andere vingers blijven op de thuisrij liggen.'
+      ] }),
+      L('m4-cv-oef', 'c en v oefenen', 'practice', { focus: 'cv', help: 'hint', intro: [
+        'Je oefent de c en de v, samen met de letters die je al kent.'
+      ] }),
+      L('m4-bn', 'b en n', 'new', { add: 'bn', intro: [
+        'De b typ je ook met je linkerwijsvinger: strek hem vanaf de f schuin naar rechts beneden, naast de v. De n typ je met je rechterwijsvinger, schuin onder de j.',
+        'Met de b en de n ken je alle letters van het alfabet.'
+      ] }),
+      L('m4-bn-oef', 'b en n oefenen', 'practice', { focus: 'bn', help: 'hint', intro: [
+        'Je oefent de b en de n. De n komt in het Nederlands heel vaak voor.'
+      ] }),
+      L('m4-woorden', 'Woorden met de onderrij', 'words', { focus: 'wxcvbn', help: 'hint', intro: [
+        'Je kent nu alle letters. In deze les typ je gewone woorden, met extra aandacht voor de onderrij.'
+      ] }),
+      L('m4-zinnen', 'Zinnetjes met alle letters', 'sentences', { focus: 'wxcvbn', help: 'hint', intro: [
+        'Je typt korte zinnen met alle letters van het alfabet. Hoofdletters en leestekens komen later, dus alles staat nog in kleine letters.'
+      ] }),
+      L('m4-herh', 'Herhaling onderrij', 'review', { focus: 'wxcvbn', help: 'hint', intro: [
+        'Een herhaling van de onderrij, samen met de thuisrij en de bovenrij. Je zwakste toetsen komen vaker terug.'
+      ] }),
+      L('m4-zwak', 'Je zwakste toetsen', 'weak', { help: 'hint', intro: [
+        'Deze les is op maat: de toetsen waarop je tot nu toe de meeste fouten maakte, komen vaker terug.'
+      ] }),
+      L('m4-toets', 'Moduletoets onderrij', 'moduletest', { focus: 'wxcvbn', help: 'hint', intro: [
+        'Dit is de moduletoets van de onderrij. Haal minstens 95% nauwkeurigheid om de module af te ronden.',
+        'Neem je tijd: snelheid telt hier niet mee.'
+      ] })
+    ] },
     { id: 'm5', nr: 5, phase: 1, title: 'Hoofdletters', planned: 8, desc: 'Linker- en rechter-Shift', lessons: [] },
     { id: 'm6', nr: 6, phase: 1, title: 'Accenten', planned: 10, desc: '\u00e9 \u00e8, \u00e7 \u00e0, \u00f9 en ^ (\u00ea), \u00a8 (\u00eb \u00ef)', lessons: [] },
     { id: 'm7', nr: 7, phase: 1, title: 'Leestekens', planned: 12, desc: ', ; ! : " \' ( ) - ? .', lessons: [] },
@@ -537,6 +826,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
     { id: 'm13', nr: 13, phase: 5, title: 'Examen', planned: 3, desc: 'Twee proefexamens en het examen met certificaat', lessons: [] }
   ];
 
+  var PLANNED_TOTAL = MODULES.reduce(function (a, m) { return a + m.planned; }, 0);
   var ALL_LESSONS = [];
   var KNOWN = {};
   (function derive() {
@@ -739,7 +1029,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
     var s = 1;
     for (var i = 0; i < w.length; i++) {
       var ch = w.charAt(i);
-      if (focusSet && focusSet.has(ch)) s += 3;
+      if (focusSet && focusSet.has(ch) && w.indexOf(ch) === i) s += 3;
       s += ((c.weights.get(ch) || 1) - 1) * 0.5;
     }
     return s;
@@ -774,13 +1064,29 @@ p { margin: 0 0 12px; max-width: 68ch; }
     if (opts.maxLen) pool = pool.filter(function (w) { return w.length <= opts.maxLen; });
     if (pool.length < 6) return null;
     var fs = focus && focus.length ? new Set(focus) : null;
-    return fillTo(target, function () { return weightedPick(pool, function (w) { return wordWeight(c, w, fs); }, c.r); });
+    // Om het andere woord een woord met de volgende focusletter, zodat elke focusletter aan bod komt.
+    var withF = fs ? focus.map(function (f) { return pool.filter(function (w) { return w.indexOf(f) >= 0; }); })
+      .filter(function (p) { return p.length > 0; }) : [];
+    var k = 0;
+    return fillTo(target, function () {
+      if (withF.length && k++ % 2 === 0) return pick(withF[(k >> 1) % withF.length], c.r);
+      return weightedPick(pool, function (w) { return wordWeight(c, w, fs); }, c.r);
+    });
+  }
+  function sentenceForm(s, knownSet) {
+    var t = s;
+    if (t.charAt(t.length - 1) === '.' && !knownSet.has('.')) t = t.slice(0, -1);
+    var f = t.charAt(0);
+    if (f !== f.toLowerCase() && !knownSet.has(f)) {
+      // Alleen een gewoon woord vooraan krijgt een kleine letter, een eigennaam niet.
+      if (!WORD_SET.has(t.split(' ')[0].toLowerCase())) return null;
+      t = f.toLowerCase() + t.slice(1);
+    }
+    for (var i = 0; i < t.length; i++) { var ch = t.charAt(i); if (ch !== ' ' && !knownSet.has(ch)) return null; }
+    return t;
   }
   function sentencesText(c, target) {
-    var pool = SENTENCES.filter(function (s) {
-      for (var i = 0; i < s.length; i++) { var ch = s.charAt(i); if (ch !== ' ' && !c.knownSet.has(ch)) return false; }
-      return true;
-    });
+    var pool = SENTENCES.map(function (s) { return sentenceForm(s, c.knownSet); }).filter(Boolean);
     if (pool.length < 4) return null;
     return fillTo(target, function () { return pick(pool, c.r); });
   }
@@ -1030,8 +1336,12 @@ p { margin: 0 0 12px; max-width: 68ch; }
   }
 
   /* ----- Lessen (startpagina) ----- */
+  function builtModules() { return MODULES.filter(function (m) { return m.lessons.length > 0; }); }
   function renderHome() {
     var nl = nextLesson();
+    var built = builtModules();
+    var lastBuilt = built[built.length - 1];
+    var allBuilt = built.length === MODULES.length;
     var html = noticeHTML();
     if (nl) {
       var nk = newKeysOf(nl);
@@ -1041,15 +1351,15 @@ p { margin: 0 0 12px; max-width: 68ch; }
           '<h1>Les ' + esc(nl.nr) + ': ' + esc(nl.title) + '</h1>' +
           '<p>' + esc(nl.intro[0] || '') + '</p>' +
           '<div class="actions"><a class="btn" href="#/les/' + esc(nl.id) + '" data-primary>Start les ' + esc(nl.nr) + '</a></div>' +
-          '<p class="overall">' + passedCount() + ' van ' + PLANNED_TOTAL + ' lessen geslaagd. In deze versie zijn modules 1 tot en met 3 beschikbaar.</p>' +
+          '<p class="overall">' + passedCount() + ' van ' + PLANNED_TOTAL + ' lessen geslaagd.' + (allBuilt ? '' : ' In deze versie zijn modules 1 tot en met ' + lastBuilt.nr + ' beschikbaar.') + '</p>' +
         '</div>' +
         '<div>' + kbHTML({ tinted: true, compact: true, newKeys: nk }) + '</div>' +
       '</section>';
     } else {
       html += '<section class="hero"><div>' +
         '<p class="lead">Alle beschikbare lessen gedaan</p>' +
-        '<h1>Modules 1 tot en met 3 zijn afgerond</h1>' +
-        '<p>De volgende modules komen in een nieuwe versie. Tot dan kan je je zwakste toetsen blijven oefenen.</p>' +
+        '<h1>' + (allBuilt ? 'Je hebt alle lessen afgerond' : 'Modules 1 tot en met ' + lastBuilt.nr + ' zijn afgerond') + '</h1>' +
+        '<p>' + (allBuilt ? 'Je kan je zwakste toetsen blijven oefenen om vlot en nauwkeurig te blijven typen.' : 'De volgende modules komen in een nieuwe versie. Tot dan kan je je zwakste toetsen blijven oefenen.') + '</p>' +
         '<div class="actions"><a class="btn" href="#/oefenen" data-primary>Vrij oefenen</a></div>' +
         '</div><div>' + kbHTML({ tinted: true, compact: true }) + '</div></section>';
     }
@@ -1141,7 +1451,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
     var help = helpMode(FLOW.lesson.help);
     var head = FLOW.kind === 'lesson' ? lessonHeader() : '<div class="lesson-head"><h1>Vrij oefenen</h1></div>';
     // In een les toont de stappenbalk al welke oefening bezig is; bij vrij oefenen tonen we de naam.
-    app.innerHTML = head + '<section class="run" id="run">' +
+    app.innerHTML = head + '<section class="run' + (help === 'none' ? ' no-kb' : '') + '" id="run">' +
       (FLOW.kind === 'lesson' ? '' : '<div class="run-top"><h2>' + esc(ex.name) + '</h2></div>') +
       '<div class="strip" id="strip" tabindex="-1" aria-label="Tekst om te typen">' + stripHTML(text) + '</div>' +
       '<div class="stats"><span><b id="st-apm">\u2013</b>aanslagen per minuut</span><span><b id="st-acc">\u2013</b>nauwkeurig</span><span><b id="st-time">0:00</b>tijd</span>' +
@@ -1178,9 +1488,12 @@ p { margin: 0 0 12px; max-width: 68ch; }
     var span = R.spans[R.pos];
     if (span) {
       span.classList.add('cur');
+      // De regel waarop je typt, staat bovenaan in de strook; de volgende regel staat eronder.
       var strip = document.getElementById('strip');
-      if (strip && span.offsetTop + span.offsetHeight > strip.scrollTop + strip.clientHeight - 10) {
-        strip.scrollTop = span.offsetTop - 20;
+      if (strip && span.offsetTop !== R.lineTop) {
+        R.lineTop = span.offsetTop;
+        if (R.firstTop == null) R.firstTop = R.spans[0].offsetTop;
+        strip.scrollTop = Math.max(0, span.offsetTop - R.firstTop);
       }
     }
     updateHint(false);
