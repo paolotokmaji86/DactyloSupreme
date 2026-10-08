@@ -273,7 +273,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
 (function () {
   'use strict';
 
-  var APP_VERSION = '0.1.0';
+  var APP_VERSION = '0.1.1';
   var STORAGE_KEY = 'dactylo-be-azerty';
   var SCHEMA = 1;
 
@@ -1007,9 +1007,10 @@ p { margin: 0 0 12px; max-width: 68ch; }
 
   function lessonRecord(l) { return S.lessons[l.id] || null; }
   function isPassed(l) { var r = lessonRecord(l); return !!(r && r.passed); }
+  // Een geslaagde les blijft open, ook als er later een les vóór komt die nog niet gedaan is.
   function isUnlocked(l) {
     var i = ALL_LESSONS.indexOf(l);
-    return i === 0 || (i > 0 && isPassed(ALL_LESSONS[i - 1]));
+    return i === 0 || isPassed(l) || (i > 0 && isPassed(ALL_LESSONS[i - 1]));
   }
   function nextLesson() {
     for (var i = 0; i < ALL_LESSONS.length; i++) if (!isPassed(ALL_LESSONS[i])) return ALL_LESSONS[i];
