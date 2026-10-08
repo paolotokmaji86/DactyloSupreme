@@ -59,19 +59,26 @@ Belangrijkste onderdelen, in de volgorde van het script:
   `derive()` zet alle lessen in één rij `ALL_LESSONS` (een les gaat open als de vorige of de
   les zelf geslaagd is),
   geeft ze een `nr` volgens hun positie (bv. "2.4", alleen weergave) en vult `KNOWN[lesId]` =
-  de letters die gekend zijn tot en met die les (afgeleid uit `add`).
+  alle tekens die gekend zijn tot en met die les (afgeleid uit `add`: letters, hoofdletters,
+  accenten, leestekens, cijfers, symbolen, `\n`, `\t`). `__dactylo.allowed(id)` = `KNOWN` plus
+  de spatie; de test gebruikt die functie.
 - Opslag: `defaultState()`, `migrate()`, `load()`, `save()`; zie "Opgeslagen gegevens".
-- Oefenteksten: `makeCtx`, `drillPieces`, `comboPiece`, `wordsText`, `sentencesText`,
-  `mixedText`, `warmupText`. `planFor(lesson, known)` bepaalt de oefeningen per lestype:
-  `intro`, `baseline`, `new`, `practice`, `words`, `sentences`, `review`, `weak`,
-  `moduletest`, `free`. Teksten worden gemaakt met een seeded RNG (`mulberry32`).
+- Oefenteksten: `planFor(lesson, known)` bepaalt de oefeningen per lestype (`intro`,
+  `baseline`, `new`, `practice`, `words`, `sentences`, `review`, `weak`, `moduletest`, `free`);
+  een les met `src` (bv. `'names'`) krijgt `itemsPlan()` met een bron uit `SOURCES`. Teksten
+  worden gemaakt met een seeded RNG (`mulberry32`) via `makeCtx()`. Kleine letters (ook met
+  accent) oefen je met `drillPieces`/`comboPiece` en woorden; andere tekens komen in korte
+  stukjes uit `drillPiece()` (los) of `pieceWith()` (natuurlijk: een naam, `woord,`, een zin).
+  `drillText()` zet via `coverFill()` elke nieuwe toets zeker in de oefening "Nieuwe toetsen"
+  (de test controleert dat). `poolsFor(known)` cachet per gekende set de bruikbare woorden,
+  namen (`NAMES`) en zinnen.
 - Typen: `keydown` op `document` roept `typeChar(e.key, clockNow())` op. De app vergelijkt het
   binnenkomende teken (`event.key`) met het verwachte teken, dus het werkt op elke
   toetsenbordindeling. Een pauze tussen twee aanslagen telt maximaal `MAX_GAP` (5 s) mee.
 - Statistieken per teken in `S.keys` (`h` = juist, `e` = fout), geteld op het verwachte teken,
   zonder spatie en zonder beginmeting. Zwakke toetsen komen vaker terug via `keyWeights()` en
   `weakestKeys()`.
-- Testtoegang: `window.__dactylo`. `state()`, `run()`, `flow()` en `layout()` zijn functies
+- Testtoegang: `window.__dactylo` (ook `allowed(id)` en `names`). `state()`, `run()`, `flow()` en `layout()` zijn functies
   omdat die variabelen opnieuw toegewezen worden; `importJSON(tekst, true)` slaat de
   bevestiging over.
 
@@ -103,6 +110,11 @@ verlaten wordt, begint opnieuw bij de intro.
   vaste 95. Een nieuw lestype heeft een `case` in `planFor()` nodig.
 - `wordsText()` en `sentencesText()` geven `null` als er minder dan 6 woorden of 4 zinnen
   bruikbaar zijn; de plannen vallen dan met `||` terug op lettercombinaties.
+- Woorden met een hoofdletter (`startingWith()`/`capWord()`): een ij vooraan wordt IJ (IJs), en
+  dagen en maanden (`CALENDAR`) krijgen geen hoofdletter. Een slottoets met een focus zonder
+  kleine letters (hoofdletters, leestekens, cijfers, tekens) bevat zeker een paar focusstukjes;
+  de test eist gemiddeld minstens 5 focustekens per 100 tekens en minstens 3 per slottoets.
+  Zwakke focustekens worden vaker gekozen (`pickFocus()`).
 - De seed van een oefening is `FLOW.seed + i * 7919 + FLOW.attempt * 104729`. Elke knop om
   opnieuw te beginnen verhoogt `FLOW.attempt`, zodat er een nieuwe tekst komt.
 - `startExercise()` voegt alle witruimte samen tot één spatie, en `stripHTML()` maakt precies
@@ -180,7 +192,7 @@ verlaten wordt, begint opnieuw bij de intro.
 | 2 Thuisrij | 1 | s d f j k l, q m, g h | 10 | klaar |
 | 3 Bovenrij | 1 | a p, z o, e r u i, t y | 15 | klaar |
 | 4 Onderrij | 1 | w x, c v, b n | 11 | klaar |
-| 5 Hoofdletters | 1 | Linker- en rechter-Shift | 8 | te bouwen |
+| 5 Hoofdletters | 1 | Linker- en rechter-Shift | 8 | klaar |
 | 6 Accenten | 1 | é è, ç à, ù en ^ (ê), ¨ (ë ï ö ü) | 10 | te bouwen |
 | 7 Leestekens | 1 | , ; ! : " ' ( ) - . ? | 12 | te bouwen |
 | 8 Cijfers | 1 | 1 tot 0 met Shift, datums, bedragen, nummers | 8 | te bouwen |
@@ -279,12 +291,11 @@ Modules 12 en 13: `none`. Via Instellingen kan de gebruiker de hulp altijd zelf 
 
 1. **Geslaagde lessen blijven open.** Klaar in 0.1.1: `isUnlocked(l)` geeft ook `true` als `l`
    zelf al geslaagd is, zodat gedane lessen open blijven als er ooit een les tussenkomt.
-2. **Toegelaten tekens per les** (vanaf module 5). `KNOWN` bevat nu enkel letters. Breid dat uit
-   naar alle tekens (hoofdletters, accenten, leestekens, cijfers, `\n`) en voeg `allowed(id)`
-   toe aan `window.__dactylo`: een array met de toegelaten tekens van die les, inclusief de
-   spatie. De test gebruikt die functie automatisch zodra ze bestaat.
+2. **Toegelaten tekens per les.** Klaar in 0.3.0: `KNOWN` bevat alle tekens uit `add`, en
+   `window.__dactylo.allowed(id)` geeft de toegelaten tekens van een les, inclusief de spatie.
 3. **Hoofdletters en leestekens in teksten** (modules 5 en 7). Gebruik ze nooit vóór de les
-   waarin ze aangeleerd worden. Eigennamen met een hoofdletter.
+   waarin ze aangeleerd worden. Eigennamen met een hoofdletter. Hoofdletters zijn klaar in 0.3.0
+   (`sentenceForm()`, `NAMES`, `pieceWith()`); leestekens volgen in module 7.
 4. **Dode toetsen** (module 6). Bij ^ en ¨ sturen browsers op macOS vaak compositie-events, en
    de keydown van de afsluitende letter kan `isComposing = true` hebben. De huidige handler
    slaat zulke events over, waardoor ê en ë nooit zouden binnenkomen. Vang tekens daarom op via

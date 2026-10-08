@@ -187,6 +187,7 @@ def main():
                 if (t.length < 30) problems.push(l.id + ' #' + i + ' te kort (' + t.length + ')');
                 if (t.length > 2500) problems.push(l.id + ' #' + i + ' te lang (' + t.length + ')');
                 for (const ch of t) if (!allowed.has(ch)) { problems.push(l.id + ' #' + i + ' bevat ' + JSON.stringify(ch)); break; }
+                if (/(^|\s)Ij[a-z]/.test(t)) problems.push(l.id + ' #' + i + ' schrijft Ij in plaats van IJ');
                 if (l.type === 'new' && ex.name === 'Nieuwe toetsen')
                   for (const k of (l.add || '')) if (k !== ' ' && !t.includes(k)) problems.push(l.id + ' mist nieuwe toets ' + k);
               });
@@ -196,6 +197,31 @@ def main():
         }""")
         check(gen["n"] == 0, f"{gen['count']} oefenteksten gecontroleerd, {gen['n']} problemen {gen['sample']}")
 
+        # 3a. Slottoetsen oefenen echt de nieuwe tekens: bij lessen die hoofdletters, leestekens,
+        # cijfers of tekens oefenen (geen kleine letters in de focus) gemiddeld minstens 5 focustekens
+        # per 100 tekens, en elke slottoets minstens 3.
+        dens = page.evaluate("""() => {
+          const d = window.__dactylo, low = [], out = [];
+          for (const l of d.lessons) {
+            const f = (l.add || l.focus || '');
+            if (!f || l.src || !['new', 'practice', 'review', 'moduletest'].includes(l.type)) continue;
+            if ([...f].some(ch => /[a-zéèçàùêâôëïöü]/.test(ch))) continue;
+            const fs = new Set(f), plan = d.planFor(l), ex = plan[plan.length - 1];
+            let sum = 0, len = 0, min = 1e9;
+            for (let seed = 1; seed <= 100; seed++) {
+              const t = ex.make(d.makeCtx(l, seed * 31 + plan.length - 1));
+              const n = [...t].filter(ch => fs.has(ch)).length;
+              sum += n; len += t.length; min = Math.min(min, n);
+            }
+            const per100 = 100 * sum / len, need = 5;
+            low.push([l.id, Math.round(per100 * 10) / 10]);
+            if (per100 < need || min < 3) out.push(l.id + ' ' + per100.toFixed(1) + '/100, min ' + min);
+          }
+          low.sort((a, b) => a[1] - b[1]);
+          return { out, lowest: low.slice(0, 3) };
+        }""")
+        check(not dens["out"], f"slottoetsen oefenen de nieuwe tekens (laagste: {dens['lowest']}) {dens['out'][:4]}")
+
         # 3b. Zinnenlessen tonen echte zinnen, geen terugval op losse woorden en lettercombinaties
         no_sent = page.evaluate("""() => {
           const d = window.__dactylo, out = [];
@@ -204,9 +230,14 @@ def main():
           for (const l of d.lessons.filter(l => l.type === 'sentences')) {
             const ex = d.planFor(l).find(e => e.name === 'Zinnetjes' || e.name === 'Korte zinnen');
             if (!ex) continue;
+            // Kent de les hoofdletters, dan moet een zin in haar echte vorm voorkomen (met hoofdletter).
+            const ok = new Set(d.allowed(l.id));
+            const forms = d.sentences.map(s => ok.has('.') || !s.endsWith('.') ? s : s.slice(0, -1))
+              .filter(s => s.split(' ').length >= 3 && [...s].every(ch => ok.has(ch)));
             for (let seed = 1; seed <= 5; seed++) {
-              const t = norm(ex.make(d.makeCtx(l, seed)));
-              if (!all.some(s => t.includes(s))) { out.push(l.id + ' #' + seed); break; }
+              const raw = ex.make(d.makeCtx(l, seed)).replace(/ +/g, ' ').trim();
+              const good = forms.length ? forms.some(s => raw.includes(s)) : all.some(s => norm(raw).includes(s));
+              if (!good) { out.push(l.id + ' #' + seed); break; }
             }
           }
           return out;
@@ -236,6 +267,40 @@ def main():
             if l["id"] == "m1-beginmeting":
                 base = page.evaluate("() => window.__dactylo.state().baseline")
                 check(base is not None and base["acc"] == 100, "beginmeting bewaard")
+
+        # 4a. Hoofdletters: de intro toont de juiste Shift als nieuwe toets, de hint toont de letter
+        # en de Shift van de andere hand, en met Caps Lock aan telt een aanslag niet.
+        ids = [l["id"] for l in lessons]
+        for lid, shift, side in (("m5-shift-links", "k_lshift", "linker"), ("m5-shift-rechts", "k_rshift", "rechter")):
+            if lid not in ids:
+                continue
+            other = "k_rshift" if shift == "k_lshift" else "k_lshift"
+            page.goto(URL + "#/les/" + lid)
+            page.wait_for_selector("[data-act=start]")
+            isnew = page.evaluate("() => Array.from(document.querySelectorAll('.key.is-new')).map(k => k.dataset.k)")
+            check(shift in isnew and other not in isnew, f"{lid}: de intro toont de {side}-Shift als nieuwe toets")
+            page.keyboard.press("Enter")
+            page.wait_for_selector("#strip")
+            typ(run_text())
+            page.wait_for_selector(".result")
+            page.keyboard.press("Enter")
+            page.wait_for_selector("#strip")
+            text = run_text()
+            cap = next(i for i, ch in enumerate(text) if ch.isupper())
+            typ(text[:cap])
+            hint = page.evaluate("""() => ({ keys: Array.from(document.querySelectorAll('.key.is-next')).map(k => k.dataset.k).sort(),
+              label: document.getElementById('finger-label').textContent })""")
+            check(hint["keys"] == sorted(["k_" + text[cap].lower(), shift]) and f"met de {side}-Shift" in hint["label"],
+                  f"{lid}: de hint voor {text[cap]} toont de letter en de {side}-Shift ({hint['label']})")
+            before = page.evaluate("() => window.__dactylo.run().pos")
+            page.evaluate("""(ch) => {
+              document.dispatchEvent(new KeyboardEvent('keydown', { key: ch, bubbles: true, cancelable: true, modifierCapsLock: true }));
+              const f = document.getElementById('catch');
+              if (f) f.dispatchEvent(new InputEvent('input', { inputType: 'insertText', data: ch, bubbles: true }));
+            }""", text[cap])
+            after = page.evaluate("() => [window.__dactylo.run().pos, !document.getElementById('caps').hidden]")
+            check(after == [before, True], f"{lid}: met Caps Lock aan telt een aanslag niet en verschijnt de melding ({after})")
+            page.keyboard.press("Escape")
 
         # 5. Toetsstatistieken bevatten enkel tekens die in de lessen voorkomen (beginmeting telt niet mee)
         last_id = lessons[-1]["id"]
@@ -291,6 +356,17 @@ def main():
             typ(run_text()[:4], 30)
             bottom = page.evaluate("() => { const el = document.getElementById('finger-label'); return el ? el.getBoundingClientRect().bottom : 0; }")
             check(0 < bottom <= 790, f"typscherm past op een MacBook bij {lid}, oefening {stop + 1} (onderkant op {bottom:.0f}px van 790)")
+            if idx != 0:
+                # Na een paar regels schuift het venster mee: geen teken mag half zichtbaar zijn.
+                typ(run_text()[4:len(run_text()) // 2])
+                half = page.evaluate("""() => {
+                  const box = document.getElementById('strip-lines').getBoundingClientRect();
+                  return Array.from(document.querySelectorAll('#strip-lines .ch')).filter(el => {
+                    const r = el.getBoundingClientRect();
+                    return r.height && r.top < box.bottom && r.bottom > box.top && (r.top < box.top - 0.5 || r.bottom > box.bottom + 0.5);
+                  }).length;
+                }""")
+                check(half == 0, f"geen half zichtbare regels in het typvenster bij {lid} ({half} tekens half zichtbaar)")
             page.screenshot(path=f"{SHOTS}/typing_macbook.png" if idx == 0 else f"{SHOTS}/typing_macbook_{lid}.png")
             page.keyboard.press("Escape")
         page.set_viewport_size({"width": 1280, "height": 900})

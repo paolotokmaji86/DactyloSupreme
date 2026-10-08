@@ -201,8 +201,9 @@ p { margin: 0 0 12px; max-width: 68ch; }
 }
 /* Tijdens een oefening toont de strook twee regels, zodat het toetsenbord en de handen op een
    MacBook-scherm passen. Zonder toetsenbord op het scherm is er plaats voor meer regels. */
-.running .run .strip { padding-bottom: 0; min-height: 0; height: calc(3.6em + 22px); overflow: hidden; }
-.running .run.no-kb .strip { height: auto; max-height: calc(9em + 22px); }
+.strip-lines { position: relative; }
+.running .run .strip-lines { height: 3.6em; overflow: hidden; }
+.running .run.no-kb .strip-lines { height: auto; max-height: 9em; }
 .strip .w { white-space: nowrap; }
 .ch { border-radius: 3px; }
 .ch.done { color: var(--muted); }
@@ -277,7 +278,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
 (function () {
   'use strict';
 
-  var APP_VERSION = '0.2.0';
+  var APP_VERSION = '0.3.0';
   var STORAGE_KEY = 'dactylo-be-azerty';
   var SCHEMA = 1;
 
@@ -510,9 +511,9 @@ p { margin: 0 0 12px; max-width: 68ch; }
     'Het kantoor verhuist in november naar een nieuw gebouw.', 'Ik bewaar mijn wachtwoorden niet op een briefje.',
     'Na een lange werkdag ben ik doodmoe.', 'De bakker op de hoek verkoopt heerlijk brood.',
     'Ik koop vlees bij de beenhouwer in het dorp.', 'De supermarkt is op zondag tot de middag open.',
-    'Aan de kassa staat een lange rij.', 'Ik betaal liever met mijn kaart dan cash.',
+    'Aan de kassa staat een lange rij.', 'Ik betaal liever met mijn bankkaart dan contant.',
     'De solden beginnen volgende week in alle winkels.', 'Deze schoenen zijn te klein voor mij.',
-    'In de winkel ligt het fruit mooi uitgestald.', 'Ik vergat mijn boodschappentas in de auto.',
+    'In de winkel ligt het fruit mooi uitgestald.', 'Ik liet mijn boodschappentas in de auto liggen.',
     'De verkoper helpt een klant met een nieuwe gsm.', 'Op de markt koop ik verse groenten en kaas.',
     'De prijs van koffie stijgt weer.', 'Ik zoek een warme jas voor de winter.',
     'De apotheek sluit vandaag al om zes uur.', 'Ze ruilt de trui in voor een grotere maat.',
@@ -548,7 +549,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
     'Mijn ouders zijn volgend jaar veertig jaar getrouwd.', 'Mijn zus woont met haar gezin in een rijhuis.',
     'Op zondag eten we vaak bij mijn grootouders.', 'Onze zoon leert dit jaar fietsen zonder zijwieltjes.',
     'Mijn grootvader vertelt graag over vroeger.', 'De kinderen spelen in de tuin met de hond.',
-    'Mijn tante belt elke week op woensdag.', 'We vieren de verjaardag van oma met taart.',
+    'Mijn tante belt ons elke woensdag op.', 'We vieren de verjaardag van oma met taart.',
     'Mijn neef studeert sinds september aan de universiteit.', 'Mijn schoonouders komen dit weekend logeren.',
     'Onze dochter zit in het zesde leerjaar.', 'Mijn broer en ik lijken sterk op elkaar.',
     'Op woensdagmiddag hebben de kinderen geen school.', 'Mijn buren geven zaterdag een feest in de tuin.',
@@ -565,7 +566,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
     'De coach geeft de spelers nog enkele tips.', 'Vanavond kijken we naar een film op tv.',
     'De tram rijdt elke tien minuten door het centrum.', 'In het centrum is parkeren erg duur.',
     'De parking onder het station is altijd vol.', 'Op het plein speelt een muzikant op zijn viool.',
-    'De straat is afgesloten wegens wegenwerken.', 'Het museum is elke eerste zondag gratis.',
+    'De straat is afgesloten wegens wegenwerken.', 'Het museum is elke eerste zondag van de maand gratis.',
     'Op de markt hangt de geur van verse wafels.', 'De bibliotheek heeft een nieuwe leeszaal.',
     'Langs de rivier is een mooi fietspad aangelegd.', 'De bus stopt vlak voor het stadhuis.',
     'In de winkelstraat is het op zaterdag erg druk.', 'De oude brug wordt volgend jaar vernieuwd.',
@@ -638,7 +639,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
     'Dirk en Hilde zijn dertig jaar getrouwd.', 'Katrien schrijft elke week een lange brief aan haar oma.',
     'Geert herstelt computers in een winkel in Geel.', 'Veerle zwemt elke woensdag in het zwembad van Hasselt.',
     'Op vrijdag eet Rik altijd frieten.', 'Yannick verhuist in maart naar Mol.',
-    'Bert gaat met de trein naar Parijs.', 'Seppe oefent elke dag op zijn gitaar.',
+    'Bert gaat met de trein naar Luik.', 'Seppe oefent elke dag op zijn gitaar.',
     'Robbe studeert voor zijn examen in de bibliotheek.', 'Noor fotografeert vogels in de duinen bij Nieuwpoort.',
     'Jasper werkt in een hotel aan de dijk in Blankenberge.', 'Lisa heeft een kot in Leuven.',
     'Saar deelt een appartement met Febe.', 'Axel en Max spelen tennis op dinsdagavond.',
@@ -646,13 +647,90 @@ p { margin: 0 0 12px; max-width: 68ch; }
     'Lien en Jonas hebben een nieuwe keuken gekocht.', 'Tom werkt vandaag thuis omdat het sneeuwt.',
     'Sofie neemt haar laptop mee naar Brugge.', 'Wout zoekt een rustig hotel in de Ardennen.',
     'De kermis in Aalst trekt veel bezoekers.', 'In Kortrijk gaat Lotte op zaterdag naar de markt.',
-    'Pieter rijdt in de zomer met zijn camper naar Frankrijk.', 'Het station van Gent is vandaag erg druk.',
+    'Pieter rijdt in de zomer met zijn camper naar Dinant.', 'Het station van Gent is vandaag erg druk.',
     'Wout zet zijn auto op de parking bij het station.',
     'Lien drinkt een warme chocolademelk op de markt van Brugge.', 'Koen verkoopt verse vis op de markt in Oostende.',
     'De bus van Hasselt naar Genk is vol.', 'Griet stuurt Tom een bericht over de vergadering.',
     'Joke typt elke dag een kwartier zonder te kijken.', 'Marie wandelt op zondag door de Kempen.',
     'Jonas bakt wafels voor de verjaardag van zijn zus.'
   ];
+
+  // Eigennamen: steden, gemeenten en voornamen, met hoofdletter.
+  var NAMES = [
+    'Antwerpen', 'Mechelen', 'Lier', 'Turnhout', 'Herentals', 'Geel', 'Mol', 'Boom', 'Mortsel', 'Brasschaat',
+    'Schoten', 'Kapellen', 'Kalmthout', 'Essen', 'Brecht', 'Malle', 'Zoersel', 'Ranst', 'Edegem', 'Kontich',
+    'Hove', 'Boechout', 'Schilde', 'Duffel', 'Bonheiden', 'Nijlen', 'Westerlo', 'Kasterlee', 'Balen',
+    'Hoogstraten', 'Willebroek', 'Bornem', 'Puurs', 'Arendonk', 'Beerse', 'Wuustwezel', 'Gent', 'Aalst',
+    'Dendermonde', 'Lokeren', 'Ninove', 'Oudenaarde', 'Ronse', 'Geraardsbergen', 'Zottegem', 'Eeklo', 'Deinze',
+    'Wetteren', 'Zele', 'Hamme', 'Temse', 'Beveren', 'Lochristi', 'Destelbergen', 'Merelbeke', 'Melle', 'Lede',
+    'Haaltert', 'Denderleeuw', 'Herzele', 'Brakel', 'Zwalm', 'Aalter', 'Evergem', 'Zelzate', 'Maldegem', 'Laarne',
+    'Berlare', 'Wichelen', 'Buggenhout', 'Lebbeke', 'Stekene', 'Kruibeke', 'Gavere', 'Assenede', 'Zulte',
+    'Kaprijke', 'Brugge', 'Kortrijk', 'Oostende', 'Roeselare', 'Ieper', 'Tielt', 'Torhout', 'Diksmuide',
+    'Poperinge', 'Veurne', 'Waregem', 'Harelbeke', 'Menen', 'Wevelgem', 'Izegem', 'Blankenberge', 'Knokke',
+    'Koksijde', 'Nieuwpoort', 'Middelkerke', 'Bredene', 'Jabbeke', 'Oostkamp', 'Zedelgem', 'Beernem', 'Damme',
+    'Wingene', 'Lichtervelde', 'Kortemark', 'Staden', 'Moorslede', 'Zonnebeke', 'Wervik', 'Heuvelland', 'Mesen',
+    'Avelgem', 'Zwevegem', 'Kuurne', 'Anzegem', 'Deerlijk', 'Ardooie', 'Pittem', 'Gistel', 'Oudenburg', 'Ichtegem',
+    'Koekelare', 'Alveringem', 'Houthulst', 'Leuven', 'Vilvoorde', 'Halle', 'Tienen', 'Diest', 'Aarschot', 'Asse',
+    'Zaventem', 'Overijse', 'Tervuren', 'Kortenberg', 'Grimbergen', 'Dilbeek', 'Liedekerke', 'Ternat', 'Zemst',
+    'Keerbergen', 'Haacht', 'Rotselaar', 'Herent', 'Bertem', 'Landen', 'Zoutleeuw', 'Lubbeek', 'Hoeilaart',
+    'Machelen', 'Merchtem', 'Londerzeel', 'Opwijk', 'Lennik', 'Meise', 'Wemmel', 'Beersel', 'Affligem', 'Tremelo',
+    'Holsbeek', 'Huldenberg', 'Kampenhout', 'Bierbeek', 'Hasselt', 'Genk', 'Tongeren', 'Bilzen', 'Maaseik', 'Bree',
+    'Peer', 'Pelt', 'Lommel', 'Beringen', 'Lanaken', 'Maasmechelen', 'Leopoldsburg', 'Diepenbeek', 'Zonhoven',
+    'Halen', 'Tessenderlo', 'Lummen', 'Alken', 'Borgloon', 'Riemst', 'Voeren', 'Wellen', 'Zutendaal', 'Kinrooi',
+    'Bocholt', 'Oudsbergen', 'Heers', 'Brussel', 'Anderlecht', 'Elsene', 'Etterbeek', 'Evere', 'Jette',
+    'Koekelberg', 'Oudergem', 'Schaarbeek', 'Ukkel', 'Vorst', 'Ganshoren', 'Luik', 'Namen', 'Bergen', 'Doornik',
+    'Charleroi', 'Aarlen', 'Nijvel', 'Waver', 'Hoei', 'Verviers', 'Spa', 'Bastenaken', 'Dinant', 'Eupen', 'Durbuy',
+    'Amsterdam', 'Rotterdam', 'Utrecht', 'Eindhoven', 'Groningen', 'Tilburg', 'Almere', 'Breda', 'Nijmegen',
+    'Enschede', 'Haarlem', 'Arnhem', 'Amersfoort', 'Apeldoorn', 'Zwolle', 'Leiden', 'Maastricht', 'Dordrecht',
+    'Zoetermeer', 'Delft', 'Deventer', 'Alkmaar', 'Venlo', 'Leeuwarden', 'Hilversum', 'Heerlen', 'Roermond',
+    'Middelburg', 'Vlissingen', 'Goes', 'Terneuzen', 'Hulst', 'Sluis', 'Zierikzee', 'Gouda', 'Schiedam',
+    'Purmerend', 'Hoorn', 'Enkhuizen', 'Edam', 'Zandvoort', 'Helmond', 'Oss', 'Roosendaal', 'Weert', 'Assen',
+    'Emmen', 'Kampen', 'Harderwijk', 'Ede', 'Wageningen', 'Zutphen', 'Gorinchem', 'Zeist', 'Lelystad', 'Sneek',
+    'Harlingen', 'Hengelo', 'Almelo', 'Valkenburg', 'Vaals', 'Veldhoven', 'Vught', 'Yerseke', 'Urk', 'Uden',
+    'Uithoorn', 'Joure', 'Franeker', 'Culemborg', 'Coevorden', 'Naarden', 'Noordwijk', 'Oosterhout', 'Ommen',
+    'Oldenzaal', 'Yana', 'Yves', 'Yara', 'Yasmine', 'Yannick', 'Yvonne', 'Yvette', 'Yorick', 'Yentl', 'Yolanda',
+    'Yuna', 'Ulrike', 'Ursula', 'Urbain', 'Ulrich', 'Uma', 'Ute', 'Udo', 'Uwe', 'Ulla', 'Umut', 'Inge', 'Ilse',
+    'Ine', 'Isa', 'Iris', 'Ivo', 'Ingrid', 'Isabelle', 'Ilias', 'Ibe', 'Imke', 'Ida', 'Irene', 'Ilona', 'Olivier',
+    'Oscar', 'Otto', 'Olga', 'Odile', 'Odette', 'Owen', 'Olaf', 'Olivia', 'Omer', 'Ortwin', 'Ole', 'Pieter',
+    'Peter', 'Paul', 'Paula', 'Patrick', 'Pauline', 'Pim', 'Pepijn', 'Petra', 'Pascal', 'Pol', 'Paulien', 'Pien',
+    'Philip', 'Hanne', 'Hans', 'Hilde', 'Hendrik', 'Henk', 'Hugo', 'Hannah', 'Helena', 'Herman', 'Hester', 'Hidde',
+    'Huub', 'Hubert', 'Heleen', 'Hamza', 'Jonas', 'Jan', 'Jef', 'Joke', 'Jolien', 'Joris', 'Julie', 'Jens',
+    'Jasper', 'Jeroen', 'Johan', 'Jana', 'Julia', 'Jules', 'Joost', 'Jesse', 'Kato', 'Koen', 'Karel', 'Katrien',
+    'Kris', 'Kevin', 'Kim', 'Kobe', 'Klaas', 'Karin', 'Kees', 'Kaat', 'Kasper', 'Kenzo', 'Lotte', 'Lars', 'Lien',
+    'Lisa', 'Lucas', 'Louis', 'Laura', 'Lieven', 'Linde', 'Liam', 'Lore', 'Luc', 'Lena', 'Lies', 'Lander', 'Luuk',
+    'Lieke', 'Louise', 'Maarten', 'Marie', 'Mieke', 'Marc', 'Mats', 'Mila', 'Marleen', 'Michiel', 'Merel',
+    'Mohamed', 'Maxime', 'Manon', 'Margot', 'Mathias', 'Milan', 'Maud', 'Marieke', 'Marloes', 'Nina', 'Niels',
+    'Nathalie', 'Nele', 'Noor', 'Noah', 'Nick', 'Nora', 'Nicole', 'Nathan', 'Nand', 'Naomi', 'Nadia', 'Nienke',
+    'Niek', 'Anna', 'Arne', 'Annelies', 'Anouk', 'Arthur', 'Astrid', 'Axel', 'Amber', 'Adam', 'Anke', 'Zara',
+    'Zita', 'Zeno', 'Zakaria', 'Zahra', 'Zoey', 'Zeynep', 'Emma', 'Elke', 'Eva', 'Ellen', 'Els', 'Eline', 'Erik',
+    'Elias', 'Emiel', 'Evelien', 'Erwin', 'Esther', 'Ruben', 'Rik', 'Roel', 'Robin', 'Rita', 'Rosa', 'Ruth',
+    'Renske', 'Rob', 'Raf', 'Roos', 'Robbe', 'Remco', 'Tom', 'Tim', 'Tine', 'Thomas', 'Tessa', 'Tuur', 'Thijs',
+    'Tamara', 'Toon', 'Tobias', 'Teun', 'Tibo', 'Tijs', 'Quinten', 'Quentin', 'Quirine', 'Quinn', 'Quirijn',
+    'Sofie', 'Sara', 'Sander', 'Stijn', 'Sven', 'Simon', 'Saskia', 'Sam', 'Sanne', 'Seppe', 'Siebe', 'Senne',
+    'Stef', 'Silke', 'Stefaan', 'Dirk', 'Daan', 'David', 'Dries', 'Daphne', 'Dorien', 'Dieter', 'Dennis',
+    'Diederik', 'Dana', 'Frank', 'Fien', 'Femke', 'Freek', 'Floor', 'Fleur', 'Floris', 'Frederik', 'Fatima',
+    'Filip', 'Febe', 'Ferre', 'Geert', 'Griet', 'Gert', 'Gijs', 'Gerda', 'Gust', 'Gilles', 'Gerrit', 'Guido',
+    'Gwen', 'Wim', 'Wouter', 'Ward', 'Willem', 'Wendy', 'Wout', 'Wannes', 'Wilma', 'Wies', 'Walter', 'Xavier',
+    'Xander', 'Xenia', 'Caroline', 'Charlotte', 'Christophe', 'Chris', 'Carla', 'Cas', 'Cato', 'Cindy', 'Claire',
+    'Clara', 'Cyriel', 'Vera', 'Victor', 'Vincent', 'Veerle', 'Vic', 'Vanessa', 'Valentijn', 'Vince', 'Vivian',
+    'Bart', 'Bram', 'Bert', 'Britt', 'Bas', 'Bo', 'Bente', 'Boris', 'Bavo', 'Bernard', 'Zoë', 'Noël', 'Chloë',
+    'Michaël', 'Raphaël', 'Daniël', 'Gabriël', 'Joël', 'Noëlle', 'Joëlle', 'Gaëlle', 'Mariëlle', 'Anaïs', 'Loïc',
+    'Héloïse', 'Hélène', 'Céline', 'Inès', 'André', 'René', 'José', 'Thérèse', 'Michèle', 'Françoise', 'François',
+    'Jérôme', 'Frédéric', 'Mélanie', 'Amélie', 'Noémie', 'Cédric', 'Anne-Sophie', 'Pieter-Jan', 'Jan-Willem',
+    'Marie-Louise', 'Anne-Marie', 'Jean-Pierre', 'Ann-Sofie', 'Sint-Niklaas', 'Sint-Truiden', 'Knokke-Heist',
+    'Heist-op-den-Berg', 'Sint-Pieters-Leeuw', 'Sint-Katelijne-Waver', 'Sint-Martens-Latem',
+    'Houthalen-Helchteren', 'Scherpenheuvel-Zichem', 'Oud-Turnhout', 'Oud-Heverlee', 'Heusden-Zolder',
+    'Dilsen-Stokkem', 'Hamont-Achel', 'Herk-de-Stad', 'Kapelle-op-den-Bos', 'Sint-Gillis-Waas',
+    'Sint-Lievens-Houtem', 'Puurs-Sint-Amands', 'De Panne', 'De Haan', 'Oost-Vlaanderen', 'West-Vlaanderen',
+    'Vlaams-Brabant', 'Noord-Brabant', 'Zuid-Holland', 'Noord-Holland', 'Bergen op Zoom', 'Den Haag', 'Den Bosch',
+    'Den Helder', 'Alphen aan den Rijn', 'Wijk bij Duurstede', 'Etten-Leur', 'België', 'Wallonië', 'Italië',
+    'Australië', 'Kroatië', 'Roemenië', 'Slovenië', 'Indonesië', 'Haïti', 'Pyreneeën', 'Bourgondië', 'Normandië',
+    'Sicilië', 'Sardinië', 'Andalusië', 'Zürich', 'Genève', 'München', 'Düsseldorf', 'Lübeck', 'Malmö', 'Göteborg',
+    'Curaçao', 'Besançon', 'Châtelet', 'Neufchâteau', 'Ardèche', 'Rhône', 'Périgord'
+  ];
+  // Woorden met een apostrof of een koppelteken (module 7).
+  var APOS_WORDS = [];
+  var HYPHEN_WORDS = [];
 
   var BASELINE_TEXT = 'Vandaag begin ik aan een typcursus. Elke dag oefen ik een kwartier, en stap voor stap leer ik blind typen met tien vingers.';
 
@@ -815,7 +893,36 @@ p { margin: 0 0 12px; max-width: 68ch; }
         'Neem je tijd: snelheid telt hier niet mee.'
       ] })
     ] },
-    { id: 'm5', nr: 5, phase: 1, title: 'Hoofdletters', planned: 8, desc: 'Linker- en rechter-Shift', lessons: [] },
+    { id: 'm5', nr: 5, phase: 1, title: 'Hoofdletters', planned: 8, desc: 'Linker- en rechter-Shift', lessons: [
+      L('m5-shift-links', 'Linker-Shift', 'new', { add: 'YUIOPHJKLMN', intro: [
+        'Een hoofdletter typ je met Shift. Gebruik altijd de Shift aan de andere kant dan de letter: de ene hand houdt Shift vast, de andere typt.',
+        'Voor de letters van je rechterhand (y, u, i, o, p, h, j, k, l, m en n) hou je met je linkerpink de linker-Shift ingedrukt. Typ de letter, laat Shift los en keer terug naar de thuispositie.',
+        'Gebruik Caps Lock niet. Staat hij aan, dan wacht de oefening tot je hem uitzet.'
+      ] }),
+      L('m5-shift-links-oef', 'Linker-Shift oefenen', 'practice', { focus: 'YUIOPHJKLMN', help: 'hint', intro: [
+        'Je oefent hoofdletters met de linker-Shift, los en in namen.'
+      ] }),
+      L('m5-shift-rechts', 'Rechter-Shift', 'new', { add: 'AZERTQSDFGWXCVB', intro: [
+        'Voor de letters van je linkerhand (a, z, e, r, t, q, s, d, f, g, w, x, c, v en b) hou je met je rechterpink de rechter-Shift ingedrukt.',
+        'Je rechterpink vindt de rechter-Shift zonder te kijken, rechts onderaan. De andere vingers van je rechterhand blijven bij de thuisrij.'
+      ] }),
+      L('m5-shift-rechts-oef', 'Rechter-Shift oefenen', 'practice', { focus: 'AZERTQSDFGWXCVB', help: 'hint', intro: [
+        'Je oefent hoofdletters met de rechter-Shift, los en in namen.'
+      ] }),
+      L('m5-namen', 'Steden en voornamen', 'words', { src: 'names', focus: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', help: 'hint', intro: [
+        'Steden, gemeenten en voornamen schrijf je met een hoofdletter. In deze les typ je ze door elkaar, met beide Shift-toetsen.'
+      ] }),
+      L('m5-zinnen', 'Zinnen met een hoofdletter', 'sentences', { focus: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', help: 'hint', intro: [
+        'Een zin begint met een hoofdletter, en een eigennaam ook. Leestekens komen in een volgende module, dus de zinnen hebben nog geen punt.'
+      ] }),
+      L('m5-herh', 'Herhaling hoofdletters', 'review', { focus: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', help: 'hint', intro: [
+        'Een herhaling van de hoofdletters met beide Shift-toetsen. Je zwakste toetsen komen vaker terug.'
+      ] }),
+      L('m5-toets', 'Moduletoets hoofdletters', 'moduletest', { focus: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', help: 'hint', intro: [
+        'Dit is de moduletoets van de hoofdletters. Haal minstens 95% nauwkeurigheid om de module af te ronden.',
+        'Let op de juiste Shift: altijd aan de andere kant dan de letter.'
+      ] })
+    ] },
     { id: 'm6', nr: 6, phase: 1, title: 'Accenten', planned: 10, desc: '\u00e9 \u00e8, \u00e7 \u00e0, \u00f9 en ^ (\u00ea), \u00a8 (\u00eb \u00ef)', lessons: [] },
     { id: 'm7', nr: 7, phase: 1, title: 'Leestekens', planned: 12, desc: ', ; ! : " \' ( ) - ? .', lessons: [] },
     { id: 'm8', nr: 8, phase: 1, title: 'Cijfers', planned: 8, desc: '1 tot 0 met Shift, datums, bedragen, nummers', lessons: [] },
@@ -995,9 +1102,58 @@ p { margin: 0 0 12px; max-width: 68ch; }
 
   /* =========================================================
      Oefenteksten maken
+     Kleine letters (ook met accent) oefenen we met lettercombinaties
+     en woorden. Andere tekens (hoofdletters, leestekens, cijfers,
+     symbolen, Enter, Tab) komen in korte, natuurlijke stukjes:
+     "Jan", "kaas,", "(ja)", "12,50", "an@voorbeeld.be".
+     Elk stukje bevat enkel tekens die de les al kent.
      ========================================================= */
   var HOME = { a: 'q', z: 's', e: 'd', r: 'f', t: 'f', g: 'f', v: 'f', b: 'f', c: 'd', x: 's', w: 'q', y: 'j', u: 'j', h: 'j', n: 'j', i: 'k', o: 'l', p: 'm' };
-  function handOf(c) { var m = CHARMAP.get(c); return m ? m.key.finger.charAt(0) : 'l'; }
+  var FINGER_HOME = { lp: 'q', lr: 's', lm: 'd', li: 'f', ri: 'j', rm: 'k', rr: 'l', rp: 'm' };
+  function isLetter(ch) { return /^[a-zéèçàùêâôëïöü]$/.test(ch); }
+  function isCap(ch) { return /^[A-Z]$/.test(ch); }
+  function isDigit(ch) { return /^[0-9]$/.test(ch); }
+  function keyOf(ch) { var m = CHARMAP.get(ch); return m ? m.key : null; }
+  function handOf(ch) { var k = keyOf(ch); return k ? k.finger.charAt(0) : 'l'; }
+  function anchorOf(ch) {
+    if (HOME[ch]) return HOME[ch];
+    var k = keyOf(ch);
+    return (k && FINGER_HOME[k.finger]) || (handOf(ch) === 'l' ? 'f' : 'j');
+  }
+
+  // Woorden, namen en zinnen die met een bepaalde set gekende tekens kunnen, één keer berekend.
+  var POOLS = {};
+  function poolsFor(known) {
+    var id = known.join('');
+    if (POOLS[id]) return POOLS[id];
+    var set = new Set(known);
+    var ok = function (w) {
+      for (var i = 0; i < w.length; i++) { var ch = w.charAt(i); if (ch !== ' ' && !set.has(ch)) return false; }
+      return true;
+    };
+    POOLS[id] = {
+      set: set,
+      words: WORDS.filter(ok),
+      names: NAMES.filter(ok),
+      sentences: SENTENCES.map(function (s) { return sentenceForm(s, set); }).filter(Boolean),
+      apos: APOS_WORDS.filter(ok),
+      hyph: HYPHEN_WORDS.filter(ok),
+      cache: {}
+    };
+    return POOLS[id];
+  }
+  function cached(c, key, make) {
+    var cache = c.pools.cache;
+    if (!cache[key]) cache[key] = make();
+    return cache[key];
+  }
+  function poolWith(c, name, ch) {
+    return cached(c, name + '\u0001' + ch, function () { return c.pools[name].filter(function (w) { return w.indexOf(ch) >= 0; }); });
+  }
+  function okText(c, t) {
+    for (var i = 0; i < t.length; i++) { var ch = t.charAt(i); if (ch !== ' ' && !c.knownSet.has(ch)) return false; }
+    return true;
+  }
 
   function makeCtx(lesson, seed, known) {
     known = known || KNOWN[lesson.id] || [];
@@ -1007,23 +1163,21 @@ p { margin: 0 0 12px; max-width: 68ch; }
     if (lesson.type === 'weak' || lesson.type === 'free') focus = weakestKeys(known);
     else if (lesson.focus) focus = lesson.focus.split('').filter(function (c) { return known.indexOf(c) >= 0; });
     else focus = add.slice();
-    return { r: r, known: known, knownSet: new Set(known), add: add, focus: focus, weights: keyWeights(known) };
+    var letters = known.filter(isLetter);
+    return {
+      r: r, lesson: lesson, known: known, knownSet: new Set(known), letters: letters,
+      comboLetters: comboLettersOf(letters, add.concat(focus)),
+      add: add, focus: focus, focusLetters: focus.filter(isLetter),
+      weights: keyWeights(known), pools: poolsFor(known)
+    };
   }
-  function wordPool(c) {
-    return WORDS.filter(function (w) {
-      for (var i = 0; i < w.length; i++) if (!c.knownSet.has(w.charAt(i))) return false;
-      return true;
-    });
+  // Willekeurige lettercombinaties gebruiken a tot z; een letter met accent alleen als de les erop focust.
+  function comboLettersOf(letters, focus) {
+    var out = letters.filter(function (ch) { return /^[a-z]$/.test(ch) || focus.indexOf(ch) >= 0; });
+    return out.length ? out : letters;
   }
   function hasWords(lesson, known) {
-    var set = new Set(known || KNOWN[lesson.id] || []);
-    var n = 0;
-    for (var i = 0; i < WORDS.length && n < 6; i++) {
-      var ok = true, w = WORDS[i];
-      for (var j = 0; j < w.length; j++) if (!set.has(w.charAt(j))) { ok = false; break; }
-      if (ok) n++;
-    }
-    return n >= 6;
+    return poolsFor(known || KNOWN[lesson.id] || []).words.length >= 6;
   }
   function wordWeight(c, w, focusSet) {
     var s = 1;
@@ -1034,43 +1188,213 @@ p { margin: 0 0 12px; max-width: 68ch; }
     }
     return s;
   }
+  // Kiest snel een gewogen woord: de gewichten worden één keer per oefening opgeteld.
+  function wordPicker(c, pool, focusSet) {
+    var pk = { pool: pool, cum: [], total: 0 };
+    for (var i = 0; i < pool.length; i++) { pk.total += wordWeight(c, pool[i], focusSet); pk.cum.push(pk.total); }
+    return function () { return pickCum(pk, c.r); };
+  }
   function drillPieces(c) {
-    var keys = c.add.length ? c.add : c.focus;
+    var keys = (c.add.length ? c.add : c.focus).filter(isLetter);
     var out = [];
     keys.forEach(function (k) {
       out.push(k + k + k, k + k);
-      var a = HOME[k];
-      if (!a || a === k || !c.knownSet.has(a)) a = handOf(k) === 'l' ? 'f' : 'j';
+      var a = anchorOf(k);
+      if (a === k || !c.knownSet.has(a)) a = handOf(k) === 'l' ? 'f' : 'j';
       if (a !== k && c.knownSet.has(a)) out.push(a + k + a, k + a + k, a + k, k + a);
     });
     for (var i = 0; i < keys.length; i++) for (var j = i + 1; j < keys.length; j++) {
       var x = keys[i], y = keys[j];
       out.push(x + y, y + x, x + y + x, y + x + y);
     }
-    return out.length ? out : c.known.slice();
+    return out.length ? out : c.letters.slice();
   }
   function comboPiece(c, focusShare, minLen, maxLen) {
     minLen = minLen || 2; maxLen = maxLen || 4;
     var len = minLen + Math.floor(c.r() * (maxLen - minLen + 1));
     var letters = [];
-    for (var i = 0; i < len; i++) letters.push(weightedPick(c.known, function (ch) { return c.weights.get(ch) || 1; }, c.r));
-    if (c.focus.length && c.r() < focusShare) letters[Math.floor(c.r() * len)] = pick(c.focus, c.r);
+    var pool = c.comboLetters || c.letters;
+    for (var i = 0; i < len; i++) letters.push(weightedPick(pool, function (ch) { return c.weights.get(ch) || 1; }, c.r));
+    if (c.focusLetters.length && c.r() < focusShare) letters[Math.floor(c.r() * len)] = pick(c.focusLetters, c.r);
     return letters.join('');
+  }
+  function shortWord(c, maxLen) {
+    var pool = cached(c, 'short' + maxLen, function () { return c.pools.words.filter(function (w) { return w.length <= maxLen; }); });
+    return pool.length ? pick(pool, c.r) : comboPiece(c, 0, 2, 3);
+  }
+  function anyWord(c) {
+    return c.pools.words.length ? pick(c.pools.words, c.r) : comboPiece(c, 0, 2, 4);
+  }
+  // Dagen en maanden schrijf je met een kleine letter: die krijgen in een oefening geen hoofdletter.
+  var CALENDAR = new Set('maandag dinsdag woensdag donderdag vrijdag zaterdag zondag januari februari maart april mei juni juli augustus september oktober november december'.split(' '));
+  function startingWith(c, name, cap) {
+    return cached(c, name + '\u0002' + cap, function () {
+      if (name === 'names') return c.pools.names.filter(function (n) { return n.charAt(0) === cap; });
+      var low = cap.toLowerCase();
+      return c.pools.words.filter(function (w) { return w.charAt(0) === low && !CALENDAR.has(w); })
+        // Een ij vooraan wordt IJ (IJs, IJzel); dan moet ook de J gekend zijn.
+        .map(function (w) { return w.slice(0, 2) === 'ij' ? 'IJ' + w.slice(2) : cap + w.slice(1); })
+        .filter(function (w) { return okText(c, w); });
+    });
+  }
+  function capWord(c, cap, maxLen) {
+    var pool = startingWith(c, 'words', cap).filter(function (w) { return !maxLen || w.length <= maxLen; });
+    return pool.length ? pick(pool, c.r) : null;
+  }
+  function digitsOf(c) { return cached(c, 'digits', function () { return c.known.filter(isDigit); }); }
+  function numberWith(c, d, minLen, maxLen) {
+    var ds = digitsOf(c);
+    if (!ds.length) return d || '';
+    var len = minLen + Math.floor(c.r() * (maxLen - minLen + 1));
+    var out = [];
+    for (var i = 0; i < len; i++) out.push(pick(ds, c.r));
+    if (d) out[Math.floor(c.r() * len)] = d;
+    if (len > 1 && out[0] === '0') {
+      var nz = ds.filter(function (x) { return x !== '0'; });
+      if (nz.length) { if (d === '0' && out.indexOf('0', 1) < 0) out[len - 1] = '0'; out[0] = pick(nz, c.r); }
+    }
+    return out.join('');
+  }
+  function smallNumber(c, max) {
+    var ds = digitsOf(c).filter(function (x) { return x !== '0' && +x <= max; });
+    return ds.length ? +pick(ds, c.r) : 1;
+  }
+
+  // Oefenstukjes voor tekens die geen kleine letter zijn.
+  var WRAP = { ',': '#,', ';': '#;', '!': '#!', ':': '#:', '.': '#.', '?': '#?', '"': '"#"', '(': '(#)', ')': '(#)' };
+  function drillPiece(c, ch) {
+    var r = c.r;
+    if (isLetter(ch)) {
+      var a = anchorOf(ch);
+      if (!c.knownSet.has(a) || a === ch) return ch + ch;
+      return pick([ch + ch + ch, a + ch + a, ch + a + ch, a + ch], r);
+    }
+    if (isCap(ch)) {
+      var short = cached(c, 'names-cap5' + ch, function () {
+        return startingWith(c, 'names', ch).filter(function (n) { return n.length <= 5 && /^[A-Za-z]+$/.test(n); });
+      });
+      var w = short.length && r() < 0.6 ? pick(short, r) : capWord(c, ch, 5);
+      return r() < 0.4 || !w ? ch + ch.toLowerCase() : w;
+    }
+    if (WRAP[ch]) return WRAP[ch].replace('#', shortWord(c, 4));
+    if (ch === "'") return c.pools.apos.length ? pick(c.pools.apos, r) : "'" + shortWord(c, 4);
+    if (ch === '-') return c.pools.hyph.length ? pick(c.pools.hyph, r) : shortWord(c, 4) + '-' + shortWord(c, 4);
+    if (isDigit(ch)) return numberWith(c, ch, 1, 3);
+    return symbolPiece(c, ch) || ch;
+  }
+  function symbolPiece(c, ch) {
+    var r = c.r, a, b;
+    switch (ch) {
+      case '@': return shortWord(c, 6) + '@voorbeeld.be';
+      case '#': return '#' + numberWith(c, null, 1, 2);
+      case '€': return '€ ' + numberWith(c, null, 1, 2) + (c.knownSet.has(',') ? ',' + numberWith(c, null, 2, 2) : '');
+      case '%': return numberWith(c, null, 1, 2) + '%';
+      case '/': return smallNumber(c, 9) + '/' + smallNumber(c, 9);
+      case '+':
+        a = smallNumber(c, 9); b = smallNumber(c, 9);
+        return a + ' + ' + b + (c.knownSet.has('=') ? ' = ' + (a + b) : '');
+      case '=':
+        a = smallNumber(c, 9); b = smallNumber(c, 9);
+        return c.knownSet.has('+') ? a + ' + ' + b + ' = ' + (a + b) : a + ' = ' + a;
+      case '*':
+        a = smallNumber(c, 9); b = smallNumber(c, 9);
+        return a + ' * ' + b + (c.knownSet.has('=') ? ' = ' + (a * b) : '');
+      case '&':
+        var names = c.pools.names;
+        return names.length > 1 ? pick(names, r) + ' & ' + pick(names, r) : shortWord(c, 5) + ' & ' + shortWord(c, 5);
+      case '\n': return shortWord(c, 6) + '\n' + shortWord(c, 6);
+      case '\t': return shortWord(c, 6) + '\t' + shortWord(c, 6);
+    }
+    return null;
+  }
+  // Een natuurlijk stukje tekst met het teken ch: een zin, een woord, een naam, een getal.
+  function pieceWith(c, ch) {
+    var r = c.r;
+    if (!isLetter(ch) && r() < 0.15) {
+      var ss = poolWith(c, 'sentences', ch);
+      if (ss.length) return pick(ss, r);
+    }
+    if (isLetter(ch)) {
+      var ws = poolWith(c, 'words', ch);
+      if (ws.length) return pick(ws, r);
+    }
+    if (isCap(ch)) {
+      var ns = startingWith(c, 'names', ch);
+      if (ns.length && r() < 0.7) return pick(ns, r);
+      var cw = capWord(c, ch, 12);
+      if (cw) return cw;
+    }
+    if (WRAP[ch]) return WRAP[ch].replace('#', anyWord(c));
+    if (isDigit(ch)) return numberWith(c, ch, 1, 4);
+    return drillPiece(c, ch);
+  }
+  function safe(c, piece, ch) { return piece && okText(c, piece) ? piece : ch; }
+  // Een focusteken kiezen; tekens waarop je vaak fouten maakt, komen vaker aan de beurt.
+  function pickFocus(c, chars) { return weightedPick(chars, function (ch) { return c.weights.get(ch) || 1; }, c.r); }
+
+  // Zet elk verplicht stukje in de tekst (in willekeurige volgorde) en vult daarna aan.
+  function coverFill(c, target, must, next) {
+    var order = must.slice();
+    for (var i = order.length - 1; i > 0; i--) { var j = Math.floor(c.r() * (i + 1)); var t = order[i]; order[i] = order[j]; order[j] = t; }
+    var out = order.slice(), len = out.join(' ').length, prev = out[out.length - 1], guard = 0;
+    while (len < target && guard++ < 600) {
+      var p = next();
+      if (!p) break;
+      if (p === prev) continue;
+      out.push(p); len += p.length + 1; prev = p;
+    }
+    return out.join(' ');
+  }
+  // De nieuwe toetsen (of de zwakste toetsen) los geoefend; elk ervan komt zeker voor.
+  function drillText(c, target) {
+    var keys = c.add.length ? c.add : c.focus;
+    if (!keys.length) keys = c.letters.slice(0, 4);
+    var lp = keys.some(isLetter) ? drillPieces(c) : [];
+    function one(k) {
+      if (isLetter(k)) {
+        var withK = lp.filter(function (p) { return p.indexOf(k) >= 0; });
+        return withK.length ? pick(withK, c.r) : k + k;
+      }
+      return safe(c, drillPiece(c, k), k);
+    }
+    return coverFill(c, target, keys.map(one), function () {
+      var k = pick(keys, c.r);
+      return isLetter(k) && lp.length ? pick(lp, c.r) : one(k);
+    });
+  }
+  function comboText(c, target, share, minLen, maxLen) {
+    var other = c.focus.filter(function (ch) { return !isLetter(ch); });
+    return fillTo(target, function () {
+      if (other.length && c.r() < share) { var ch = pickFocus(c, other); return safe(c, drillPiece(c, ch), ch); }
+      // Zonder focus op kleine letters zijn korte woorden nuttiger dan willekeurige lettergroepjes.
+      if (other.length && !c.focusLetters.length && c.pools.words.length >= 6) return shortWord(c, 6);
+      return comboPiece(c, share, minLen, maxLen);
+    });
   }
   function wordsText(c, target, focus, opts) {
     opts = opts || {};
-    var pool = wordPool(c);
+    var pool = c.pools.words;
     if (opts.minLen) pool = pool.filter(function (w) { return w.length >= opts.minLen; });
     if (opts.maxLen) pool = pool.filter(function (w) { return w.length <= opts.maxLen; });
     if (pool.length < 6) return null;
-    var fs = focus && focus.length ? new Set(focus) : null;
+    var next = wordPicker(c, pool, focus && focus.length ? new Set(focus) : null);
     // Om het andere woord een woord met de volgende focusletter, zodat elke focusletter aan bod komt.
-    var withF = fs ? focus.map(function (f) { return pool.filter(function (w) { return w.indexOf(f) >= 0; }); })
-      .filter(function (p) { return p.length > 0; }) : [];
+    var withF = (focus || []).map(function (f) { return pool.filter(function (w) { return w.indexOf(f) >= 0; }); })
+      .filter(function (p) { return p.length > 0; });
     var k = 0;
     return fillTo(target, function () {
       if (withF.length && k++ % 2 === 0) return pick(withF[(k >> 1) % withF.length], c.r);
-      return weightedPick(pool, function (w) { return wordWeight(c, w, fs); }, c.r);
+      return next();
+    });
+  }
+  // Woorden met de focustekens: kleine letters via wordsText, andere tekens als stukjes tussen gewone woorden.
+  function focusWordsText(c, target, opts) {
+    var other = c.focus.filter(function (ch) { return !isLetter(ch); });
+    if (!other.length) return wordsText(c, target, c.focus, opts);
+    var plain = c.pools.words.length >= 6 ? wordPicker(c, c.pools.words, null) : null;
+    return fillTo(target, function () {
+      if (c.r() < 0.6 || !plain) { var ch = pickFocus(c, other); return safe(c, pieceWith(c, ch), ch); }
+      return plain();
     });
   }
   function sentenceForm(s, knownSet) {
@@ -1085,34 +1409,104 @@ p { margin: 0 0 12px; max-width: 68ch; }
     for (var i = 0; i < t.length; i++) { var ch = t.charAt(i); if (ch !== ' ' && !knownSet.has(ch)) return null; }
     return t;
   }
-  function sentencesText(c, target) {
-    var pool = SENTENCES.map(function (s) { return sentenceForm(s, c.knownSet); }).filter(Boolean);
-    if (pool.length < 4) return null;
-    return fillTo(target, function () { return pick(pool, c.r); });
+  function sentWeight(s, fs) {
+    var n = 0;
+    for (var i = 0; i < s.length; i++) if (fs.has(s.charAt(i))) n++;
+    return 1 + 3 * Math.min(n, 4);
+  }
+  function sentencesText(c, target, focus, opts) {
+    opts = opts || {};
+    var key = 'sent' + (opts.maxWords || '') + '\u0003' + (focus || []).join('');
+    var pk = cached(c, key, function () {
+      var pool = c.pools.sentences;
+      if (opts.maxWords) pool = pool.filter(function (s) { return s.split(' ').length <= opts.maxWords; });
+      var fs = focus && focus.length ? new Set(focus) : null;
+      var cum = [], total = 0;
+      pool.forEach(function (s) { total += fs ? sentWeight(s, fs) : 1; cum.push(total); });
+      return { pool: pool, cum: cum, total: total };
+    });
+    if (pk.pool.length < 4) return null;
+    return fillTo(target, function () { return pickCum(pk, c.r); });
+  }
+  function pickCum(pk, r) {
+    var x = r() * pk.total, lo = 0, hi = pk.cum.length - 1;
+    while (lo < hi) { var mid = (lo + hi) >> 1; if (pk.cum[mid] <= x) lo = mid + 1; else hi = mid; }
+    return pk.pool[lo];
   }
   function mixedText(c, target, focusShare) {
-    var pool = wordPool(c);
+    var pool = c.pools.words;
     var fs = new Set(c.focus);
-    return fillTo(target, function () {
-      if (pool.length >= 6 && c.r() < 0.55) return weightedPick(pool, function (w) { return wordWeight(c, w, fs); }, c.r);
+    var other = c.focus.filter(function (ch) { return !isLetter(ch); });
+    var next = pool.length >= 6 ? wordPicker(c, pool, fs) : null;
+    // Zonder focus op kleine letters (hoofdletters, leestekens, cijfers): vaker een focusstukje, en
+    // gewone woorden in plaats van willekeurige lettergroepjes.
+    var onlyOther = other.length > 0 && !c.focusLetters.length;
+    var share = onlyOther ? Math.max(0.85, focusShare) : focusShare * 0.7;
+    var next2 = function () {
+      if (other.length && c.r() < share) { var ch = pickFocus(c, other); return safe(c, pieceWith(c, ch), ch); }
+      if (next && (onlyOther || c.r() < 0.55)) return next();
       return comboPiece(c, focusShare, 2, 4);
-    });
+    };
+    if (!onlyOther) return fillTo(target, next2);
+    // Elke tekst bevat zeker een paar korte focusstukjes (minstens drie focustekens).
+    var must = [];
+    for (var i = 0; i < Math.min(Math.max(3, other.length), 6); i++) {
+      var mc = other.length <= 3 ? other[i % other.length] : pickFocus(c, other);
+      must.push(safe(c, drillPiece(c, mc), mc));
+    }
+    return coverFill(c, target, must, next2);
   }
   function warmupText(c, target) {
-    var prev = c.known.filter(function (x) { return c.add.indexOf(x) < 0; });
+    var prev = c.letters.filter(function (x) { return c.add.indexOf(x) < 0; });
     if (prev.length < 2) return fillTo(target, function () { return pick(drillPieces(c), c.r); });
-    var sub = { r: c.r, known: prev, knownSet: new Set(prev), add: [], focus: [], weights: keyWeights(prev) };
-    var pool = wordPool(sub);
+    var sub = {
+      r: c.r, known: prev, knownSet: new Set(prev), letters: prev, comboLetters: comboLettersOf(prev, []),
+      add: [], focus: [], focusLetters: [], weights: keyWeights(prev), pools: poolsFor(prev)
+    };
+    var next = sub.pools.words.length >= 6 ? wordPicker(sub, sub.pools.words, null) : null;
+    // Met veel woorden (vanaf de onderrij) bestaat de opwarming vooral uit woorden.
+    var wordShare = sub.pools.words.length > 300 ? 0.8 : 0.5;
     return fillTo(target, function () {
-      if (pool.length >= 6 && c.r() < 0.5) return weightedPick(pool, function (w) { return wordWeight(sub, w, null); }, c.r);
+      if (next && c.r() < wordShare) return next();
       return comboPiece(sub, 0, 2, 4);
     });
   }
+  function itemsText(c, target, item, share) {
+    return fillTo(target, function () { return share == null || c.r() < share ? item(c) : anyWord(c); });
+  }
+
+  // Bronnen voor lessen met een eigen soort inhoud (namen, datums, bedragen, ...).
+  var SOURCES = {
+    names: {
+      steps: ['Korte namen', 'Lange namen', 'Namen door elkaar'],
+      item: function (c, level) {
+        var pool = c.pools.names;
+        if (level === 0) pool = cached(c, 'names-short', function () { return c.pools.names.filter(function (n) { return n.length <= 6; }); });
+        if (level === 1) pool = cached(c, 'names-long', function () { return c.pools.names.filter(function (n) { return n.length >= 7; }); });
+        return pool.length ? pick(pool, c.r) : anyWord(c);
+      }
+    }
+  };
 
   var LEN = { ex: 80, test: 110, module: 200 };
 
+  function ex(name, make, test) { return { name: name, make: make, test: !!test }; }
+  // Lessen met een eigen bron (namen, datums, ...): drie stappen uit de bron en een slottoets.
+  // Niveau 3 is voor de slottoets; een bron mag daar ook zinnen gebruiken.
+  function itemsPlan(lesson) {
+    var src = SOURCES[lesson.src];
+    var mix = function (share) { return src.mixWords === false ? null : share; };
+    return [
+      ex('Opwarming', function (c) { return mixedText(c, LEN.ex, 0.3); }),
+      ex(src.steps[0], function (c) { return itemsText(c, LEN.ex, function (cc) { return src.item(cc, 0); }); }),
+      ex(src.steps[1], function (c) { return itemsText(c, LEN.ex, function (cc) { return src.item(cc, 1); }); }),
+      ex(src.steps[2], function (c) { return itemsText(c, LEN.ex, function (cc) { return src.item(cc, 2); }, mix(0.7)); }),
+      ex('Slottoets', function (c) { return itemsText(c, LEN.test, function (cc) { return src.item(cc, 3); }, mix(0.75)); }, true)
+    ];
+  }
+
   function planFor(lesson, known) {
-    function ex(name, make, test) { return { name: name, make: make, test: !!test }; }
+    if (lesson.src) return itemsPlan(lesson);
     var words = hasWords(lesson, known);
     switch (lesson.type) {
       case 'intro':
@@ -1131,19 +1525,19 @@ p { margin: 0 0 12px; max-width: 68ch; }
       case 'new':
         return [
           ex('Opwarming', function (c) { return warmupText(c, LEN.ex); }),
-          ex('Nieuwe toetsen', function (c) { var p = drillPieces(c); return fillTo(LEN.ex, function () { return pick(p, c.r); }); }),
-          ex('Combinaties', function (c) { return fillTo(LEN.ex, function () { return comboPiece(c, 0.75, 2, 4); }); }),
+          ex('Nieuwe toetsen', function (c) { return drillText(c, LEN.ex); }),
+          ex('Combinaties', function (c) { return comboText(c, LEN.ex, 0.75, 2, 4); }),
           ex(words ? 'Woorden' : 'Langere combinaties', function (c) {
-            return wordsText(c, LEN.ex, c.focus) || fillTo(LEN.ex, function () { return comboPiece(c, 0.6, 3, 5); });
+            return focusWordsText(c, LEN.ex) || comboText(c, LEN.ex, 0.6, 3, 5);
           }),
           ex('Slottoets', function (c) { return mixedText(c, LEN.test, 0.6); }, true)
         ];
       case 'practice':
         return [
           ex('Opwarming', function (c) { return warmupText(c, LEN.ex); }),
-          ex('Combinaties', function (c) { return fillTo(LEN.ex, function () { return comboPiece(c, 0.8, 2, 4); }); }),
+          ex('Combinaties', function (c) { return comboText(c, LEN.ex, 0.8, 2, 4); }),
           ex(words ? 'Woorden' : 'Langere combinaties', function (c) {
-            return wordsText(c, LEN.ex, c.focus) || fillTo(LEN.ex, function () { return comboPiece(c, 0.7, 3, 5); });
+            return focusWordsText(c, LEN.ex) || comboText(c, LEN.ex, 0.7, 3, 5);
           }),
           ex(words ? 'Woorden en combinaties' : 'Alles door elkaar', function (c) { return mixedText(c, LEN.ex, 0.6); }),
           ex('Slottoets', function (c) { return mixedText(c, LEN.test, 0.6); }, true)
@@ -1153,33 +1547,33 @@ p { margin: 0 0 12px; max-width: 68ch; }
           ex('Opwarming', function (c) { return mixedText(c, LEN.ex, 0.3); }),
           ex('Korte woorden', function (c) { return wordsText(c, LEN.ex, c.focus, { maxLen: 4 }) || mixedText(c, LEN.ex, 0.5); }),
           ex('Langere woorden', function (c) { return wordsText(c, LEN.ex, c.focus, { minLen: 5 }) || mixedText(c, LEN.ex, 0.5); }),
-          ex('Woorden door elkaar', function (c) { return wordsText(c, LEN.ex, c.focus) || mixedText(c, LEN.ex, 0.5); }),
-          ex('Slottoets', function (c) { return wordsText(c, LEN.test, c.focus) || mixedText(c, LEN.test, 0.5); }, true)
+          ex('Woorden door elkaar', function (c) { return focusWordsText(c, LEN.ex) || mixedText(c, LEN.ex, 0.5); }),
+          ex('Slottoets', function (c) { return focusWordsText(c, LEN.test) || mixedText(c, LEN.test, 0.5); }, true)
         ];
       case 'sentences':
         return [
-          ex('Woorden', function (c) { return wordsText(c, LEN.ex, c.focus) || mixedText(c, LEN.ex, 0.5); }),
-          ex('Zinnetjes', function (c) { return sentencesText(c, LEN.ex) || mixedText(c, LEN.ex, 0.5); }),
-          ex('Meer zinnetjes', function (c) { return sentencesText(c, LEN.ex) || mixedText(c, LEN.ex, 0.5); }),
-          ex('Langere zinnetjes', function (c) { return sentencesText(c, LEN.test) || mixedText(c, LEN.test, 0.5); }),
-          ex('Slottoets', function (c) { return sentencesText(c, LEN.test) || mixedText(c, LEN.test, 0.5); }, true)
+          ex('Woorden', function (c) { return focusWordsText(c, LEN.ex) || mixedText(c, LEN.ex, 0.5); }),
+          ex('Zinnetjes', function (c) { return sentencesText(c, LEN.ex, c.focus) || mixedText(c, LEN.ex, 0.5); }),
+          ex('Meer zinnetjes', function (c) { return sentencesText(c, LEN.ex, c.focus) || mixedText(c, LEN.ex, 0.5); }),
+          ex('Langere zinnetjes', function (c) { return sentencesText(c, LEN.test, c.focus) || mixedText(c, LEN.test, 0.5); }),
+          ex('Slottoets', function (c) { return sentencesText(c, LEN.test, c.focus) || mixedText(c, LEN.test, 0.5); }, true)
         ];
       case 'review':
         return [
-          ex('Alles door elkaar', function (c) { return fillTo(LEN.ex, function () { return comboPiece(c, 0.3, 2, 4); }); }),
-          ex('Combinaties', function (c) { return fillTo(LEN.ex, function () { return comboPiece(c, 0.6, 3, 5); }); }),
+          ex('Alles door elkaar', function (c) { return comboText(c, LEN.ex, 0.3, 2, 4); }),
+          ex('Combinaties', function (c) { return comboText(c, LEN.ex, 0.6, 3, 5); }),
           ex(words ? 'Woorden' : 'Lange combinaties', function (c) {
-            return wordsText(c, LEN.ex, c.focus) || fillTo(LEN.ex, function () { return comboPiece(c, 0.5, 4, 6); });
+            return focusWordsText(c, LEN.ex) || comboText(c, LEN.ex, 0.5, 4, 6);
           }),
           ex(words ? 'Woorden en combinaties' : 'Gemengde combinaties', function (c) { return mixedText(c, LEN.ex, 0.5); }),
           ex('Slottoets', function (c) { return mixedText(c, LEN.test, 0.5); }, true)
         ];
       case 'weak':
         return [
-          ex('Je zwakste toetsen', function (c) { var p = drillPieces(c); return fillTo(LEN.ex, function () { return pick(p, c.r); }); }),
-          ex('Combinaties', function (c) { return fillTo(LEN.ex, function () { return comboPiece(c, 0.85, 2, 4); }); }),
+          ex('Je zwakste toetsen', function (c) { return drillText(c, LEN.ex); }),
+          ex('Combinaties', function (c) { return comboText(c, LEN.ex, 0.85, 2, 4); }),
           ex(words ? 'Woorden' : 'Langere combinaties', function (c) {
-            return wordsText(c, LEN.ex, c.focus) || fillTo(LEN.ex, function () { return comboPiece(c, 0.8, 3, 5); });
+            return focusWordsText(c, LEN.ex) || comboText(c, LEN.ex, 0.8, 3, 5);
           }),
           ex('Door elkaar', function (c) { return mixedText(c, LEN.ex, 0.7); }),
           ex('Slottoets', function (c) { return mixedText(c, LEN.test, 0.6); }, true)
@@ -1188,8 +1582,8 @@ p { margin: 0 0 12px; max-width: 68ch; }
         return [
           ex('Opwarming', function (c) { return mixedText(c, 50, 0.3); }),
           ex('Moduletoets', function (c) {
-            var w = wordPool(c).length >= 6;
-            var s = sentencesText(c, 60);
+            var w = c.pools.words.length >= 6;
+            var s = sentencesText(c, 60, c.focus);
             var main = w ? mixedText(c, LEN.module - (s ? 60 : 0), 0.4) : fillTo(LEN.module, function () { return comboPiece(c, 0.3, 2, 5); });
             return s ? main + ' ' + s : main;
           }, true)
@@ -1207,7 +1601,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
      ========================================================= */
   function kbHTML(opts) {
     opts = opts || {};
-    var newSet = new Set(opts.newKeys || []);
+    var newIds = keyIdsFor(opts.newKeys || []);
     var cls = 'kb' + (opts.tinted ? ' tinted' : '') + (opts.compact ? ' compact' : '');
     var html = '<div class="' + cls + '" aria-hidden="true">';
     LAYOUT.forEach(function (row) {
@@ -1216,11 +1610,14 @@ p { margin: 0 0 12px; max-width: 68ch; }
         var classes = ['key', 'f-' + k.finger];
         if (k.base == null) classes.push('mod');
         if (k.id === 'k_f' || k.id === 'k_j') classes.push('home');
-        if ((k.base && newSet.has(k.base)) || (k.id === 'k_space' && newSet.has(' '))) classes.push('is-new');
+        if (newIds.has(k.id)) classes.push('is-new');
         var style = 'flex-grow:' + k.w + ';';
         var title = '';
         if (opts.heat && k.base) {
-          var h = opts.heat[k.base];
+          // Een toets telt de fouten van al zijn tekens samen (bv. j en J).
+          var hb = opts.heat[k.base], hs = k.shift !== k.base ? opts.heat[k.shift] : null;
+          var h = hb || hs ? { n: (hb ? hb.n : 0) + (hs ? hs.n : 0), e: (hb ? hb.e : 0) + (hs ? hs.e : 0) } : null;
+          if (h) h.rate = h.n ? h.e / h.n : 0;
           if (h && h.n >= 8) {
             if (h.rate <= 0.02) {
               style += 'background:rgba(43,118,86,0.22);';
@@ -1229,7 +1626,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
               style += 'background:rgba(184,40,63,' + a.toFixed(2) + ');';
               if (a > 0.55) style += 'color:#fff;';
             }
-            title = ' title="' + esc(k.base) + ': ' + Math.round(h.rate * 100) + '% fouten (' + h.n + ' aanslagen)"';
+            title = ' title="' + esc(k.base === k.shift || !hs ? k.base : k.base + ' ' + k.shift) + ': ' + Math.round(h.rate * 100) + '% fouten (' + h.n + ' aanslagen)"';
           }
         }
         html += '<div class="' + classes.join(' ') + '" data-k="' + k.id + '" style="' + style + '"' + title + '>';
@@ -1259,7 +1656,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
       '<g transform="translate(600 0) scale(-1 1)">' + hand('r') + '</g>' +
       '</svg>';
   }
-  function setFingers(list) {
+  function setFingers(list, text) {
     var area = document.getElementById('kb-area');
     if (!area) return;
     area.querySelectorAll('.finger.on').forEach(function (f) { f.classList.remove('on'); });
@@ -1268,15 +1665,32 @@ p { margin: 0 0 12px; max-width: 68ch; }
     });
     var label = document.getElementById('finger-label');
     if (label) {
-      if (list && list.length === 1) label.textContent = 'Gebruik je ' + FINGER_NAME[list[0]] + '.';
+      if (text) label.textContent = text;
+      else if (list && list.length === 1) label.textContent = 'Gebruik je ' + FINGER_NAME[list[0]] + '.';
       else label.textContent = '';
     }
   }
+  // Shift hoort bij de andere hand dan de toets.
+  function shiftIdFor(key) { return key.finger.charAt(0) === 'l' ? 'k_rshift' : 'k_lshift'; }
+  function keyIdsFor(chars) {
+    var ids = new Set();
+    chars.forEach(function (ch) {
+      if (ch === ' ') { ids.add('k_space'); return; }
+      var m = CHARMAP.get(ch);
+      if (!m) return;
+      ids.add(m.key.id);
+      if (m.shift) ids.add(shiftIdFor(m.key));
+    });
+    return ids;
+  }
   function fingersFor(chars) {
     var out = [];
+    function add(f) { if (out.indexOf(f) < 0) out.push(f); }
     chars.forEach(function (c) {
       var m = CHARMAP.get(c);
-      if (m && out.indexOf(m.key.finger) < 0) out.push(m.key.finger);
+      if (!m) return;
+      add(m.key.finger);
+      if (m.shift) add(shiftIdFor(m.key) === 'k_rshift' ? 'rp' : 'lp');
     });
     return out;
   }
@@ -1453,7 +1867,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
     // In een les toont de stappenbalk al welke oefening bezig is; bij vrij oefenen tonen we de naam.
     app.innerHTML = head + '<section class="run' + (help === 'none' ? ' no-kb' : '') + '" id="run">' +
       (FLOW.kind === 'lesson' ? '' : '<div class="run-top"><h2>' + esc(ex.name) + '</h2></div>') +
-      '<div class="strip" id="strip" tabindex="-1" aria-label="Tekst om te typen">' + stripHTML(text) + '</div>' +
+      '<div class="strip" id="strip" tabindex="-1" aria-label="Tekst om te typen"><div class="strip-lines" id="strip-lines">' + stripHTML(text) + '</div></div>' +
       '<div class="stats"><span><b id="st-apm">\u2013</b>aanslagen per minuut</span><span><b id="st-acc">\u2013</b>nauwkeurig</span><span><b id="st-time">0:00</b>tijd</span>' +
       '<span class="run-hint" id="run-hint">Begin met typen wanneer je klaar bent. Esc stopt de oefening.</span></div>' +
       '<p class="caps" id="caps" hidden>Caps Lock staat aan. Zet hem uit om verder te typen.</p>' +
@@ -1489,11 +1903,12 @@ p { margin: 0 0 12px; max-width: 68ch; }
     if (span) {
       span.classList.add('cur');
       // De regel waarop je typt, staat bovenaan in de strook; de volgende regel staat eronder.
-      var strip = document.getElementById('strip');
-      if (strip && span.offsetTop !== R.lineTop) {
+      // Het binnenblok zonder opvulling schuift, zodat er geen halve regel bovenaan blijft staan.
+      var lines = document.getElementById('strip-lines');
+      if (lines && span.offsetTop !== R.lineTop) {
         R.lineTop = span.offsetTop;
         if (R.firstTop == null) R.firstTop = R.spans[0].offsetTop;
-        strip.scrollTop = Math.max(0, span.offsetTop - R.firstTop);
+        lines.scrollTop = Math.max(0, span.offsetTop - R.firstTop);
       }
     }
     updateHint(false);
@@ -1518,14 +1933,15 @@ p { margin: 0 0 12px; max-width: 68ch; }
     if (!m) { setFingers([]); return; }
     var el = area.querySelector('[data-k="' + m.key.id + '"]');
     if (el) el.classList.add('is-next');
-    var fingers = [m.key.finger];
+    var fingers = [m.key.finger], text = null;
     if (m.shift) {
-      var sid = m.key.finger.charAt(0) === 'l' ? 'k_rshift' : 'k_lshift';
+      var sid = shiftIdFor(m.key);
       var sk = area.querySelector('[data-k="' + sid + '"]');
       if (sk) sk.classList.add('is-next');
       fingers.push(sid === 'k_rshift' ? 'rp' : 'lp');
+      text = 'Gebruik je ' + FINGER_NAME[m.key.finger] + ', met de ' + (sid === 'k_rshift' ? 'rechter' : 'linker') + '-Shift.';
     }
-    setFingers(fingers);
+    setFingers(fingers, text);
   }
   function updateStats() {
     var R = RUN;
@@ -1710,7 +2126,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
       app.innerHTML = html; return;
     }
     var weak = weakestKeys(known);
-    html += '<p>Je oefent met de ' + known.length + ' letters die je al kent. Toetsen waarop je vaak fouten maakt, komen vaker terug.</p>' +
+    html += '<p>Je oefent met alle toetsen die je al kent. Toetsen waarop je vaak fouten maakt, komen vaker terug.</p>' +
       '<p class="muted">Je zwakste toetsen op dit moment: ' + weak.map(esc).join(', ') + '.</p>' +
       '<div class="actions"><button class="btn" data-act="free" data-primary>Start een oefening</button></div>' +
       '<p class="hint">Een vrije oefening telt mee in je statistieken, maar niet voor de lessen.</p>';
@@ -1792,7 +2208,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
     var heat = {};
     Object.keys(S.keys).forEach(function (c) {
       var k = S.keys[c], n = k.h + k.e;
-      heat[c] = { n: n, rate: n ? k.e / n : 0 };
+      heat[c] = { n: n, e: k.e, rate: n ? k.e / n : 0 };
     });
     var fingers = {};
     Object.keys(S.keys).forEach(function (c) {
@@ -1948,7 +2364,8 @@ p { margin: 0 0 12px; max-width: 68ch; }
     version: APP_VERSION, state: function () { return S; }, modules: MODULES, lessons: ALL_LESSONS, known: KNOWN,
     planFor: planFor, makeCtx: makeCtx, run: function () { return RUN; }, flow: function () { return FLOW; },
     exportJSON: exportJSON, importJSON: importJSON, migrate: migrate, layout: function () { return LAYOUT; },
-    words: WORDS, sentences: SENTENCES, weakestKeys: weakestKeys
+    words: WORDS, sentences: SENTENCES, names: NAMES, weakestKeys: weakestKeys,
+    allowed: function (id) { return (KNOWN[id] || []).concat([' ']); }
   };
 
   document.getElementById('version').textContent = APP_VERSION;
