@@ -438,12 +438,13 @@ def main():
         def counts():
             return page.evaluate("() => { const R = window.__dactylo.run(); return [R.pos, R.keystrokes, R.errors]; }")
         if "m7-aanhaling" in ids:
-            target = open_until("m7-aanhaling", "'\"")
-            curly = "\u2019" if target == "'" else "\u201d"
-            before = counts()
-            page.evaluate("(ch) => document.getElementById('catch').dispatchEvent(new InputEvent('input', { inputType: 'insertText', data: ch, bubbles: true }))", curly)
-            check([a - b for a, b in zip(counts(), before)] == [1, 1, 0], f"slim aanhalingsteken {curly} telt als {target}")
-            page.keyboard.press("Escape")
+            # macOS in het Nederlands: ’ voor de apostrof, „ als openend aanhalingsteken
+            for target, curly in (("'", "\u2019"), ('"', "\u201e")):
+                open_until("m7-aanhaling", target)
+                before = counts()
+                page.evaluate("(ch) => document.getElementById('catch').dispatchEvent(new InputEvent('input', { inputType: 'insertText', data: ch, bubbles: true }))", curly)
+                check([a - b for a, b in zip(counts(), before)] == [1, 1, 0], f"slim aanhalingsteken {curly} telt als {target}")
+                page.keyboard.press("Escape")
         if "m7-punt" in ids:
             target = open_until("m7-punt", ".?")
             hint = page.evaluate("""() => ({ keys: Array.from(document.querySelectorAll('#kb-area .key.is-next')).map(k => k.dataset.k).sort(),

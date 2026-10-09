@@ -280,7 +280,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
 (function () {
   'use strict';
 
-  var APP_VERSION = '0.5.0';
+  var APP_VERSION = '0.5.1';
   var STORAGE_KEY = 'dactylo-be-azerty';
   var SCHEMA = 1;
 
@@ -2656,7 +2656,8 @@ p { margin: 0 0 12px; max-width: 68ch; }
      bevestigd worden: zie tests/MANUEEL-safari.md). Keydown blijft voor Esc, Enter, Tab en Backspace. */
   var COMPOSING = false;
   var COMPOSED = null;   // tekst van de laatste compositie, tot de volgende toetsaanslag
-  var QUOTES = { '\u2018': "'", '\u2019': "'", '\u201c': '"', '\u201d': '"' };
+  // Slimme aanhalingstekens van macOS (in het Nederlands ook „ en ‚) tellen als ' en ".
+  var QUOTES = { '\u2018': "'", '\u2019': "'", '\u201a': "'", '\u201c': '"', '\u201d': '"', '\u201e': '"', '\u00ab': '"', '\u00bb': '"' };
   function focusCatch() {
     var el = document.getElementById('catch');
     if (el && document.activeElement !== el) el.focus({ preventScroll: true });

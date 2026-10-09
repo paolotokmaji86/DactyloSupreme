@@ -67,8 +67,11 @@ cursor: één aanslag mag maar één teken verder gaan.
 
 ## Module 7: leestekens
 
-21. Les 7.4 (aanhalingsteken en apostrof): typ ' en ". Ze tellen als juist. Staat in macOS
-    "Slimme aanhalingstekens" aan, dan tellen ook ’ en ” als juist.
+21. Les 7.4 (aanhalingsteken en apostrof): typ ' (toets van de 4) en " (toets van de 3). Doe dat
+    één keer met "Gebruik slimme aanhalingstekens en streepjes" aan (Systeeminstellingen >
+    Toetsenbord > Tekstinvoer > Wijzig…; standaard staat het aan) en één keer met de optie uit.
+    Verwacht: beide tellen als juist en de cursor gaat telkens één teken verder. Gaat het mis,
+    noteer dan welk teken verscheen (de app kent ’ ‘ ‚ “ ” „ « »).
 22. Les 7.7 (punt en vraagteken): de punt typ je met linker-Shift + puntkomma, het vraagteken met
     linker-Shift + komma. Het toetsenbord op het scherm toont telkens de linker-Shift.
 
