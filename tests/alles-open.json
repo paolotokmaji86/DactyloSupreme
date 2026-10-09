@@ -1,0 +1,474 @@
+{
+ "schema": 1,
+ "created": 1791450000000,
+ "settings": {
+  "name": "",
+  "layout": "mac",
+  "errorMode": "block",
+  "help": "auto",
+  "theme": "auto"
+ },
+ "lessons": {
+  "m1-houding": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m1-vingers": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m1-beginmeting": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m2-dk": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m2-sl": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m2-sdfjkl": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m2-qm": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m2-qm-oef": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m2-gh": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m2-gh-oef": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m2-herh1": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m2-herh2": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m2-toets": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m3-ap": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m3-ap-oef": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m3-zo": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m3-zo-oef": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m3-ei": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m3-ru": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m3-erui-oef": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m3-ty": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m3-ty-oef": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m3-woorden": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m3-zinnen": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m3-herh1": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m3-herh2": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m3-zwak": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m3-toets": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m4-wx": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m4-wx-oef": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m4-cv": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m4-cv-oef": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m4-bn": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m4-bn-oef": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m4-woorden": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m4-zinnen": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m4-herh": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m4-zwak": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m4-toets": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m5-shift-links": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m5-shift-links-oef": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m5-shift-rechts": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m5-shift-rechts-oef": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m5-namen": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m5-zinnen": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m5-herh": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m5-toets": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m6-ee": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m6-ee-oef": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m6-ca": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m6-circ": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m6-trema": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m6-trema-oef": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m6-woorden": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m6-herh": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m6-zwak": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m6-toets": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  }
+ },
+ "sessions": [],
+ "keys": {},
+ "days": {},
+ "totalMs": 0,
+ "baseline": null
+}

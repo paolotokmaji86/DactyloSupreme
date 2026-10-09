@@ -212,6 +212,8 @@ p { margin: 0 0 12px; max-width: 68ch; }
 .ch.flash { background: var(--err-bg); box-shadow: inset 0 -3px 0 var(--error); }
 .stats { display: flex; flex-wrap: wrap; gap: 6px 28px; margin: 14px 2px 0; color: var(--muted); font-size: 15px; }
 .stats b { color: var(--ink); font-size: 21px; margin-right: 5px; font-variant-numeric: tabular-nums; }
+/* Verborgen tekstveld dat de getypte tekens opvangt (ook die met een dode toets). */
+.catch { position: fixed; top: 0; left: 0; width: 1px; height: 1px; padding: 0; border: 0; margin: 0; opacity: 0; resize: none; overflow: hidden; pointer-events: none; }
 .caps { margin: 12px 0 0; padding: 8px 12px; border-radius: 8px; background: var(--err-bg); color: var(--ink); font-weight: 700; }
 .kb-area { margin-top: 22px; }
 .result h2 { font-size: 28px; }
@@ -278,7 +280,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
 (function () {
   'use strict';
 
-  var APP_VERSION = '0.3.0';
+  var APP_VERSION = '0.4.0';
   var STORAGE_KEY = 'dactylo-be-azerty';
   var SCHEMA = 1;
 
@@ -453,7 +455,21 @@ p { margin: 0 0 12px; max-width: 68ch; }
     'uitzicht echtgenoot achternaam gedachte verlichting achtergrond nachtwinkel schaal schuld schrift schets schijf ' +
     'schouder schuur schuim schaduw schade schat scheren verschil landschap vriendschap boodschap eigenschap ' +
     'gereedschap afscheid tijdschrift handschoen scherp schrikken schreeuwen schrijver schuin schaken schema ' +
-    'schilderij schimmel schommel schotel schouwburg schroef schuilen').trim().split(/\s+/)));
+    'schilderij schimmel schommel schotel schouwburg schroef schuilen' +
+ // module 6: woorden met accenten
+ ' één café cafés cafébaas privé privéleven cliché clichés comité comités logé rosé attaché hé coupé resumé paté ' +
+ 'consommé communiqué fiancé negligé decolleté canapé variété oké macramé blasé passé defilé crème ' +
+ 'crèmekleurig scène scènes carrière carrières carrièreplanning barrière première misère bèta hè ampère cortège ' +
+ 'crèche crèches volière cafetière chèvre gruyère suède façade façades reçu garçon ' +
+ 'garçons curaçao voilà enquête enquêtes enquêteur enquêteurs ' +
+ 'enquêteren enquêtecommissie crêpe crêpes crêperie crêpepapier crêpezool gêne mêlee fêteren ' +
+ ' rhônewijn ideeën ideeënbus zeeën knieën financiën efficiënt efficiëntie patiënt patiënte ' +
+ 'cliënt cliënteel ingrediënt ingrediëntenlijst poëzie poëtisch skiën skiër coëfficiënt oriëntatie kopiëren ' +
+ 'variëren financiële officiële tweeën theorieën categorieën allergieën beëindigen geëerd geërgerd reëel ruïne ' +
+ 'naïef naïeve naïviteit geïnteresseerd beïnvloeden egoïst egoïsme mozaïek cafeïne proteïne heroïsch geïnspireerd ' +
+ 'geïnformeerd geïsoleerd continuïteit archaïsch pinguïn linguïst coördinator coördinatie coördineren coöperatie ' +
+ 'coöperatief zoölogie zoöloog föhn föhnen röntgenfoto coöpteren reünie reünies reünist vacuüm vacuümverpakt ' +
+ 'vacuümpomp continuüm überhaupt').trim().split(/\s+/)));
 
   // Zinnen staan in hun volledige vorm: hoofdletter vooraan, leestekens. sentenceForm() laat
   // de hoofdletter vooraan en de punt achteraan weg zolang die nog niet gekend zijn; een zin met
@@ -652,7 +668,57 @@ p { margin: 0 0 12px; max-width: 68ch; }
     'Lien drinkt een warme chocolademelk op de markt van Brugge.', 'Koen verkoopt verse vis op de markt in Oostende.',
     'De bus van Hasselt naar Genk is vol.', 'Griet stuurt Tom een bericht over de vergadering.',
     'Joke typt elke dag een kwartier zonder te kijken.', 'Marie wandelt op zondag door de Kempen.',
-    'Jonas bakt wafels voor de verjaardag van zijn zus.'
+    'Jonas bakt wafels voor de verjaardag van zijn zus.',
+    // module 6: zinnen met accenten
+    'Ik drink elke ochtend één kop koffie op het terras.', 'Het café op de hoek gaat om zeven uur open.',
+    'Zij werkt als coördinator bij een organisatie in Gent.', 'De reünie van onze klas vindt plaats in Brugge.',
+    'Op de reünie zagen we veel oude bekenden terug.', 'We hebben veel nieuwe ideeën voor het project.',
+    'Mijn broer woont al tien jaar in het zuiden van België.',
+    'Veel toeristen bezoeken België voor de steden en de kust.',
+    'De ruïne van het oude kasteel trekt veel bezoekers.', 'Het was naïef om te denken dat het vanzelf zou lukken.',
+    'De patiënt wacht rustig in de wachtzaal van de dokter.', 'Ze werkt snel en efficiënt aan haar nieuwe opdracht.',
+    'Hij leest graag poëzie op een rustige avond.', 'Het skiën in de Ardennen hangt af van de sneeuw.',
+    'In de winter smeer ik elke avond crème op mijn handen.',
+    'De enquête over het nieuwe zwembad loopt nog een week.', 'Op de markt staat een kraam met verse crêpes.',
+    'Je kunt hier à la carte eten of het dagmenu nemen.', 'Hij houdt zijn werk en zijn privéleven strikt gescheiden.',
+    'De façade van het oude stadhuis wordt volgend jaar gerenoveerd.',
+    'Vraag altijd een reçu als bewijs van betaling.', 'Na de laatste scène bleef het even stil in de zaal.',
+    'Ze maakte een mooie carrière in het onderwijs.', 'Voor de lunch nemen we een broodje met paté.',
+    'De diëtiste stelt voor elke patiënt een gezond menu op.',
+    'Lees de lijst met ingrediënten goed voordat je begint.', 'Het comité organiseert in de herfst een wandeling.',
+    'De crèche in onze straat heeft nog een plaats vrij.', 'Na de première gingen de acteurs samen iets drinken.',
+    'De vogels in de volière zingen al vroeg in de ochtend.',
+    'Zij houdt de financiën van de vereniging nauwkeurig bij.', 'Deze zomer fietsen we langs de oevers van de Rhône.',
+    'Thee bevat minder cafeïne dan een kop sterke koffie.', 'Het mozaïek in de oude kerk is prachtig gerestaureerd.',
+    'Ik ben erg geïnteresseerd in de geschiedenis van Antwerpen.',
+    'Je wordt per mail geïnformeerd over de nieuwe uurregeling.',
+    'Het nieuwe programma is gisteren op alle computers geïnstalleerd.',
+    'De boerderij ligt wat geïsoleerd tussen de velden.',
+    'Na de lange vergadering was iedereen een beetje geïrriteerd.',
+    'De sfeer in een team beïnvloedt ook de resultaten.', 'Het huurcontract wordt eind deze maand beëindigd.',
+    'De wedstrijd is in een gelijkspel geëindigd.', 'Alle kopieën liggen klaar op de tafel in de vergaderzaal.',
+    'We sorteren de boeken in verschillende categorieën.', 'Vermeld eventuele allergieën bij je reservatie.',
+    'Een goede hygiëne in de keuken is erg belangrijk.', 'Met een kaart en een kompas leer je je oriënteren.',
+    'De nieuwe cliënt wordt morgen om tien uur verwacht.', 'De röntgenfoto toont dat de pols niet gebroken is.',
+    'De coöperatie verkoopt groenten van boeren uit de streek.',
+    'Hij studeerde zoölogie aan de universiteit van Leuven.',
+    'De koffie zit in een vacuümverpakking en blijft lang vers.', 'Mijn ouders zijn vorig jaar naar Zürich verhuisd.',
+    'Volgende week neem ik de nachttrein naar München.', 'Mijn zus werkt sinds kort in Düsseldorf.',
+    'Twee à drie keer per week ga ik zwemmen.', 'De levering duurt meestal vier à vijf werkdagen.',
+    'We drinken een glas rosé op het terras.', 'Mijn neef is dit weekend onze logé.',
+    'Hij vertelde zonder enige gêne over zijn fouten.', 'Na de overwinning werd de ploeg uitgebreid gefêteerd.',
+    'Na de val had hij pijn aan beide knieën.', 'Hij volgt een cursus macramé in het cultureel centrum.',
+    'Het feest was geïmproviseerd maar toch erg geslaagd.', 'De barrière aan de overweg gaat zo meteen omhoog.',
+    'Het was een misère om een plaats op de parking te vinden.', 'Michaël en Chloë komen vanavond bij ons eten.',
+    'Zoë heeft gisteren haar rijbewijs gehaald.', 'Daniël herstelt zelf zijn fiets in de garage.',
+    'Op vakantie houden we na de lunch graag een siësta.', 'Dat is een reëel risico voor de planning.',
+    'Egoïsme past niet in een goed team.', 'De drie skiërs dalen voorzichtig de steile helling af.',
+    'Ik bak de kip met Provençaalse kruiden.', 'Op de receptie werden kleine canapés geserveerd.',
+    'Hij leest een geïllustreerd boek over vogels.', 'Deze wijn wordt geïmporteerd uit het zuiden van Frankrijk.',
+    'Een goede coördinatie tussen de diensten is noodzakelijk.', 'Ze hebben samen een coöperatieve winkel opgericht.',
+    'De nieuwe medewerker is geïnspireerd door zijn vorige job.', 'Die uitdrukking is intussen een beetje passé.',
+    'Hij gebruikt in elke toespraak hetzelfde cliché.', 'Ze zeilden samen over alle zeeën van de wereld.',
+    'Bij de kaas drinken we een fles rhônewijn.', 'Bij het aperitief serveren we toast met paté.'
   ];
 
   // Eigennamen: steden, gemeenten en voornamen, met hoofdletter.
@@ -923,7 +989,45 @@ p { margin: 0 0 12px; max-width: 68ch; }
         'Let op de juiste Shift: altijd aan de andere kant dan de letter.'
       ] })
     ] },
-    { id: 'm6', nr: 6, phase: 1, title: 'Accenten', planned: 10, desc: '\u00e9 \u00e8, \u00e7 \u00e0, \u00f9 en ^ (\u00ea), \u00a8 (\u00eb \u00ef)', lessons: [] },
+    { id: 'm6', nr: 6, phase: 1, title: 'Accenten', planned: 10, desc: '\u00e9 \u00e8, \u00e7 \u00e0, \u00f9 en ^ (\u00ea), \u00a8 (\u00eb \u00ef \u00f6 \u00fc)', lessons: [
+      L('m6-ee', '\u00e9 en \u00e8', 'new', { add: '\u00e9\u00e8', intro: [
+        'De \u00e9 staat zonder Shift op de toets van de 2. Typ hem met je linkerringvinger: strek hem vanaf de s schuin omhoog, voorbij de z.',
+        'De \u00e8 staat op de toets van de 7. Typ hem met je rechterwijsvinger, vanaf de j schuin omhoog, voorbij de u.',
+        'Keer na de aanslag meteen terug naar de thuisrij.'
+      ] }),
+      L('m6-ee-oef', '\u00e9 en \u00e8 oefenen', 'practice', { focus: '\u00e9\u00e8', help: 'hint', intro: [
+        'Je oefent de \u00e9 en de \u00e8, los en in woorden zoals \u00e9\u00e9n, caf\u00e9 en cr\u00e8me.'
+      ] }),
+      L('m6-ca', '\u00e7 en \u00e0', 'new', { add: '\u00e7\u00e0', intro: [
+        'De \u00e7 staat op de toets van de 9. Typ hem met je rechterringvinger, vanaf de l schuin omhoog, voorbij de o.',
+        'De \u00e0 staat op de toets van de 0. Typ hem met je rechterpink, vanaf de m schuin omhoog, voorbij de p.'
+      ] }),
+      L('m6-circ', '\u00f9 en het dakje (^)', 'new', { add: '\u00f9\u00ea\u00e2\u00f4', intro: [
+        'De \u00f9 staat rechts naast de m. Typ hem met je rechterpink.',
+        'Het dakje ^ staat rechts naast de p. Het is een dode toets: als je hem aanslaat, verschijnt er nog niets. Typ daarna de letter, en het dakje komt erop: ^ en dan e geeft \u00ea. Zo typ je ook \u00e2 en \u00f4.',
+        'Typ het dakje met je rechterpink en de letter daarna gewoon met de vinger die erbij hoort.'
+      ] }),
+      L('m6-trema', 'Het trema (\u00a8)', 'new', { add: '\u00eb\u00ef\u00f6\u00fc', intro: [
+        'Het trema \u00a8 staat op dezelfde toets als het dakje, met Shift. Hou met je linkerpink de linker-Shift ingedrukt en sla met je rechterpink de toets rechts naast de p aan.',
+        'Ook het trema is een dode toets. Laat Shift los en typ dan de letter: \u00a8 en dan e geeft \u00eb. Hou je Shift te lang vast, dan krijg je \u00cb.',
+        'Zo typ je ook \u00ef, \u00f6 en \u00fc, zoals in idee\u00ebn, ru\u00efne, co\u00f6rdinator en re\u00fcnie.'
+      ] }),
+      L('m6-trema-oef', 'Trema oefenen', 'practice', { focus: '\u00eb\u00ef\u00f6\u00fc', help: 'hint', intro: [
+        'Je oefent het trema in woorden. In het Nederlands komen vooral \u00eb en \u00ef veel voor.'
+      ] }),
+      L('m6-woorden', 'Woorden met accenten', 'words', { focus: 'éèçàùêâôëïöü', help: 'hint', intro: [
+        'Je typt gewone woorden met accenten door elkaar: \u00e9\u00e9n, caf\u00e9, idee\u00ebn, enqu\u00eate, fa\u00e7ade, ru\u00efne.'
+      ] }),
+      L('m6-herh', 'Herhaling accenten', 'review', { focus: 'éèçàùêâôëïöü', help: 'hint', intro: [
+        'Een herhaling van alle accenten. Je zwakste toetsen komen vaker terug.'
+      ] }),
+      L('m6-zwak', 'Je zwakste toetsen', 'weak', { help: 'hint', intro: [
+        'Deze les is op maat: de toetsen waarop je tot nu toe de meeste fouten maakte, komen vaker terug.'
+      ] }),
+      L('m6-toets', 'Moduletoets accenten', 'moduletest', { focus: 'éèçàùêâôëïöü', help: 'hint', intro: [
+        'Dit is de moduletoets van de accenten. Haal minstens 95% nauwkeurigheid om de module af te ronden.'
+      ] })
+    ] },
     { id: 'm7', nr: 7, phase: 1, title: 'Leestekens', planned: 12, desc: ', ; ! : " \' ( ) - ? .', lessons: [] },
     { id: 'm8', nr: 8, phase: 1, title: 'Cijfers', planned: 8, desc: '1 tot 0 met Shift, datums, bedragen, nummers', lessons: [] },
     { id: 'm9', nr: 9, phase: 1, title: 'Tekens en bediening', planned: 9, desc: '@ \u20ac % / + = & # *, Enter, Backspace, Tab', lessons: [] },
@@ -1062,6 +1166,10 @@ p { margin: 0 0 12px; max-width: 68ch; }
     return v === 'auto' ? (detectMac() ? 'mac' : 'win') : v;
   }
 
+  // Tekens met een dode toets: eerst ^ (of ¨ = Shift + ^), dan de letter. Ze staan niet in
+  // CHARMAP; de hint toont beide stappen.
+  var DEAD = { '\u00ea': ['^', 'e'], '\u00e2': ['^', 'a'], '\u00f4': ['^', 'o'], '\u00eb': ['\u00a8', 'e'], '\u00ef': ['\u00a8', 'i'], '\u00f6': ['\u00a8', 'o'], '\u00fc': ['\u00a8', 'u'] };
+
   var LAYOUT = buildLayout(variant());
   var CHARMAP = buildCharMap(LAYOUT);
   function refreshLayout() { LAYOUT = buildLayout(variant()); CHARMAP = buildCharMap(LAYOUT); }
@@ -1113,7 +1221,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
   function isLetter(ch) { return /^[a-zéèçàùêâôëïöü]$/.test(ch); }
   function isCap(ch) { return /^[A-Z]$/.test(ch); }
   function isDigit(ch) { return /^[0-9]$/.test(ch); }
-  function keyOf(ch) { var m = CHARMAP.get(ch); return m ? m.key : null; }
+  function keyOf(ch) { var m = CHARMAP.get(ch) || (DEAD[ch] ? CHARMAP.get(DEAD[ch][1]) : null); return m ? m.key : null; }
   function handOf(ch) { var k = keyOf(ch); return k ? k.finger.charAt(0) : 'l'; }
   function anchorOf(ch) {
     if (HOME[ch]) return HOME[ch];
@@ -1171,9 +1279,10 @@ p { margin: 0 0 12px; max-width: 68ch; }
       weights: keyWeights(known), pools: poolsFor(known)
     };
   }
-  // Willekeurige lettercombinaties gebruiken a tot z; een letter met accent alleen als de les erop focust.
+  // Willekeurige lettercombinaties gebruiken a tot z; een letter met accent komt er alleen bij via de
+  // focus (comboPiece vervangt hoogstens één letter door een focusletter).
   function comboLettersOf(letters, focus) {
-    var out = letters.filter(function (ch) { return /^[a-z]$/.test(ch) || focus.indexOf(ch) >= 0; });
+    var out = letters.filter(function (ch) { return /^[a-z]$/.test(ch); });
     return out.length ? out : letters;
   }
   function hasWords(lesson, known) {
@@ -1379,11 +1488,19 @@ p { margin: 0 0 12px; max-width: 68ch; }
     if (pool.length < 6) return null;
     var next = wordPicker(c, pool, focus && focus.length ? new Set(focus) : null);
     // Om het andere woord een woord met de volgende focusletter, zodat elke focusletter aan bod komt.
+    // Een focusletter met minder dan 3 woorden (zoals à, ù, ô) zou in elke tekst hetzelfde woord geven:
+    // die letter oefen je in de drills en lettergroepjes.
     var withF = (focus || []).map(function (f) { return pool.filter(function (w) { return w.indexOf(f) >= 0; }); })
-      .filter(function (p) { return p.length > 0; });
-    var k = 0;
+      .filter(function (p) { return p.length >= 3; });
+    for (var i = withF.length - 1; i > 0; i--) { var j = Math.floor(c.r() * (i + 1)); var t = withF[i]; withF[i] = withF[j]; withF[j] = t; }
+    var k = 0, used = new Set();
     return fillTo(target, function () {
-      if (withF.length && k++ % 2 === 0) return pick(withF[(k >> 1) % withF.length], c.r);
+      if (withF.length && k++ % 2 === 0) {
+        var cand = withF[(k >> 1) % withF.length], fresh = cand.filter(function (w) { return !used.has(w); });
+        var w = pick(fresh.length ? fresh : cand, c.r);
+        used.add(w);
+        return w;
+      }
       return next();
     });
   }
@@ -1545,7 +1662,11 @@ p { margin: 0 0 12px; max-width: 68ch; }
       case 'words':
         return [
           ex('Opwarming', function (c) { return mixedText(c, LEN.ex, 0.3); }),
-          ex('Korte woorden', function (c) { return wordsText(c, LEN.ex, c.focus, { maxLen: 4 }) || mixedText(c, LEN.ex, 0.5); }),
+          ex('Korte woorden', function (c) {
+            // Korte woorden met een accent zijn zeldzaam: in een les over accenten tot 6 letters.
+            var max = /[\u00e9\u00e8\u00e7\u00e0\u00f9\u00ea\u00e2\u00f4\u00eb\u00ef\u00f6\u00fc]/.test(lesson.focus || '') ? 6 : 4;
+            return wordsText(c, LEN.ex, c.focus, { maxLen: max }) || mixedText(c, LEN.ex, 0.5);
+          }),
           ex('Langere woorden', function (c) { return wordsText(c, LEN.ex, c.focus, { minLen: 5 }) || mixedText(c, LEN.ex, 0.5); }),
           ex('Woorden door elkaar', function (c) { return focusWordsText(c, LEN.ex) || mixedText(c, LEN.ex, 0.5); }),
           ex('Slottoets', function (c) { return focusWordsText(c, LEN.test) || mixedText(c, LEN.test, 0.5); }, true)
@@ -1676,6 +1797,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
     var ids = new Set();
     chars.forEach(function (ch) {
       if (ch === ' ') { ids.add('k_space'); return; }
+      if (DEAD[ch]) { keyIdsFor(DEAD[ch]).forEach(function (id) { ids.add(id); }); return; }
       var m = CHARMAP.get(ch);
       if (!m) return;
       ids.add(m.key.id);
@@ -1687,6 +1809,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
     var out = [];
     function add(f) { if (out.indexOf(f) < 0) out.push(f); }
     chars.forEach(function (c) {
+      if (DEAD[c]) { fingersFor(DEAD[c]).forEach(add); return; }
       var m = CHARMAP.get(c);
       if (!m) return;
       add(m.key.finger);
@@ -1868,6 +1991,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
     app.innerHTML = head + '<section class="run' + (help === 'none' ? ' no-kb' : '') + '" id="run">' +
       (FLOW.kind === 'lesson' ? '' : '<div class="run-top"><h2>' + esc(ex.name) + '</h2></div>') +
       '<div class="strip" id="strip" tabindex="-1" aria-label="Tekst om te typen"><div class="strip-lines" id="strip-lines">' + stripHTML(text) + '</div></div>' +
+      '<textarea id="catch" class="catch" tabindex="-1" aria-hidden="true" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>' +
       '<div class="stats"><span><b id="st-apm">\u2013</b>aanslagen per minuut</span><span><b id="st-acc">\u2013</b>nauwkeurig</span><span><b id="st-time">0:00</b>tijd</span>' +
       '<span class="run-hint" id="run-hint">Begin met typen wanneer je klaar bent. Esc stopt de oefening.</span></div>' +
       '<p class="caps" id="caps" hidden>Caps Lock staat aan. Zet hem uit om verder te typen.</p>' +
@@ -1877,10 +2001,12 @@ p { margin: 0 0 12px; max-width: 68ch; }
     app.classList.add('running');
     if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
     var strip = document.getElementById('strip');
-    strip.focus({ preventScroll: true });
+    COMPOSING = false;
+    focusCatch();
     RUN = {
       text: text, pos: 0, keystrokes: 0, errors: 0, correct: 0, start: null, last: null, active: 0,
       perKey: {}, errPos: {}, help: help, test: ex.test, finished: false, hintTimer: null, clockTimer: null,
+      caps: false, dead: false, allowed: new Set(FLOW.known || KNOWN[FLOW.lesson.id] || []),
       spans: Array.prototype.slice.call(strip.querySelectorAll('.ch'))
     };
     markCurrent();
@@ -1929,17 +2055,27 @@ p { margin: 0 0 12px; max-width: 68ch; }
     if (!area) return;
     area.querySelectorAll('.key.is-next').forEach(function (k) { k.classList.remove('is-next'); });
     if (ch == null || ch === '') { setFingers([]); return; }
-    var m = CHARMAP.get(ch);
-    if (!m) { setFingers([]); return; }
-    var el = area.querySelector('[data-k="' + m.key.id + '"]');
-    if (el) el.classList.add('is-next');
-    var fingers = [m.key.finger], text = null;
-    if (m.shift) {
-      var sid = shiftIdFor(m.key);
-      var sk = area.querySelector('[data-k="' + sid + '"]');
-      if (sk) sk.classList.add('is-next');
-      fingers.push(sid === 'k_rshift' ? 'rp' : 'lp');
-      text = 'Gebruik je ' + FINGER_NAME[m.key.finger] + ', met de ' + (sid === 'k_rshift' ? 'rechter' : 'linker') + '-Shift.';
+    // Een teken met een dode toets in twee stappen; na de dode toets blijft enkel de letter over.
+    var seq = DEAD[ch] ? (RUN && RUN.dead === DEAD[ch][0] ? [DEAD[ch][1]] : DEAD[ch]) : [ch];
+    var fingers = [], text = null;
+    seq.forEach(function (c) {
+      var m = CHARMAP.get(c);
+      if (!m) return;
+      var el = area.querySelector('[data-k="' + m.key.id + '"]');
+      if (el) el.classList.add('is-next');
+      if (fingers.indexOf(m.key.finger) < 0) fingers.push(m.key.finger);
+      if (m.shift) {
+        var sid = shiftIdFor(m.key);
+        var sk = area.querySelector('[data-k="' + sid + '"]');
+        if (sk) sk.classList.add('is-next');
+        fingers.push(sid === 'k_rshift' ? 'rp' : 'lp');
+        if (seq.length === 1) text = 'Gebruik je ' + FINGER_NAME[m.key.finger] + ', met de ' + (sid === 'k_rshift' ? 'rechter' : 'linker') + '-Shift.';
+      }
+    });
+    if (seq.length === 2) {
+      var letter = 'dan de ' + seq[1] + ' met je ' + FINGER_NAME[CHARMAP.get(seq[1]).key.finger] + '.';
+      text = seq[0] === '^' ? 'Eerst ^ met je rechterpink, ' + letter
+        : 'Eerst ' + (shiftIdFor(CHARMAP.get('^').key) === 'k_lshift' ? 'linker' : 'rechter') + '-Shift + ^ voor \u00a8, laat Shift los, ' + letter;
     }
     setFingers(fingers, text);
   }
@@ -2207,12 +2343,13 @@ p { margin: 0 0 12px; max-width: 68ch; }
       '</div></section>';
     var heat = {};
     Object.keys(S.keys).forEach(function (c) {
-      var k = S.keys[c], n = k.h + k.e;
-      heat[c] = { n: n, e: k.e, rate: n ? k.e / n : 0 };
+      // Een teken met een dode toets (ê, ë) telt bij de ^-toets (^ of \u00a8).
+      var k = S.keys[c], at = DEAD[c] ? DEAD[c][0] : c, h = heat[at] || (heat[at] = { n: 0, e: 0 });
+      h.n += k.h + k.e; h.e += k.e; h.rate = h.n ? h.e / h.n : 0;
     });
     var fingers = {};
     Object.keys(S.keys).forEach(function (c) {
-      var m = CHARMAP.get(c);
+      var m = CHARMAP.get(DEAD[c] ? DEAD[c][0] : c);
       if (!m) return;
       var f = m.key.finger, k = S.keys[c];
       var agg = fingers[f] || (fingers[f] = { h: 0, e: 0 });
@@ -2328,6 +2465,55 @@ p { margin: 0 0 12px; max-width: 68ch; }
     }
   });
 
+  /* Tekens komen binnen via het verborgen tekstveld #catch: een gewone aanslag als input-event
+     (insertText), een teken met een dode toets (ê, ë, ...) als compositionend. Input-events die
+     bij een compositie horen, slaan we over, zodat niets dubbel telt, of ze nu vóór of na
+     compositionend komen (Chrome stuurt ze ervoor; wat Safari precies doet, moet nog op de Mac
+     bevestigd worden: zie tests/MANUEEL-safari.md). Keydown blijft voor Esc, Enter, Tab en Backspace. */
+  var COMPOSING = false;
+  var COMPOSED = null;   // tekst van de laatste compositie, tot de volgende toetsaanslag
+  var QUOTES = { '\u2018': "'", '\u2019': "'", '\u201c': '"', '\u201d': '"' };
+  function focusCatch() {
+    var el = document.getElementById('catch');
+    if (el && document.activeElement !== el) el.focus({ preventScroll: true });
+  }
+  function feed(text) {
+    var now = clockNow();
+    for (var i = 0; i < text.length; i++) {
+      if (!RUN || RUN.finished || RUN.caps) return;
+      var ch = text.charAt(i);
+      if (ch === '\n' || ch === '\r' || ch === '\t') continue;
+      RUN.dead = false;
+      typeChar(QUOTES[ch] || ch, now);
+    }
+  }
+  app.addEventListener('compositionstart', function (e) { if (e.target.id === 'catch') COMPOSING = true; });
+  app.addEventListener('compositionend', function (e) {
+    if (e.target.id !== 'catch') return;
+    COMPOSING = false;
+    var data = e.data != null ? e.data : e.target.value;
+    e.target.value = '';
+    COMPOSED = data || null;
+    // Dode toets gevolgd door een letter die er niet mee samengaat ('^r'): bij een verwacht teken met een
+    // dode toets telt dat als één fout, niet als twee.
+    if (data && data.length === 2 && (data.charAt(0) === '^' || data.charAt(0) === '\u00a8') && RUN && DEAD[RUN.text.charAt(RUN.pos)]) data = data.charAt(1);
+    if (RUN && !RUN.finished) { RUN.dead = false; updateHint(false); }
+    if (data) feed(data);
+  });
+  app.addEventListener('input', function (e) {
+    var t = e.target;
+    if (t.id !== 'catch') return;
+    var type = e.inputType || 'insertText';
+    if (e.isComposing || COMPOSING || type.indexOf('Composition') >= 0) return;
+    // Vangnet: een input-event met hetzelfde teken na compositionend (mogelijk in Safari, soms zonder
+    // herkenbaar type) telt niet nog eens.
+    if (COMPOSED !== null && e.data === COMPOSED) { COMPOSED = null; t.value = ''; return; }
+    var data = type === 'insertText' ? (e.data != null ? e.data : t.value) : '';
+    t.value = '';
+    if (data) feed(data);
+  });
+  document.addEventListener('mousedown', function () { if (RUN && !RUN.finished) setTimeout(focusCatch, 0); });
+
   document.addEventListener('keydown', function (e) {
     if (RUN && !RUN.finished) {
       if (e.key === 'Escape') {
@@ -2336,15 +2522,25 @@ p { margin: 0 0 12px; max-width: 68ch; }
         if (FLOW && FLOW.kind === 'lesson') renderIntro(); else renderFree();
         return;
       }
+      COMPOSED = null;
       if (e.metaKey || (e.ctrlKey && !e.altKey)) return;
       var caps = typeof e.getModifierState === 'function' && e.getModifierState('CapsLock');
+      RUN.caps = !!caps;
       setCaps(caps);
-      if (e.key === 'Tab' || e.key === 'Backspace' || e.key === ' ' || e.key === 'Enter') e.preventDefault();
-      if (e.isComposing || e.key === 'Dead' || e.key === 'Process' || e.key === 'Unidentified') return;
-      if (!e.key || e.key.length !== 1) return;
-      e.preventDefault();
-      if (caps) return;
-      typeChar(e.key, clockNow());
+      if (e.key === 'Enter' || e.key === 'Tab') {
+        e.preventDefault();
+        var ctl = e.key === 'Enter' ? '\n' : '\t';
+        if (!caps && RUN.allowed.has(ctl)) typeChar(ctl, clockNow());
+        return;
+      }
+      if (e.key === 'Backspace') { e.preventDefault(); return; }
+      if (e.key === 'Dead') {
+        RUN.dead = e.shiftKey ? '\u00a8' : '^';
+        // Alleen bijwerken als de hint al zichtbaar is (of altijd zichtbaar moet zijn).
+        if (RUN.help === 'full' || document.querySelector('#kb-area .key.is-next')) showNextKey(RUN.text.charAt(RUN.pos));
+      }
+      // Gewone tekens niet tegenhouden: ze komen als input-event in #catch binnen.
+      focusCatch();
       return;
     }
     var active = document.activeElement;

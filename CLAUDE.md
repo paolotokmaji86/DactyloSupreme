@@ -72,9 +72,13 @@ Belangrijkste onderdelen, in de volgorde van het script:
   `drillText()` zet via `coverFill()` elke nieuwe toets zeker in de oefening "Nieuwe toetsen"
   (de test controleert dat). `poolsFor(known)` cachet per gekende set de bruikbare woorden,
   namen (`NAMES`) en zinnen.
-- Typen: `keydown` op `document` roept `typeChar(e.key, clockNow())` op. De app vergelijkt het
-  binnenkomende teken (`event.key`) met het verwachte teken, dus het werkt op elke
-  toetsenbordindeling. Een pauze tussen twee aanslagen telt maximaal `MAX_GAP` (5 s) mee.
+- Typen: tekens komen binnen via het verborgen tekstveld `#catch`: een gewone aanslag als
+  input-event (`insertText`), een teken met een dode toets (ê, ë, ...) via `compositionend`.
+  `feed()` geeft ze aan `typeChar()`. Input-events die bij een compositie horen tellen niet, en
+  `COMPOSED` onderdrukt het input-event dat Safari na `compositionend` nog stuurt. Keydown op
+  `document` blijft voor Esc, Enter, Tab, Backspace en `Dead`. De app vergelijkt het
+  binnenkomende teken met het verwachte teken, dus het werkt op elke toetsenbordindeling. Een
+  pauze tussen twee aanslagen telt maximaal `MAX_GAP` (5 s) mee.
 - Statistieken per teken in `S.keys` (`h` = juist, `e` = fout), geteld op het verwachte teken,
   zonder spatie en zonder beginmeting. Zwakke toetsen komen vaker terug via `keyWeights()` en
   `weakestKeys()`.
@@ -124,9 +128,12 @@ verlaten wordt, begint opnieuw bij de intro.
   browser, maar Ctrl+Alt (AltGr) wordt getypt. Enter, Tab en Backspace doen niets; Esc stopt de
   oefening. `errorMode` `block` laat de cursor staan bij een fout, `continue` gaat verder en
   kleurt het teken rood. De klok start bij de eerste aanslag.
-- `CHARMAP` kent alleen de basis- en de Shift-laag. Tekens via AltGr/Option (zoals €) en via
-  dode toetsen (ê, ë, ï) krijgen geen hint. Bij een Shift-teken licht de Shift van de andere
-  hand op.
+- `CHARMAP` kent de basis- en de Shift-laag. Tekens met een dode toets staan in `DEAD`
+  (ê = ^ dan e, ë = Shift + ^ dan e) en krijgen een hint in twee stappen. `RUN.dead` onthoudt
+  welke dode toets ingedrukt werd (`^` of `¨`); alleen de juiste kort de hint in tot de letter.
+  Een geannuleerde compositie (lege `compositionend`) zet de hint terug, en `^r` bij een
+  verwacht teken met een dode toets telt als één fout. Bij een Shift-teken licht de Shift van
+  de andere hand op (`shiftIdFor()`). Op Voortgang tellen de fouten op ê en ë bij de ^-toets.
 - `PLANNED_TOTAL` is de som van alle `planned`; `planned` is ook de noemer van de
   voortgangsbalk per module en moet gelijk zijn aan het aantal lessen van een gebouwde module
   (de test controleert dat). De startpagina noemt de laatste gebouwde module zelf.
@@ -193,7 +200,7 @@ verlaten wordt, begint opnieuw bij de intro.
 | 3 Bovenrij | 1 | a p, z o, e r u i, t y | 15 | klaar |
 | 4 Onderrij | 1 | w x, c v, b n | 11 | klaar |
 | 5 Hoofdletters | 1 | Linker- en rechter-Shift | 8 | klaar |
-| 6 Accenten | 1 | é è, ç à, ù en ^ (ê), ¨ (ë ï ö ü) | 10 | te bouwen |
+| 6 Accenten | 1 | é è, ç à, ù en ^ (ê), ¨ (ë ï ö ü) | 10 | klaar |
 | 7 Leestekens | 1 | , ; ! : " ' ( ) - . ? | 12 | te bouwen |
 | 8 Cijfers | 1 | 1 tot 0 met Shift, datums, bedragen, nummers | 8 | te bouwen |
 | 9 Tekens en bediening | 1 | @ # € % / + = * &, Enter, Backspace, Tab | 9 | te bouwen |
@@ -296,7 +303,8 @@ Modules 12 en 13: `none`. Via Instellingen kan de gebruiker de hulp altijd zelf 
 3. **Hoofdletters en leestekens in teksten** (modules 5 en 7). Gebruik ze nooit vóór de les
    waarin ze aangeleerd worden. Eigennamen met een hoofdletter. Hoofdletters zijn klaar in 0.3.0
    (`sentenceForm()`, `NAMES`, `pieceWith()`); leestekens volgen in module 7.
-4. **Dode toetsen** (module 6). Bij ^ en ¨ sturen browsers op macOS vaak compositie-events, en
+4. **Dode toetsen** (module 6). Klaar in 0.4.0 (zie "Typen" hierboven); manueel te testen met
+   `tests/MANUEEL-safari.md`. Oorspronkelijke opdracht: bij ^ en ¨ sturen browsers op macOS vaak compositie-events, en
    de keydown van de afsluitende letter kan `isComposing = true` hebben. De huidige handler
    slaat zulke events over, waardoor ê en ë nooit zouden binnenkomen. Vang tekens daarom op via
    een verborgen, gefocust tekstveld met `beforeinput`, `input` en `compositionend`; keydown
@@ -318,7 +326,7 @@ Modules 12 en 13: `none`. Via Instellingen kan de gebruiker de hulp altijd zelf 
 ## Openstaande punten
 
 - Mac-indeling van @, # en € controleren vóór module 9.
-- Dode toetsen testen op haar Mac in Safari, bij module 6.
+- Dode toetsen testen op haar Mac in Safari, met de lijst in `tests/MANUEEL-safari.md`.
 - Google Fonts laden niet in een testomgeving zonder internet. Op de echte site controleren.
 
 ## Testen
@@ -363,6 +371,12 @@ nieuw gedrag.
 
 De voortgang staat in `localStorage` per adres: `localhost`, `file://` en de echte site hebben
 elk hun eigen voortgang.
+
+`TYPE_JS` in de test typt zoals een echt toetsenbord: een keydown op het document en een
+input-event in `#catch`; `COMPOSE_JS` bootst een dode toets na in de volgorde van Chrome en van
+Safari. Wat de test niet kan nabootsen, staat in `tests/MANUEEL-safari.md` (manuele test op de
+Mac). `tests/alles-open.json` is een back-up waarin alle lessen geslaagd zijn, om elke les te
+kunnen openen bij een manuele test; nooit terugzetten in de app van de gebruiker zelf.
 
 ## Na elke module
 
