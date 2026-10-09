@@ -280,7 +280,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
 (function () {
   'use strict';
 
-  var APP_VERSION = '0.4.0';
+  var APP_VERSION = '0.5.0';
   var STORAGE_KEY = 'dactylo-be-azerty';
   var SCHEMA = 1;
 
@@ -361,7 +361,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
     'huis tuin deur raam muur dak trap kamer keuken tafel stoel bed kast lamp boek pen potlood papier brief kaart foto film beeld ' +
     'muziek lied spel sport fiets auto trein tram bus boot schip vliegtuig straat weg plein park markt winkel school kerk stad dorp ' +
     'land zee strand berg bos veld rivier meer brug haven station hotel kantoor bureau computer scherm toets muis telefoon bericht ' +
-    'mail email tekst woord zin letter regel bladzijde verhaal vraag antwoord idee plan doel les cursus oefening examen diploma ' +
+    'mail tekst woord zin letter regel bladzijde verhaal vraag antwoord idee plan doel les cursus oefening examen diploma ' +
     'sleutel tas jas trui broek jurk rok schoen sok hoed muts sjaal bril horloge ring geld prijs rekening factuur euro cent kassa ' +
     'brood kaas melk boter ei soep salade appel peer banaan druif citroen tomaat aardappel rijst pasta pizza vis vlees kip koffie ' +
     'thee water wijn bier sap suiker zout peper taart koek ijs chocolade friet wafel ontbijt lunch diner snoep fruit groente sla ' +
@@ -718,7 +718,115 @@ p { margin: 0 0 12px; max-width: 68ch; }
     'Een goede coördinatie tussen de diensten is noodzakelijk.', 'Ze hebben samen een coöperatieve winkel opgericht.',
     'De nieuwe medewerker is geïnspireerd door zijn vorige job.', 'Die uitdrukking is intussen een beetje passé.',
     'Hij gebruikt in elke toespraak hetzelfde cliché.', 'Ze zeilden samen over alle zeeën van de wereld.',
-    'Bij de kaas drinken we een fles rhônewijn.', 'Bij het aperitief serveren we toast met paté.'
+    'Bij de kaas drinken we een fles rhônewijn.', 'Bij het aperitief serveren we toast met paté.',
+    // module 7: zinnen met leestekens
+    'Ik koop brood, kaas en melk in de supermarkt.', 'Na het werk ga ik zwemmen, lezen of wandelen.',
+    'Het regent al de hele dag; we blijven dus binnen.', 'Gent, Brugge en Antwerpen zijn drukke steden.',
+    'Als het mooi weer is, eten we buiten.', 'De trein had vertraging; ik kwam te laat op mijn werk.',
+    'Hij is moe, maar hij werkt toch verder.', 'We wonen in een rustige straat, vlak bij het park.',
+    'Neem je jas mee, want het wordt kouder.', 'De vergadering duurde lang; niemand had nog zin in een discussie.',
+    'Ze spreekt Nederlands, Frans, Engels en een beetje Duits.',
+    'Morgen is de winkel gesloten; overmorgen zijn we weer open.', 'Toen de film begon, werd het stil in de zaal.',
+    'Typ rustig, kijk naar het scherm en hou je vingers op de thuisrij.',
+    'Mijn zus woont in Leuven, mijn broer in Mechelen.', 'Hoewel het laat was, bleef ze nog even werken.',
+    'De kinderen spelen buiten; hun ouders drinken koffie op het terras.',
+    'Voor de soep heb je wortels, prei, selder en een ui nodig.',
+    'Het museum is open van dinsdag tot zondag; op maandag is het gesloten.',
+    'Wie vroeg vertrekt, staat minder lang in de file.', 'De oefening is kort, maar ze vraagt veel concentratie.',
+    'We gaan met de fiets naar de kust; de auto blijft thuis.', 'Ja, ik kom zeker naar het feest.',
+    'Nee, dat is niet de juiste sleutel.', 'De zon schijnt, de vogels zingen en het is lekker warm.',
+    'Het café is klein, maar erg gezellig.', 'Let op: de winkel sluit vandaag om vijf uur!',
+    'Ik heb drie favoriete sporten: zwemmen, fietsen en lopen.', 'Opgelet: de trap is glad door de regen!',
+    'Vergeet niet: morgen begint de les een uur vroeger.',
+    'Breng het volgende mee: een pen, een schrift en je agenda.',
+    'Tip: neem regelmatig een korte pauze tijdens het typen.', 'Resultaat: je hebt de toets in één keer gehaald!',
+    'Het antwoord is eenvoudig: oefenen, oefenen en nog eens oefenen.',
+    'Belangrijk: sluit alle ramen voordat je vertrekt!', 'Kom binnen: de deur staat open!',
+    'Het menu van vandaag: tomatensoep, stoofvlees met frieten en ijs.',
+    'Opgepast: op deze weg rijden veel fietsers!',
+    'De conclusie: we moeten meer tijd uittrekken voor de planning.',
+    'Goed nieuws: de nieuwe parking is eindelijk klaar!',
+    'Herhaal de oefening tot ze vlot gaat: zo leer je het snelst.',
+    'Er zijn twee mogelijkheden: we vertrekken nu of we blijven hier.',
+    'Hou vol: je bent bijna aan het einde van de module!',
+    'Er is markt op het plein: kom zondag gerust eens kijken!',
+    'Waarschuwing: dit product is niet geschikt voor kinderen.',
+    'Wat een mooie dag: de zon schijnt en het is warm!',
+    'Het recept is simpel: bloem, melk, eieren en een snuifje zout.',
+    'Nog één tip: lees de opdracht altijd eerst helemaal!', 'Stilte: de examens zijn bezig!',
+    'Mijn advies: begin klein en bouw rustig op.', 'Zij zei het meteen: dit plan gaat niet werken.',
+    'Onthoud dit: juist typen is belangrijker dan snel typen!', 'Let goed op: na de brug moet je links afslaan!',
+    'We gaan \'s avonds vaak wandelen in het park.', 'Zo\'n mooie zonsondergang zie je niet elke dag.',
+    'Ze heeft honderden foto\'s van haar reis naar Portugal.',
+    'Op de parking staan veel auto\'s met een Nederlandse nummerplaat.',
+    'Het woord "dactylo" hoor je in Vlaanderen nog vaak.', 'De chauffeur riep "Opgelet!" en sloot de deuren.',
+    'Aan de deur hangt een bordje met het woord "gesloten".', 'Klik op de knop "Opslaan" om je werk te bewaren.',
+    'Mijn oma\'s tuin staat vol rozen en lavendel.', 'In het restaurant liggen twee menu\'s op elke tafel.',
+    'Ze stuurde me \'s morgens een kort sms\'je.', 'De baby\'s in de crèche slapen na de middag.',
+    'Bij zo\'n weer blijf ik liever binnen met een boek.',
+    'Het bord aan de ingang zegt duidelijk: "Verboden toegang".', 'Hij zei "tot morgen" en stapte in de auto.',
+    'De cd\'s van mijn vader staan nog op zolder.', 'We zijn \'s nachts aangekomen in een rustig hotel.',
+    'Op zondag eten we \'s middags bij mijn ouders.',
+    'Typ eerst het woord "toetsenbord" en dan het woord "scherm".',
+    'Op de envelop staat in grote letters "dringend".', 'Zij noemt haar kleine tuin "mijn stukje platteland".',
+    'De foto\'s van het huwelijk zijn eindelijk klaar!', 'In de keuken staan twee oude radio\'s op de kast.',
+    'De taxi\'s wachten in een lange rij aan het station.', 'Op het scherm verschijnt de melding "Geslaagd".',
+    'Hij is een fijne collega, maar ik ken zijn hobby\'s niet.',
+    'De agenda\'s voor volgend jaar liggen al in de winkel.', 'Ze riep "Proficiat!" toen ik binnenkwam.',
+    'De vergadering (in zaal B) begint om tien uur.', 'Mijn tante (de zus van mijn moeder) woont in Kortrijk.',
+    'Neem je identiteitskaart mee (en je rijbewijs).',
+    'De winkel is open van maandag tot zaterdag (behalve op feestdagen).',
+    'Hij spreekt drie talen (Nederlands, Frans en Engels).', 'De les duurt ongeveer een uur (inclusief pauze).',
+    'Breng iets te drinken mee (water of thee).', 'Hasselt (in Limburg) heeft een gezellig centrum.',
+    'Antwerpen (de grootste stad van Vlaanderen) ligt aan de Schelde.',
+    'Bak de taart in een warme oven (niet te heet).',
+    'De bakker (op de hoek van onze straat) verkoopt heerlijke pistolets.',
+    'Lees de handleiding (zeker het eerste hoofdstuk) voordat je begint.',
+    'Mijn collega\'s (vooral Tom en Lien) helpen me graag.',
+    'De film (een Vlaamse komedie) speelt vanavond in de cinema.',
+    'Het pakket wordt morgen geleverd (tussen acht en twaalf uur).',
+    'Kies een kleur (rood, groen of blauw) en klik verder.',
+    'Onze hond (een oude labrador) slaapt bijna de hele dag.',
+    'We vertrekken vroeg (rond zes uur) om de file te vermijden.',
+    'Het examen bestaat uit twee delen (theorie en praktijk).',
+    'De koffie (zonder suiker) is voor mij, de thee voor jou.',
+    'Je mag de oefening herhalen (zo vaak als je wil).',
+    'Op vrijdag (de laatste werkdag) is het kantoor vroeger dicht.',
+    'Mijn grootvader (tachtig jaar oud) fietst nog elke dag.',
+    'De nieuwe bibliotheek (vlak bij het station) is erg licht.',
+    'Het weer wordt morgen beter (volgens de weerman)!', 'Ze kocht een nieuwe gsm (een cadeau voor zichzelf).',
+    'De parking (achter het station) is \'s nachts gesloten.', 'Stuur me je antwoord per e-mail.',
+    'Op het strand vonden we een zee-egel.', 'Er was een auto-ongeluk op de weg naar Brugge.',
+    'Mijn nicht woont in Oost-Vlaanderen, vlak bij Gent.', 'In West-Vlaanderen zie je veel boerderijen en velden.',
+    'Sint-Niklaas heeft een van de grootste marktpleinen van het land.',
+    'Het tv-programma begint vanavond om acht uur.', 'Mijn oude cd-speler werkt nog altijd perfect.',
+    'Ze ging lunchen met een ex-collega.', 'Hij is mede-eigenaar van een kleine zaak in Mechelen.',
+    'Noteer je gsm-nummer en je e-mailadres op het formulier.', 'Het btw-nummer staat onderaan op de factuur.',
+    'Ze draagt een wit T-shirt en een blauwe jeans.', 'Hij is een oud-leerling van onze school.',
+    'Hij is al tien jaar een overtuigde niet-roker.', 'Mijn buurman is een echte doe-het-zelver.',
+    'Na het skiën genieten we van de après-ski.', 'Ze sturen elkaar elke avond een sms-bericht.',
+    'Vorige zomer reisden we door Nieuw-Zeeland.', 'Het radio-interview duurde langer dan gepland.',
+    'Op de zeedijk staat een groot hotel-restaurant.', 'Het e-book kost minder dan de papieren versie.',
+    'Mijn zus woont in Zuid-Frankrijk, ver van de drukte.', 'Vandaag eten we vol-au-vent met frietjes.',
+    'In het café bestel ik een croque-monsieur en een koffie.',
+    'Een oud-collega van mijn man woont in Vlaams-Brabant.',
+    'Hij werkt als vrijwilliger bij een kleine radio-omroep.',
+    'De auto-industrie verandert snel door de opkomst van elektrische wagens.',
+    'Hoe laat komt de trein uit Brussel aan?', 'Heb je de sleutels van de fietsenstalling gezien?',
+    'Kom je morgen ook naar de vergadering?', 'Wil je koffie of thee bij het ontbijt?',
+    'Weet jij waar ik mijn bril heb gelegd?', 'Hoeveel kost een kilo appelen op de markt?',
+    'Zullen we zondag een wandeling maken langs de Leie?', 'Ken je een goed frietkot in de buurt?',
+    'Heb je het verslag al gelezen, of zal ik het samenvatten?', 'Mag ik je oplader even lenen?',
+    'Waarom rijdt de tram vandaag niet?', 'Wanneer begint de nieuwe cursus voor volwassenen?',
+    'Kun je me straks even terugbellen op mijn gsm?', 'Breng iets lekkers mee, bv. een taart of fruit.',
+    'Pennen, schriften, mappen enz. liggen in de bovenste kast.',
+    'De cursus behandelt o.a. leestekens en hoofdletters.', 'Ik ben moe. Ik ga vroeg slapen.',
+    'Het regent. Neem zeker een paraplu mee.', 'Stuur de brief t.a.v. de directie.',
+    'Laat me z.s.m. weten of je komt.', 'We nemen de trein i.p.v. de auto.', 'Hij komt niet. Hij is ziek.',
+    'De prijs is incl. btw en leveringskosten.', 'De winkel is dicht wegens verlof. We zijn volgende week terug.',
+    'Het examen duurt ca. een uur.', 'Is dit de juiste weg naar het station? Ik ben verdwaald.',
+    'Mevr. Claes is vandaag niet op kantoor.', 'Dhr. Wouters belt u morgen terug.',
+    'Wat denk je ervan? Gaan we morgen naar zee?', 'Heb je zin in een wandeling? Het is mooi weer.'
   ];
 
   // Eigennamen: steden, gemeenten en voornamen, met hoofdletter.
@@ -795,8 +903,21 @@ p { margin: 0 0 12px; max-width: 68ch; }
     'Curaçao', 'Besançon', 'Châtelet', 'Neufchâteau', 'Ardèche', 'Rhône', 'Périgord'
   ];
   // Woorden met een apostrof of een koppelteken (module 7).
-  var APOS_WORDS = [];
-  var HYPHEN_WORDS = [];
+  var APOS_WORDS = [
+    'zo\'n', 'auto\'s', 'foto\'s', 'baby\'s', 'menu\'s', 'cd\'s', 'dvd\'s', 'tv\'s', 'pc\'s', 'sms\'je',
+    '\'s avonds', '\'s morgens', '\'s nachts', '\'s middags', '\'s ochtends', '\'s zomers', '\'s winters',
+    '\'s maandags', '\'s zondags', 'hobby\'s', 'paraplu\'s', 'taxi\'s', 'radio\'s', 'video\'s', 'agenda\'s',
+    'collega\'s', 'oma\'s', 'opa\'s', 'kilo\'s', 'pagina\'s', 'camera\'s', 'piano\'s', 'ski\'s', 'euro\'s',
+    'pyjama\'s', 'villa\'s'
+  ];
+  var HYPHEN_WORDS = [
+    'e-mail', 'e-mailadres', 'zee-egel', 'auto-ongeluk', 'auto-industrie', 'na-apen', 'mede-eigenaar', 'mee-eten',
+    'toe-eigenen', 'Oost-Vlaanderen', 'West-Vlaanderen', 'Vlaams-Brabant', 'Sint-Niklaas', 'Sint-Truiden',
+    'tv-programma', 'cd-speler', 'gsm-nummer', 'sms-bericht', 'btw-nummer', 'e-book', 'T-shirt', 'ex-collega',
+    'oud-collega', 'oud-leerling', 'niet-roker', 'doe-het-zelver', 'après-ski', 'vol-au-vent', 'croque-monsieur',
+    'hotel-restaurant', 'radio-interview', 'radio-omroep', 'Nieuw-Zeeland', 'Zuid-Frankrijk', 'Noord-Amerika',
+    'Groot-Brittannië', 'vis-à-vis', 'pied-à-terre', 'tête-à-tête', 'prêt-à-porter'
+  ];
 
   var BASELINE_TEXT = 'Vandaag begin ik aan een typcursus. Elke dag oefen ik een kwartier, en stap voor stap leer ik blind typen met tien vingers.';
 
@@ -1028,7 +1149,52 @@ p { margin: 0 0 12px; max-width: 68ch; }
         'Dit is de moduletoets van de accenten. Haal minstens 95% nauwkeurigheid om de module af te ronden.'
       ] })
     ] },
-    { id: 'm7', nr: 7, phase: 1, title: 'Leestekens', planned: 12, desc: ', ; ! : " \' ( ) - ? .', lessons: [] },
+    { id: 'm7', nr: 7, phase: 1, title: 'Leestekens', planned: 12, desc: ', ; ! : " \' ( ) - ? .', lessons: [
+      L('m7-komma', 'Komma en puntkomma', 'new', { add: ',;', intro: [
+        'De komma staat rechts naast de n. Typ hem met je rechterwijsvinger, schuin onder de j.',
+        'De puntkomma staat rechts naast de komma. Typ hem met je rechtermiddelvinger, schuin onder de k.',
+        'Na een komma en een puntkomma volgt een spatie, ervoor niet.'
+      ] }),
+      L('m7-komma-oef', 'Komma en puntkomma oefenen', 'practice', { focus: ',;', help: 'hint', intro: [
+        'Je oefent de komma en de puntkomma, in opsommingen en in zinnen.'
+      ] }),
+      L('m7-uitroep', 'Uitroepteken en dubbele punt', 'new', { add: '!:', intro: [
+        'Het uitroepteken staat zonder Shift op de toets van de 8. Typ het met je rechtermiddelvinger, vanaf de k schuin omhoog, voorbij de i.',
+        'De dubbele punt staat rechts naast de puntkomma. Typ hem met je rechterringvinger, schuin onder de l.'
+      ] }),
+      L('m7-aanhaling', 'Aanhalingsteken en apostrof', 'new', { add: '"\'', intro: [
+        'Het aanhalingsteken " staat zonder Shift op de toets van de 3. Typ het met je linkermiddelvinger, vanaf de d schuin omhoog, voorbij de e.',
+        'De apostrof \' staat op de toets van de 4. Typ hem met je linkerwijsvinger, vanaf de f schuin omhoog, voorbij de r. Je gebruikt hem in woorden zoals zo\'n, auto\'s en \'s avonds.'
+      ] }),
+      L('m7-haakjes', 'Haakjes', 'new', { add: '()', intro: [
+        'Het haakje openen ( staat op de toets van de 5. Typ het met je linkerwijsvinger, vanaf de f schuin omhoog, voorbij de t.',
+        'Het haakje sluiten ) staat rechts naast de 0. Typ het met je rechterpink.'
+      ] }),
+      L('m7-koppel', 'Koppelteken', 'new', { add: '-', intro: [
+        'Het koppelteken staat helemaal rechts op de cijferrij, naast het haakje sluiten. Typ het met je rechterpink.',
+        'Je gebruikt het in woorden zoals e-mail, zee-egel en Oost-Vlaanderen.'
+      ] }),
+      L('m7-punt', 'Punt en vraagteken', 'new', { add: '.?', intro: [
+        'Op een Belgisch toetsenbord typ je de punt met Shift: hou met je linkerpink de linker-Shift ingedrukt en sla met je rechtermiddelvinger de puntkomma aan.',
+        'Het vraagteken typ je ook met de linker-Shift, op de komma, met je rechterwijsvinger.',
+        'Vanaf nu begint elke zin met een hoofdletter en eindigt hij met een punt, een vraagteken of een uitroepteken.'
+      ] }),
+      L('m7-punt-oef', 'Punt en vraagteken oefenen', 'practice', { focus: '.?', help: 'hint', intro: [
+        'Je oefent de punt en het vraagteken in volledige zinnen.'
+      ] }),
+      L('m7-zinnen', 'Volledige zinnen', 'sentences', { focus: ',;!:"\'()-.?', help: 'hint', intro: [
+        'Je typt volledige zinnen met hoofdletters en leestekens, zoals in een gewone tekst.'
+      ] }),
+      L('m7-herh', 'Herhaling leestekens', 'review', { focus: ',;!:"\'()-.?', help: 'hint', intro: [
+        'Een herhaling van alle leestekens. Je zwakste toetsen komen vaker terug.'
+      ] }),
+      L('m7-zwak', 'Je zwakste toetsen', 'weak', { help: 'hint', intro: [
+        'Deze les is op maat: de toetsen waarop je tot nu toe de meeste fouten maakte, komen vaker terug.'
+      ] }),
+      L('m7-toets', 'Moduletoets leestekens', 'moduletest', { focus: ',;!:"\'()-.?', help: 'hint', intro: [
+        'Dit is de moduletoets van de leestekens. Haal minstens 95% nauwkeurigheid om de module af te ronden.'
+      ] })
+    ] },
     { id: 'm8', nr: 8, phase: 1, title: 'Cijfers', planned: 8, desc: '1 tot 0 met Shift, datums, bedragen, nummers', lessons: [] },
     { id: 'm9', nr: 9, phase: 1, title: 'Tekens en bediening', planned: 9, desc: '@ \u20ac % / + = & # *, Enter, Backspace, Tab', lessons: [] },
     { id: 'm10', nr: 10, phase: 2, title: 'Alles door elkaar', planned: 10, desc: 'Alle toetsen gemengd, lastige combinaties (ij, ui, eu, sch, ng), zwakke toetsen', lessons: [] },
@@ -1132,14 +1298,18 @@ p { margin: 0 0 12px; max-width: 68ch; }
     for (var i = 0; i < items.length; i++) { x -= ws[i]; if (x <= 0) return items[i]; }
     return items[items.length - 1];
   }
-  function fillTo(target, next) {
+  // Na een stukje dat op , ; of : eindigt, volgt geen zin met een hoofdletter (een naam mag wel).
+  function badAfter(prev, p) { return prev && /[,;:]$/.test(prev) && /^[A-Z]/.test(p) && p.indexOf(' ') > 0; }
+  // tail (optioneel): een woord om achteraan te zetten als de tekst op , ; of : zou eindigen.
+  function fillTo(target, next, tail) {
     var out = [], len = 0, prev = null, guard = 0;
     while (len < target && guard++ < 600) {
       var p = next();
       if (!p) break;
-      if (p === prev) continue;
+      if (p === prev || badAfter(prev, p)) continue;
       out.push(p); len += p.length + 1; prev = p;
     }
+    if (tail && prev && /[,;:]$/.test(prev)) out.push(tail());
     return out.join(' ');
   }
   function todayKey(d) {
@@ -1449,9 +1619,10 @@ p { margin: 0 0 12px; max-width: 68ch; }
     while (len < target && guard++ < 600) {
       var p = next();
       if (!p) break;
-      if (p === prev) continue;
+      if (p === prev || badAfter(prev, p)) continue;
       out.push(p); len += p.length + 1; prev = p;
     }
+    if (prev && /[,;:]$/.test(prev)) out.push(anyWord(c));
     return out.join(' ');
   }
   // De nieuwe toetsen (of de zwakste toetsen) los geoefend; elk ervan komt zeker voor.
@@ -1478,7 +1649,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
       // Zonder focus op kleine letters zijn korte woorden nuttiger dan willekeurige lettergroepjes.
       if (other.length && !c.focusLetters.length && c.pools.words.length >= 6) return shortWord(c, 6);
       return comboPiece(c, share, minLen, maxLen);
-    });
+    }, function () { return anyWord(c); });
   }
   function wordsText(c, target, focus, opts) {
     opts = opts || {};
@@ -1512,7 +1683,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
     return fillTo(target, function () {
       if (c.r() < 0.6 || !plain) { var ch = pickFocus(c, other); return safe(c, pieceWith(c, ch), ch); }
       return plain();
-    });
+    }, function () { return anyWord(c); });
   }
   function sentenceForm(s, knownSet) {
     var t = s;
@@ -1526,9 +1697,10 @@ p { margin: 0 0 12px; max-width: 68ch; }
     for (var i = 0; i < t.length; i++) { var ch = t.charAt(i); if (ch !== ' ' && !knownSet.has(ch)) return null; }
     return t;
   }
+  // Bijna elke zin eindigt op een punt: die telt niet mee voor het gewicht.
   function sentWeight(s, fs) {
-    var n = 0;
-    for (var i = 0; i < s.length; i++) if (fs.has(s.charAt(i))) n++;
+    var n = 0, end = s.charAt(s.length - 1) === '.' ? s.length - 1 : s.length;
+    for (var i = 0; i < end; i++) if (fs.has(s.charAt(i))) n++;
     return 1 + 3 * Math.min(n, 4);
   }
   function sentencesText(c, target, focus, opts) {
@@ -1538,6 +1710,11 @@ p { margin: 0 0 12px; max-width: 68ch; }
       var pool = c.pools.sentences;
       if (opts.maxWords) pool = pool.filter(function (s) { return s.split(' ').length <= opts.maxWords; });
       var fs = focus && focus.length ? new Set(focus) : null;
+      // Bij een focus zonder kleine letters (leestekens, cijfers, ...) alleen zinnen die een focusteken bevatten.
+      if (fs && !focus.some(isLetter)) {
+        var withF = pool.filter(function (s) { return sentWeight(s, fs) > 1; });
+        if (withF.length >= 4) pool = withF;
+      }
       var cum = [], total = 0;
       pool.forEach(function (s) { total += fs ? sentWeight(s, fs) : 1; cum.push(total); });
       return { pool: pool, cum: cum, total: total };
@@ -1564,7 +1741,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
       if (next && (onlyOther || c.r() < 0.55)) return next();
       return comboPiece(c, focusShare, 2, 4);
     };
-    if (!onlyOther) return fillTo(target, next2);
+    if (!onlyOther) return fillTo(target, next2, function () { return anyWord(c); });
     // Elke tekst bevat zeker een paar korte focusstukjes (minstens drie focustekens).
     var must = [];
     for (var i = 0; i < Math.min(Math.max(3, other.length), 6); i++) {
@@ -2179,10 +2356,17 @@ p { margin: 0 0 12px; max-width: 68ch; }
     }
   }
 
+  // Namen voor tekens die los in een zin onleesbaar zijn (bv. in 'De meeste fouten maakte je op: ...').
+  var KEY_NAME = {
+    ' ': 'spatie', ',': 'komma', ';': 'puntkomma', ':': 'dubbele punt', '.': 'punt', '?': 'vraagteken',
+    '!': 'uitroepteken', '"': 'aanhalingsteken', "'": 'apostrof', '(': 'haakje openen', ')': 'haakje sluiten',
+    '-': 'koppelteken', '\n': 'Enter', '\t': 'Tab'
+  };
+  function keyName(c) { return KEY_NAME[c] || c; }
   function worstKeys(perKey) {
     return Object.keys(perKey).filter(function (c) { return perKey[c].e > 0; })
       .sort(function (a, b) { return perKey[b].e - perKey[a].e; }).slice(0, 4)
-      .map(function (c) { return c === ' ' ? 'spatie' : c; });
+      .map(keyName);
   }
   function statsBlock(r) {
     return '<div class="result-stats">' +
@@ -2263,7 +2447,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
     }
     var weak = weakestKeys(known);
     html += '<p>Je oefent met alle toetsen die je al kent. Toetsen waarop je vaak fouten maakt, komen vaker terug.</p>' +
-      '<p class="muted">Je zwakste toetsen op dit moment: ' + weak.map(esc).join(', ') + '.</p>' +
+      '<p class="muted">Je zwakste toetsen op dit moment: ' + weak.map(function (c) { return esc(keyName(c)); }).join(', ') + '.</p>' +
       '<div class="actions"><button class="btn" data-act="free" data-primary>Start een oefening</button></div>' +
       '<p class="hint">Een vrije oefening telt mee in je statistieken, maar niet voor de lessen.</p>';
     app.innerHTML = html;

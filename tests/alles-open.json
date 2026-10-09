@@ -464,6 +464,102 @@
    "attempts": 1,
    "lastAt": 1791450000000,
    "passedAt": 1791450000000
+  },
+  "m7-komma": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m7-komma-oef": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m7-uitroep": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m7-aanhaling": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m7-haakjes": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m7-koppel": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m7-punt": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m7-punt-oef": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m7-zinnen": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m7-herh": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m7-zwak": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
+  },
+  "m7-toets": {
+   "passed": true,
+   "bestAcc": 100,
+   "bestApm": 200,
+   "attempts": 1,
+   "lastAt": 1791450000000,
+   "passedAt": 1791450000000
   }
  },
  "sessions": [],

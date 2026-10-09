@@ -212,6 +212,13 @@ def main():
                 if (t.length > 2500) problems.push(l.id + ' #' + i + ' te lang (' + t.length + ')');
                 for (const ch of t) if (!allowed.has(ch)) { problems.push(l.id + ' #' + i + ' bevat ' + JSON.stringify(ch)); break; }
                 if (/(^|\s)Ij[a-z]/.test(t)) problems.push(l.id + ' #' + i + ' schrijft Ij in plaats van IJ');
+                const sp = t.match(/.{0,8}( [,;:!?.)]|\( |[,;!?][A-Za-z\u00c0-\u00ff]).{0,8}/);
+                if (sp) problems.push(l.id + ' #' + i + ' spatie rond leesteken: ' + JSON.stringify(sp[0]));
+                if ((t.match(/\(/g) || []).length !== (t.match(/\)/g) || []).length || (t.match(/"/g) || []).length % 2)
+                  problems.push(l.id + ' #' + i + ' haakjes of aanhalingstekens niet in paren');
+                if (/[,;:]$/.test(t)) problems.push(l.id + ' #' + i + ' eindigt op een komma, puntkomma of dubbele punt');
+                if (/[,;:] [A-Z][a-z]+ [a-z]/.test(t) && /[,;:] (De|Het|Een|Ik|We|Zij|Hij|Mijn|Er|Op|In) /.test(t))
+                  problems.push(l.id + ' #' + i + ' zin met hoofdletter na een komma: ' + JSON.stringify((t.match(/.{0,10}[,;:] (De|Het|Een|Ik|We|Zij|Hij|Mijn|Er|Op|In) .{0,10}/) || [''])[0]));
                 if (l.type === 'new' && ex.name === 'Nieuwe toetsen')
                   for (const k of (l.add || '')) if (k !== ' ' && !t.includes(k)) problems.push(l.id + ' mist nieuwe toets ' + k);
               });
@@ -410,6 +417,40 @@ def main():
             page.wait_for_timeout(50)
             check(page.evaluate("() => document.activeElement && document.activeElement.id") == "catch",
                   "na een klik buiten de tekst gaat de focus terug naar het tekstveld")
+            page.keyboard.press("Escape")
+
+        # 4f. Leestekens: slimme aanhalingstekens (zoals Safari ze kan sturen) tellen als ' en ",
+        # en de hint bij punt en vraagteken toont de toets met de linker-Shift.
+        def open_until(lid, chars):
+            # Opent de oefening 'Nieuwe toetsen' en typt tot het eerste teken uit chars.
+            page.goto(URL + "#/les/" + lid)
+            page.wait_for_selector("[data-act=start]")
+            page.keyboard.press("Enter")
+            page.wait_for_selector("#strip")
+            typ(run_text())
+            page.wait_for_selector(".result")
+            page.keyboard.press("Enter")
+            page.wait_for_selector("#strip")
+            text = run_text()
+            i = next(k for k, ch in enumerate(text) if ch in chars)
+            typ(text[:i])
+            return text[i]
+        def counts():
+            return page.evaluate("() => { const R = window.__dactylo.run(); return [R.pos, R.keystrokes, R.errors]; }")
+        if "m7-aanhaling" in ids:
+            target = open_until("m7-aanhaling", "'\"")
+            curly = "\u2019" if target == "'" else "\u201d"
+            before = counts()
+            page.evaluate("(ch) => document.getElementById('catch').dispatchEvent(new InputEvent('input', { inputType: 'insertText', data: ch, bubbles: true }))", curly)
+            check([a - b for a, b in zip(counts(), before)] == [1, 1, 0], f"slim aanhalingsteken {curly} telt als {target}")
+            page.keyboard.press("Escape")
+        if "m7-punt" in ids:
+            target = open_until("m7-punt", ".?")
+            hint = page.evaluate("""() => ({ keys: Array.from(document.querySelectorAll('#kb-area .key.is-next')).map(k => k.dataset.k).sort(),
+              label: document.getElementById('finger-label').textContent })""")
+            want = sorted(["k_semi" if target == "." else "k_comma", "k_lshift"])
+            check(hint["keys"] == want and "met de linker-Shift" in hint["label"],
+                  f"hint voor {target}: de toets met de linker-Shift ({hint['keys']}, {hint['label']})")
             page.keyboard.press("Escape")
 
         # 5. Toetsstatistieken bevatten enkel tekens die in de lessen voorkomen (beginmeting telt niet mee)

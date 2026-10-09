@@ -119,6 +119,12 @@ verlaten wordt, begint opnieuw bij de intro.
   kleine letters (hoofdletters, leestekens, cijfers, tekens) bevat zeker een paar focusstukjes;
   de test eist gemiddeld minstens 5 focustekens per 100 tekens en minstens 3 per slottoets.
   Zwakke focustekens worden vaker gekozen (`pickFocus()`).
+- Leestekens tussen stukjes: `fillTo()` en `coverFill()` zetten geen zin met hoofdletter na een
+  stukje dat op , ; of : eindigt (`badAfter()`), en een tekst eindigt niet op zo'n teken. De
+  test controleert ook spaties rond leestekens en haakjes en aanhalingstekens in paren.
+  `sentWeight()` telt de punt achteraan niet mee; bij een focus zonder kleine letters kiest
+  `sentencesText()` alleen zinnen met een focusteken. Meldingen noemen tekens bij naam
+  (`KEY_NAME`, `keyName()`: komma, punt, ...).
 - De seed van een oefening is `FLOW.seed + i * 7919 + FLOW.attempt * 104729`. Elke knop om
   opnieuw te beginnen verhoogt `FLOW.attempt`, zodat er een nieuwe tekst komt.
 - `startExercise()` voegt alle witruimte samen tot één spatie, en `stripHTML()` maakt precies
@@ -201,7 +207,7 @@ verlaten wordt, begint opnieuw bij de intro.
 | 4 Onderrij | 1 | w x, c v, b n | 11 | klaar |
 | 5 Hoofdletters | 1 | Linker- en rechter-Shift | 8 | klaar |
 | 6 Accenten | 1 | é è, ç à, ù en ^ (ê), ¨ (ë ï ö ü) | 10 | klaar |
-| 7 Leestekens | 1 | , ; ! : " ' ( ) - . ? | 12 | te bouwen |
+| 7 Leestekens | 1 | , ; ! : " ' ( ) - . ? | 12 | klaar |
 | 8 Cijfers | 1 | 1 tot 0 met Shift, datums, bedragen, nummers | 8 | te bouwen |
 | 9 Tekens en bediening | 1 | @ # € % / + = * &, Enter, Backspace, Tab | 9 | te bouwen |
 | 10 Alles door elkaar | 2 | Alle toetsen, lastige combinaties, zwakke toetsen | 10 | te bouwen |
@@ -302,7 +308,8 @@ Modules 12 en 13: `none`. Via Instellingen kan de gebruiker de hulp altijd zelf 
    `window.__dactylo.allowed(id)` geeft de toegelaten tekens van een les, inclusief de spatie.
 3. **Hoofdletters en leestekens in teksten** (modules 5 en 7). Gebruik ze nooit vóór de les
    waarin ze aangeleerd worden. Eigennamen met een hoofdletter. Hoofdletters zijn klaar in 0.3.0
-   (`sentenceForm()`, `NAMES`, `pieceWith()`); leestekens volgen in module 7.
+   (`sentenceForm()`, `NAMES`, `pieceWith()`), leestekens in 0.5.0 (`WRAP`, `APOS_WORDS`,
+   `HYPHEN_WORDS`, zinnen met leestekens).
 4. **Dode toetsen** (module 6). Klaar in 0.4.0 (zie "Typen" hierboven); manueel te testen met
    `tests/MANUEEL-safari.md`. Oorspronkelijke opdracht: bij ^ en ¨ sturen browsers op macOS vaak compositie-events, en
    de keydown van de afsluitende letter kan `isComposing = true` hebben. De huidige handler
