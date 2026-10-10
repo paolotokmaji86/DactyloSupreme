@@ -454,6 +454,51 @@ def main():
                   f"hint voor {target}: de toets met de linker-Shift ({hint['keys']}, {hint['label']})")
             page.keyboard.press("Escape")
 
+        # 4g. Knop om het toetsenbord op het scherm tijdens een oefening te verbergen en weer te tonen
+        def kb_state():
+            return page.evaluate("""() => { const R = window.__dactylo.run(), b = document.getElementById('kb-toggle');
+              return { pos: R.pos, errors: R.errors, help: R.help, setting: window.__dactylo.state().settings.help,
+                hidden: document.getElementById('kb-area').hidden, noKb: document.getElementById('run').classList.contains('no-kb'),
+                label: b ? b.textContent : null, next: document.querySelectorAll('#kb-area .key.is-next').length,
+                statsH: document.querySelector('.stats').offsetHeight }; }""")
+        def start_first(lid):
+            page.goto(URL + "#/les/" + lid)
+            page.wait_for_selector("[data-act=start]")
+            page.keyboard.press("Enter")
+            page.wait_for_selector("#strip")
+        start_first("m2-dk")
+        text = run_text()
+        typ(text[:3])
+        st = kb_state()
+        check(st["label"] == "Toetsenbord verbergen" and not st["hidden"] and st["help"] == "full" and st["statsH"] < 45,
+              f"knop 'Toetsenbord verbergen' staat naast de tijd, op één regel ({st['label']}, {st['statsH']}px)")
+        page.click("#kb-toggle")
+        page.wait_for_timeout(50)
+        st = kb_state()
+        check(st["hidden"] and st["noKb"] and st["help"] == "none" and st["setting"] == "never" and st["label"] == "Toetsenbord tonen"
+              and st["pos"] == 3 and st["errors"] == 0,
+              f"na een klik is het toetsenbord verborgen, de oefening loopt verder ({st})")
+        check(page.evaluate("() => document.activeElement && document.activeElement.id") == "catch",
+              "na een klik op de knop gaat de focus terug naar het tekstveld")
+        typ(text[3])
+        st = kb_state()
+        check(st["pos"] == 4 and st["errors"] == 0, "na het verbergen typ je gewoon verder")
+        page.screenshot(path=f"{SHOTS}/run_zonder_toetsenbord.png")
+        page.keyboard.press("Escape")
+        start_first("m2-dk")
+        st = kb_state()
+        check(st["hidden"] and st["label"] == "Toetsenbord tonen", "de keuze blijft gelden voor de volgende oefening")
+        page.click("#kb-toggle")
+        page.wait_for_timeout(50)
+        st = kb_state()
+        check(not st["hidden"] and not st["noKb"] and st["help"] == "full" and st["setting"] == "auto" and st["next"] > 0
+              and st["label"] == "Toetsenbord verbergen",
+              f"na nog een klik is het toetsenbord terug, met de hint voor de volgende toets ({st})")
+        page.keyboard.press("Escape")
+        start_first("m1-beginmeting")
+        check(page.evaluate("() => !document.getElementById('kb-toggle')"), "geen knop bij de beginmeting (zonder toetsenbord)")
+        page.keyboard.press("Escape")
+
         # 5. Toetsstatistieken bevatten enkel tekens die in de lessen voorkomen (beginmeting telt niet mee)
         last_id = lessons[-1]["id"]
         allowed_last = set(page.evaluate(ALLOWED_JS, last_id))

@@ -191,7 +191,12 @@ p { margin: 0 0 12px; max-width: 68ch; }
 .running .kb { max-width: 900px; margin: 0 auto; }
 .running .key { height: 40px; }
 .running .hands { width: 270px; margin-top: 8px; }
-.run-hint { margin-left: auto; color: var(--muted); font-size: 15px; }
+.run-hint { margin-left: auto; color: var(--muted); font-size: 15px; align-self: center; }
+.kb-toggle {
+  font: 700 14px/1.2 var(--font-ui); padding: 5px 10px; border: 1px solid var(--line); border-radius: 8px;
+  background: transparent; color: var(--ink); cursor: pointer; align-self: center;
+}
+.kb-toggle:hover { background: var(--surface-2); }
 .ex-count { color: var(--muted); font-size: 15px; }
 .strip {
   background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-panel);
@@ -280,7 +285,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
 (function () {
   'use strict';
 
-  var APP_VERSION = '0.5.1';
+  var APP_VERSION = '0.5.2';
   var STORAGE_KEY = 'dactylo-be-azerty';
   var SCHEMA = 1;
 
@@ -2157,6 +2162,39 @@ p { margin: 0 0 12px; max-width: 68ch; }
     if (h === 'never') return 'none';
     return lessonHelp || 'full';
   }
+  // Knop tijdens een oefening om het toetsenbord op het scherm te verbergen of weer te tonen, zodat
+  // je zelf moet nadenken waar een toets ligt. Niet in een les zonder toetsenbord (beginmeting).
+  function kbToggleHTML(help) {
+    if (FLOW.lesson.help === 'none') return '';
+    return '<button type="button" class="kb-toggle" id="kb-toggle" data-act="kb" tabindex="-1">' +
+      (help === 'none' ? 'Toetsenbord tonen' : 'Toetsenbord verbergen') + '</button>';
+  }
+  // Verbergen zet de instelling op 'never' (Nooit tonen); tonen zet de vorige instelling terug.
+  // De keuze blijft gelden voor de volgende oefeningen en lessen.
+  var HELP_ON = 'auto';
+  function toggleKeyboard() {
+    var R = RUN;
+    if (!R || R.finished || !FLOW) return;
+    if (R.help !== 'none') {
+      if (S.settings.help !== 'never') HELP_ON = S.settings.help;
+      S.settings.help = 'never';
+    } else {
+      S.settings.help = HELP_ON;
+    }
+    save();
+    var help = helpMode(FLOW.lesson.help);
+    R.help = help;
+    var run = document.getElementById('run'), area = document.getElementById('kb-area'), btn = document.getElementById('kb-toggle');
+    if (run) run.classList.toggle('no-kb', help === 'none');
+    if (area) {
+      area.hidden = help === 'none';
+      area.innerHTML = kbHTML({ tinted: help === 'full' }) + handsHTML() + '<p class="finger-label" id="finger-label"></p>';
+    }
+    if (btn) btn.textContent = help === 'none' ? 'Toetsenbord tonen' : 'Toetsenbord verbergen';
+    // De strook wordt hoger of lager: de regel waarop je typt, opnieuw bovenaan zetten.
+    R.lineTop = null;
+    markCurrent();
+  }
   function startExercise(i) {
     FLOW.i = i;
     var ex = FLOW.plan[i];
@@ -2170,7 +2208,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
       '<div class="strip" id="strip" tabindex="-1" aria-label="Tekst om te typen"><div class="strip-lines" id="strip-lines">' + stripHTML(text) + '</div></div>' +
       '<textarea id="catch" class="catch" tabindex="-1" aria-hidden="true" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>' +
       '<div class="stats"><span><b id="st-apm">\u2013</b>aanslagen per minuut</span><span><b id="st-acc">\u2013</b>nauwkeurig</span><span><b id="st-time">0:00</b>tijd</span>' +
-      '<span class="run-hint" id="run-hint">Begin met typen wanneer je klaar bent. Esc stopt de oefening.</span></div>' +
+      '<span class="run-hint" id="run-hint">Begin met typen wanneer je klaar bent. Esc stopt de oefening.</span>' + kbToggleHTML(help) + '</div>' +
       '<p class="caps" id="caps" hidden>Caps Lock staat aan. Zet hem uit om verder te typen.</p>' +
       '<div class="kb-area" id="kb-area"' + (help === 'none' ? ' hidden' : '') + '>' +
       kbHTML({ tinted: help === 'full' }) + handsHTML() + '<p class="finger-label" id="finger-label"></p></div>' +
@@ -2575,7 +2613,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
       '</select></div>' +
       '<div class="field"><label for="set-help">Hulp van het toetsenbord op het scherm</label><select id="set-help">' +
       opt('auto', 'Automatisch: verdwijnt stap voor stap', s.help) + opt('always', 'Altijd de volgende toets tonen', s.help) + opt('never', 'Nooit tonen', s.help) +
-      '</select></div>' +
+      '</select><div class="help">Tijdens een oefening kan je het toetsenbord ook verbergen en weer tonen met de knop naast de tijd.</div></div>' +
       '<div class="field"><label for="set-theme">Weergave</label><select id="set-theme">' +
       opt('auto', 'Zoals je Mac (licht of donker)', s.theme) + opt('light', 'Licht', s.theme) + opt('dark', 'Donker', s.theme) +
       '</select></div>' +
@@ -2637,6 +2675,7 @@ p { margin: 0 0 12px; max-width: 68ch; }
     else if (act === 'retry-test') { FLOW.attempt = (FLOW.attempt || 0) + 1; startExercise(FLOW.plan.length - 1); }
     else if (act === 'restart') { FLOW.attempt = (FLOW.attempt || 0) + 1; FLOW.finished = false; startExercise(0); }
     else if (act === 'free') startFree();
+    else if (act === 'kb') toggleKeyboard();
     else if (act === 'export') exportProgress();
     else if (act === 'import') document.getElementById('import-file').click();
     else if (act === 'reset') {

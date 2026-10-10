@@ -28,6 +28,9 @@ cursor: één aanslag mag maar één teken verder gaan.
 2. Klik tijdens een oefening in de lege marge naast de tekst, en ook op de kopbalk. Typ meteen
    verder, in les 6.4 ook meteen ^ e. Typen moet blijven werken, zonder fout.
 3. Wissel met Cmd+Tab naar een ander programma en terug. Typ meteen verder (ook ^ e).
+3b. Klik tijdens een oefening op "Toetsenbord verbergen" en typ meteen verder, zonder eerst in de
+    tekst te klikken. Het toetsenbord verdwijnt, typen blijft werken. Klik op "Toetsenbord tonen":
+    het komt terug, en typen werkt nog altijd.
 4. Hou een letter (bv. e) een seconde ingedrukt. Verschijnt het accentmenu van macOS? Laat los en
    typ verder. Noteer wat er gebeurt en of er een aanslag te veel geteld wordt.
 

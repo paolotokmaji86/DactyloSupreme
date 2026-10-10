@@ -146,7 +146,8 @@ verlaten wordt, begint opnieuw bij de intro.
 - Het typscherm past maar net op een MacBook (de test meet 1440 x 790, ook bij de langste
   oefeningen). Daarom toont de strook tijdens een oefening twee regels die meeschuiven
   (`.running .run .strip`, `markCurrent()`); zonder toetsenbord op het scherm (`no-kb`) meer.
-  Elke extra regel boven het toetsenbord kan de test doen falen.
+  Elke extra regel boven het toetsenbord kan de test doen falen. De knop "Toetsenbord
+  verbergen" staat daarom op de regel met de tijd.
 - CSS: kleuren zijn variabelen op `:root`. De donkere kleuren staan er twee keer (in
   `@media (prefers-color-scheme: dark)` en onder `:root[data-theme="dark"]`): pas beide aan.
   Vingerkleuren: `--f-*` (vol) en `--t-*` (tint), via de klassen `.f-lp` tot `.f-th`. De
@@ -299,6 +300,13 @@ het resultaatscherm moet tonen welke eis niet gehaald werd.
 
 Modules 4 tot 9: nieuwe lessen `full`, de andere `hint`. Modules 10 en 11: `hint`.
 Modules 12 en 13: `none`. Via Instellingen kan de gebruiker de hulp altijd zelf aanzetten.
+
+Tijdens een oefening verbergt de knop "Toetsenbord verbergen" (`toggleKeyboard()`) het
+toetsenbord op het scherm, zodat de gebruiker zelf moet nadenken waar een toets ligt. Dat zet
+`S.settings.help` op `never` (Instellingen: "Nooit tonen"); "Toetsenbord tonen" zet de vorige
+waarde terug. De keuze blijft gelden voor volgende oefeningen en lessen. De knop staat er niet
+in een les met `help: 'none'` (bv. de beginmeting). De intro van een les toont het toetsenbord
+altijd.
 
 ## Technische taken
 
